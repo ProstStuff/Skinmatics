@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "skinmatics",
+	"version": "${version}",
+	"name": "Skinmatics",
+	"description": "Versatile avatar customization mod aimed for minimal customization.",
+	"authors": ["ProstStuff"],
+	"contributors": ["YouCanCallMeFreyya"],
+	"contact": {
+		"homepage": "https://modrinth/Skinmatics",
+		"sources": "https://github.com/ProstStuff/Skinmatics"
+	},
+	"license": "All Rights Reserved",
+	"icon": "assets/skinmatics/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["dev.proststuff.skinmatics.Skinmatics"],
+		"client": ["dev.proststuff.skinmatics.SkinmaticsClient"],
+		"modmenu": ["dev.proststuff.skinmatics.client.compat.SkinmaticsModMenu"]
+	},
+
+	"mixins": ["skinmatics.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
