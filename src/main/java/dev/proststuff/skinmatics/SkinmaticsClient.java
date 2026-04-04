@@ -66,7 +66,7 @@ public class SkinmaticsClient implements ClientModInitializer {
     public static Identifier getPlayerSkin(UUID uuid) {
         SkinmaticsData data = SkinmaticsClient.SKINMATICS.getOrDefault(uuid, null);
 
-        if (data != null && data.enabled && data.customSkinEnabled) {
+        if (data != null && data.validateSkin()) {
             return data.getSkinTexture();
         }
 

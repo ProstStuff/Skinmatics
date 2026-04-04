@@ -1,5 +1,5 @@
 # Skinmatics
-A Versatile yet minimal player customization mod.
+A versatile yet minimal player customization mod. Vanilla-friendly-ish!
 
 ---
 
@@ -7,6 +7,7 @@ A Versatile yet minimal player customization mod.
 Want custom animated skins? emissive (glowing) skins? and maybe even animated and reactive eyes?
 
 Skinmatics gives you just that.
+Adding customization to existing aspect of the game without overriding it, while staying relatively vanilla-friendly.
 
 ## Features
 
@@ -28,6 +29,8 @@ Skinmatics gives you just that.
 
 Note: The mod does not come with pre-made textures, players must create their own textures to use these features.
 
+---
+
 ## How To Use
 ### In-Game
 Currently, the editor for the mod is still a work-in-progress, and only serves as a refresh screen for now.
@@ -35,11 +38,12 @@ Currently, the editor for the mod is still a work-in-progress, and only serves a
 To open it, open `Options` > `Skin Customizations` > `Skinmatics` or from Mod Menu.
 
 ### Manual
-From the in-game editor, it tells you the current profile you're using. You can change your profile in the config (`config/skinmatics/config.json`).
+From the in-game editor, it tells you the current profile you're using.
+You can change your profile in the config (`config/skinmatics/config.json` > `profile`).
 Textures are stored in `config/skinmatics/textures`.
 
 <details>
-<summary>Profile Content</summary>
+<summary>Profile json Content</summary>
 
 ```json
 {
@@ -132,3 +136,13 @@ Textures are stored in `config/skinmatics/textures`.
 </details>
 
 ---
+
+<details>
+<summary>Future Plans</summary>
+
+- Editor (0.2.0)
+- Server-side sync (0.3.0 ~ 0.5.0)
+- *Eye-moticons* (Eye Customization+) (0.6.0 ~ 0.7.0)
+- Backporting (1.0.0, until 1.21.1)
+- Pre-made textures and profiles
+</details>

@@ -43,18 +43,18 @@ public class CapeFeatureRendererMixin implements SkinmaticsDataHolderImpl {
 
     @ModifyExpressionValue(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/client/render/entity/state/PlayerEntityRenderState;FF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/entity/state/PlayerEntityRenderState;capeVisible:Z"))
     public boolean skinmatics$modifyCapeVisibility(boolean original) {
-        if (skinmatics$skinmaticsData != null && skinmatics$skinmaticsData.validateCape() && skinmatics$skinmaticsData.getCapeTexture() != null) return true;
+        if (skinmatics$skinmaticsData != null && skinmatics$skinmaticsData.showCape()) return true;
         return original;
     }
 
     @ModifyExpressionValue(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/client/render/entity/state/PlayerEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/SkinTextures;cape()Lnet/minecraft/util/AssetInfo$TextureAsset;"))
     public AssetInfo.TextureAsset skinmatics$returnDummy(AssetInfo.TextureAsset original) {
-        return original == null ? DummyTextureAsset.INSTANCE : original;
+        return original == null && skinmatics$skinmaticsData.validateCustomCape() ? DummyTextureAsset.INSTANCE : original;
     }
 
     @ModifyArg(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/client/render/entity/state/PlayerEntityRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/RenderLayer;IIILnet/minecraft/client/render/command/ModelCommandRenderer$CrumblingOverlayCommand;)V"), index = 3)
     public RenderLayer skinmatics$overrideDefaultCapeTexture(RenderLayer defaultLayer) {
-        if (skinmatics$skinmaticsData != null && skinmatics$skinmaticsData.validateCape() && skinmatics$skinmaticsData.getCapeTexture() != null) {
+        if (skinmatics$skinmaticsData != null && skinmatics$skinmaticsData.validateCustomCape() && skinmatics$skinmaticsData.getCapeTexture() != null) {
             return RenderLayers.entityTranslucent(skinmatics$skinmaticsData.getCapeTexture());
         }
 

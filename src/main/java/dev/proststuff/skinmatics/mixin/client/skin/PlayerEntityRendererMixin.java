@@ -4,6 +4,7 @@ import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsData;
 import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsDataHolderImpl;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.network.ClientPlayerLikeEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
@@ -11,6 +12,7 @@ import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.PlayerLikeEntity;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,16 +29,15 @@ public class PlayerEntityRendererMixin implements SkinmaticsDataHolderImpl {
     @Unique
     protected SkinmaticsData skinmatics$skinmaticsData;
 
+    @Inject(method = "updateRenderState(Lnet/minecraft/entity/PlayerLikeEntity;Lnet/minecraft/client/render/entity/state/PlayerEntityRenderState;F)V", at = @At("TAIL"))
+    public <P extends PlayerLikeEntity & ClientPlayerLikeEntity> void skinmatics$setSkinmaticsData(P playerLikeEntity, PlayerEntityRenderState playerEntityRenderState, float f, CallbackInfo ci) {
+        skinmatics$skinmaticsData = SkinmaticsClient.SKINMATICS.get(playerLikeEntity.getUuid());
+    }
+
     @Inject(method = "getTexture(Lnet/minecraft/client/render/entity/state/PlayerEntityRenderState;)Lnet/minecraft/util/Identifier;", at = @At("RETURN"), cancellable = true)
     public void skinmatics$modifyDefaultSkinTexture(PlayerEntityRenderState playerEntityRenderState, CallbackInfoReturnable<Identifier> cir) {
-        SkinmaticsData data = SkinmaticsClient.getSkinmaticsFromRenderState(playerEntityRenderState);
-
-        if (data != null) {
-            skinmatic$setSkinmaticsData(data);
-
-            if (data.validateSkin()) {
-                cir.setReturnValue(data.getSkinTexture());
-            }
+        if (skinmatics$skinmaticsData != null && skinmatics$skinmaticsData.validateSkin()) {
+            cir.setReturnValue(skinmatics$skinmaticsData.getSkinTexture());
         }
     }
 
@@ -44,6 +45,12 @@ public class PlayerEntityRendererMixin implements SkinmaticsDataHolderImpl {
     public RenderLayer skinmatics$modifyDefaultArmTexture(RenderLayer defaultRenderLayer) {
         if (skinmatics$skinmaticsData != null && skinmatics$skinmaticsData.validateSkin() && skinmatics$skinmaticsData.getSkinTexture() != null) {
             return RenderLayers.entityTranslucent(skinmatics$skinmaticsData.getSkinTexture());
+        } else if (skinmatics$skinmaticsData == null) { // To fix player arm not using custom when joined
+            Identifier identifier = SkinmaticsClient.getPlayerSkin(SkinmaticsClient.LOCAL_UUID);
+
+            if (identifier != null) {
+                return RenderLayers.entityTranslucent(identifier);
+            }
         }
 
         return defaultRenderLayer;

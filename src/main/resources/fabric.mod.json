@@ -3,12 +3,13 @@
 	"id": "skinmatics",
 	"version": "${version}",
 	"name": "Skinmatics",
-	"description": "A Versatile yet minimal player customization mod.",
+	"description": "A versatile yet minimal player customization mod. Vanilla-friendly-ish!",
 	"authors": ["ProstStuff"],
 	"contributors": ["YouCanCallMeFreyya (Artist)"],
 	"contact": {
 		"homepage": "https://modrinth/Skinmatics",
-		"sources": "https://github.com/ProstStuff/Skinmatics"
+		"sources": "https://github.com/ProstStuff/Skinmatics",
+		"issues": "https://github.com/ProstStuff/Skinmatics/issues"
 	},
 	"license": "All Rights Reserved",
 	"icon": "assets/skinmatics/icon.png",

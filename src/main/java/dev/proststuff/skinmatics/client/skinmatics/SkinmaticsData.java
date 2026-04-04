@@ -57,16 +57,20 @@ public class SkinmaticsData {
         return enabled && emissiveSkinEnabled;
     }
 
-    public boolean validateCape() {
-        return enabled && capeEnabled && customCapeEnabled;
+    public boolean showCape() {
+        return enabled && capeEnabled;
+    }
+
+    public boolean validateCustomCape() {
+        return showCape() && customCapeEnabled;
     }
 
     public boolean validateEmissiveCape() {
-        return enabled && capeEnabled && emissiveCapeEnabled;
+        return showCape() && emissiveCapeEnabled;
     }
 
     public boolean validateElytra() {
-        return (enabled && customElytraEnabled) || validateCape();
+        return (enabled && customElytraEnabled) || validateCustomCape();
     }
 
     public boolean validateEmissiveElytra() {
