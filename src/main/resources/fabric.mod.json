@@ -3,9 +3,9 @@
 	"id": "skinmatics",
 	"version": "${version}",
 	"name": "Skinmatics",
-	"description": "Versatile avatar customization mod aimed for minimal customization.",
+	"description": "A Versatile yet minimal player customization mod.",
 	"authors": ["ProstStuff"],
-	"contributors": ["YouCanCallMeFreyya"],
+	"contributors": ["YouCanCallMeFreyya (Artist)"],
 	"contact": {
 		"homepage": "https://modrinth/Skinmatics",
 		"sources": "https://github.com/ProstStuff/Skinmatics"

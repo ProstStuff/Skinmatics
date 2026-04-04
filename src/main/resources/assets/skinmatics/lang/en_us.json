@@ -2,7 +2,7 @@
   "skinmatics.options.skinmatics": "Skinmatics...",
 
   "skinmatics.screen.soon": "Coming soon!",
-  "skinmatics.screen.soon_tips1": "Open `%1$s` to open config. Change 'currentSkinmaticsProfile' to change your skinmatics profile.",
-  "skinmatics.screen.soon_tips2": "Open `%1$s` to begin customizing. Put your textures at `%2$s`",
-  "skinmatics.screen.soon_tips3": "You can close this to refresh your skinmatics. Refresh your textures to load/reload skinmatics textures."
+  "skinmatics.screen.soon_tips1": "Current profile: '%1$s'",
+  "skinmatics.screen.soon_tips2": "You can close this to refresh your skinmatics.",
+  "skinmatics.screen.soon_tips3": "Reload resource packs (F3 + T by default) to load/reload skinmatics textures."
 }
