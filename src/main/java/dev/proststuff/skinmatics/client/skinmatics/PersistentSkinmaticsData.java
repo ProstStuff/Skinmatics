@@ -65,13 +65,13 @@ public class PersistentSkinmaticsData {
     private String profile;
 
     public void save() {
-        if (!profile.equals(SkinmaticsClient.CONFIG.getCurrentSkinmaticsProfile())) return;
+        if (!profile.equals(SkinmaticsClient.CONFIG.getProfile())) return;
 
         try {
             Path dir = SkinmaticsJsonUtils.getModPath();
             if (!Files.exists(dir)) Files.createDirectories(dir.resolve("textures"));
 
-            SkinmaticsJsonUtils.write(SkinmaticsClient.CONFIG.getCurrentSkinmaticsProfile(), dir.resolve("profiles"), this);
+            SkinmaticsJsonUtils.write(SkinmaticsClient.CONFIG.getProfile(), dir.resolve("profiles"), this);
         } catch (IOException e) {
             SkinmaticsClient.LOGGER.error("Unable to save local skinmatics.", e);
         }
@@ -79,7 +79,7 @@ public class PersistentSkinmaticsData {
 
     public static PersistentSkinmaticsData load() {
         try {
-            String profile = SkinmaticsClient.CONFIG.getCurrentSkinmaticsProfile();
+            String profile = SkinmaticsClient.CONFIG.getProfile();
             PersistentSkinmaticsData data = SkinmaticsJsonUtils.read(profile, SkinmaticsJsonUtils.getModPath().resolve("profiles"), PersistentSkinmaticsData.class, PersistentSkinmaticsData::new);
             data.profile = profile;
             return data;
@@ -165,7 +165,7 @@ public class PersistentSkinmaticsData {
         if (animatable.isEmpty()) return;
 
         for (Map.Entry<String, List<Integer>> textureEntry : animatable.textures().entrySet()) {
-            Identifier id = SkinmaticsClient.TEXTURE_MANAGER.resolve(textureEntry.getKey());
+            Identifier id = SkinmaticsClient.TEXTURE_MANAGER.resolve(textureEntry.getKey()).textureId();
 
             if (id != null && id != MissingSprite.getMissingSpriteId()) {
                 for (Integer i : textureEntry.getValue()) {

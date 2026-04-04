@@ -5,6 +5,7 @@ import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.client.utility.SkinmaticsJsonUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.util.math.ColorHelper;
 
 import java.io.IOException;
 
@@ -16,22 +17,30 @@ public class SkinmaticsConfig {
     @Expose private boolean showPaperDoll = false;
     @Expose private PaperDollAlignment paperDollAlignment = PaperDollAlignment.TOP_RIGHT;
 
-    @Expose private String backgroundColor = "#80000000";
-    @Expose private String foregroundColor = "#FFFFFFFF";
-    @Expose private String accentColor = "#FF80C4FF";
+    @Expose private String backgroundColor = "#000000";
+    @Expose private String foregroundColor = "#FFFFFF";
+    @Expose private String accentColor = "#80C4FF";
 
-    @Expose private String currentSkinmaticsProfile = "default";
+    @Expose private String profile = "default";
 
-    public String getCurrentSkinmaticsProfile() {
-        return currentSkinmaticsProfile != null ? currentSkinmaticsProfile : "default";
+    public String getProfile() {
+        return profile != null ? profile : "default";
     }
 
     public int getBackgroundColor() {
         return parseColor(backgroundColor);
     }
 
+    public int getBackgroundColor(float alpha) {
+        return ColorHelper.withAlpha(alpha, getBackgroundColor());
+    }
+
     public int getForegroundColor() {
         return parseColor(foregroundColor);
+    }
+
+    public int getForegroundColor(float alpha) {
+        return ColorHelper.withAlpha(alpha, getForegroundColor());
     }
 
     public int getAccentColor() {
@@ -39,15 +48,15 @@ public class SkinmaticsConfig {
     }
 
     public void setBackgroundColor(int color) {
-        backgroundColor = String.format("0x%08X", color);
+        backgroundColor = String.format("0x%06X", color);
     }
 
     public void setForegroundColor(int color) {
-        foregroundColor = String.format("0x%08X", color);
+        foregroundColor = String.format("0x%06X", color);
     }
 
     public void setAccentColor(int color) {
-        accentColor = String.format("0x%08X", color);
+        accentColor = String.format("0x%06X", color);
     }
 
     public enum PaperDollAlignment {

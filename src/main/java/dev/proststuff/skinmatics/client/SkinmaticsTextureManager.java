@@ -3,13 +3,8 @@ package dev.proststuff.skinmatics.client;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.client.utility.SkinmaticsJsonUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.texture.*;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
@@ -17,15 +12,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
-@Environment(EnvType.CLIENT)
 public class SkinmaticsTextureManager {
-    private final Set<Identifier> loadedTextures = new HashSet<>();
-    private final Map<String, Identifier> textureMap = new HashMap<>();
+    private final Map<String, SkinmaticsTextureData> loaded = new HashMap<>();
 
     public SkinmaticsTextureManager() {}
 
@@ -33,29 +24,62 @@ public class SkinmaticsTextureManager {
         return MinecraftClient.getInstance().getTextureManager();
     }
 
-    public Identifier resolve(String path) {
-        if (path == null) return null;
-        Identifier parsed = Identifier.tryParse(path);
-        if (parsed != null && path.contains(":")) return parsed;
+    public SkinmaticsTextureData createTextureData(String texturePath, Identifier textureId, int width, int height, SkinmaticsTextureData.TextureSource textureSource) {
+        return loaded.computeIfAbsent(textureId.toString(), (_p) -> new SkinmaticsTextureData(texturePath, textureId, width, height, textureSource));
+    }
 
-        String clean = path.replace("\\", "/");
-        if (clean.endsWith(".png")) clean = clean.substring(0, clean.length() - 4);
-        Identifier id = textureMap.get(clean);
+    public SkinmaticsTextureData getTextureData(Identifier textureId) {
+        return loaded.computeIfAbsent(textureId.toString(), SkinmaticsTextureData::empty);
+    }
 
-        if (id == null) {
-            SkinmaticsClient.LOGGER.warn("Missing texture {} ({})", path, clean);
-            return MissingSprite.getMissingSpriteId();
+    public SkinmaticsTextureData getTextureData(String texturePath) {
+        if (texturePath.contains(":")) {
+            Identifier textureId = Identifier.tryParse(texturePath);
+            if (textureId == null) {
+                return SkinmaticsTextureData.empty(texturePath);
+            }
+            return getTextureData(textureId);
+        }
+        return getTextureData(Skinmatics.of(texturePath));
+    }
+
+    public SkinmaticsTextureData resolve(String texturePath) {
+        Identifier parsed = Identifier.tryParse(texturePath);
+
+        if (parsed != null && texturePath.contains(":")) {
+            AbstractTexture texture = getTextureManager().getTexture(parsed);
+            int width = 16;
+            int height = 16;
+
+            if (texture != null) {
+                width = texture.getGlTexture().getWidth(0);
+                height = texture.getGlTexture().getHeight(0);
+            }
+
+            return createTextureData(texturePath, parsed, width, height, SkinmaticsTextureData.TextureSource.PARSED);
         }
 
-        return id;
+        String clean = texturePath.replace("\\", "/");
+        if (clean.endsWith(".png")) clean = clean.substring(0, clean.length() - 4);
+
+        SkinmaticsTextureData data = getTextureData(clean);
+
+        if (data.textureId == MissingSprite.getMissingSpriteId()) {
+            SkinmaticsClient.LOGGER.warn("Missing texture data {} ({})", texturePath, clean);
+        }
+
+        return data;
     }
 
     public void reload() {
         SkinmaticsClient.LOGGER.info("Reloading Skinmatics textures...");
 
-        for (Identifier id : loadedTextures) getTextureManager().destroyTexture(id);
-        loadedTextures.clear();
-        textureMap.clear();
+        loaded.forEach((texturePath, textureData) -> {
+            if (textureData.textureId != MissingSprite.getMissingSpriteId()) {
+                getTextureManager().destroyTexture(textureData.textureId);
+            }
+        });
+        loaded.clear();
         load();
     }
 
@@ -76,29 +100,38 @@ public class SkinmaticsTextureManager {
         }
     }
 
-    public Identifier loadFrom(Path root, Path file) {
-        TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+    public void loadFrom(Path root, Path file) {
+        TextureManager textureManager = getTextureManager();
 
         try {
             Path relative = root.relativize(file);
-            String idPath = relative.toString().replace("\\", "/").replace(".png", "");
-            Identifier id = Skinmatics.of(idPath);
-            textureManager.destroyTexture(id);
+            String texturePath = relative.toString().replace("\\", "/").replace(".png", "");
+            Identifier textureId = Skinmatics.of(texturePath);
+            textureManager.destroyTexture(textureId);
             NativeImage image;
 
             try (InputStream stream = Files.newInputStream(file)) {
                 image = NativeImage.read(stream);
             }
 
-            textureManager.registerTexture(id, new NativeImageBackedTexture(() -> "skinmatics_" + idPath, image));
-            loadedTextures.add(id);
-            textureMap.put(idPath, id);
+            textureManager.registerTexture(textureId, new NativeImageBackedTexture(() -> "skinmatics_" + texturePath, image));
+            SkinmaticsTextureData textureData = new SkinmaticsTextureData(texturePath, textureId, image.getWidth(), image.getHeight(), SkinmaticsTextureData.TextureSource.CONFIG);
+            loaded.put(textureId.toString(), textureData);
 
-            SkinmaticsClient.LOGGER.info("Loaded {} as {}", idPath, id);
-            return id;
+            SkinmaticsClient.LOGGER.info("Loaded texture path {} as {}", texturePath, textureId);
         } catch (Exception e) {
             SkinmaticsClient.LOGGER.warn("Failed to load texture from {}", file, e);
-            return MissingSprite.getMissingSpriteId();
+        }
+    }
+
+    public record SkinmaticsTextureData(String texturePath, Identifier textureId, int width, int height, TextureSource textureSource) {
+        public static SkinmaticsTextureData empty(String texturePath) {
+            return new SkinmaticsTextureData(texturePath, MissingSprite.getMissingSpriteId(), 16, 16, TextureSource.PARSED);
+        }
+
+        public enum TextureSource {
+            CONFIG,
+            PARSED
         }
     }
 }
