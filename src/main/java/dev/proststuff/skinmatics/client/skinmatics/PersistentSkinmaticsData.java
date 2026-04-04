@@ -34,8 +34,8 @@ public class PersistentSkinmaticsData {
     public boolean slim = false; // wip
 
     @Expose public boolean enableEyes = false;
-    @Expose public int blinkingChancePerTick = 20;
-    @Expose public int holdBlinkingForTicks = 5;
+    @Expose public int blinkingChancePerTick = 48;
+    @Expose public int holdBlinkingForTicks = 4;
     @Expose public boolean enableEmissiveRightEye = false;
     @Expose public boolean enableEmissiveLeftEye = false;
     @Expose public boolean enableOverlays = false;

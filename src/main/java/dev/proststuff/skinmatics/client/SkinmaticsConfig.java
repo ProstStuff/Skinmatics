@@ -11,17 +11,16 @@ import java.io.IOException;
 
 @Environment(EnvType.CLIENT)
 public class SkinmaticsConfig {
-    @Expose public boolean openSkinmaticsInstead = false;
+    @Expose public boolean openSkinmaticsInsteadOfSkinCustomization = false;
+    @Expose private String profile = "default";
     @Expose public int playerUpdateRange = 64;
 
-    @Expose private boolean showPaperDoll = false;
-    @Expose private PaperDollAlignment paperDollAlignment = PaperDollAlignment.TOP_RIGHT;
+    private boolean showPaperDoll = false;
+    private PaperDollAlignment paperDollAlignment = PaperDollAlignment.TOP_RIGHT;
 
     @Expose private String backgroundColor = "#000000";
     @Expose private String foregroundColor = "#FFFFFF";
     @Expose private String accentColor = "#80C4FF";
-
-    @Expose private String profile = "default";
 
     public String getProfile() {
         return profile != null ? profile : "default";

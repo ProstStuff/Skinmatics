@@ -19,7 +19,7 @@ public class OptionSkinMixins {
         OptionsScreen parent =  (OptionsScreen)(Object)this;
         Text text = args.get(0);
 
-        if (text.equals(Text.translatable("options.skinCustomisation")) && SkinmaticsClient.CONFIG.openSkinmaticsInstead) {
+        if (text.equals(Text.translatable("options.skinCustomisation")) && SkinmaticsClient.CONFIG.openSkinmaticsInsteadOfSkinCustomization) {
             Supplier<Screen> supplier = () -> new SkinmaticsScreen(parent);
             args.set(1, supplier);
         }
