@@ -1,41 +1,36 @@
 package dev.proststuff.skinmatics.client.model;
 
-import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsData;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import dev.proststuff.skinmatics.client.skinmatics.Profile;
+import dev.proststuff.skinmatics.client.skinmatics.impl.SkinmaticsProfileHolder;
+import net.minecraft.client.model.player.PlayerModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.NonNull;
 
-@Environment(EnvType.CLIENT)
-public class EmissiveSkinFeatureRenderer extends FeatureRenderer<PlayerEntityRenderState, PlayerEntityModel> {
-    protected SkinmaticsData cachedSkinmaticsData;
-
-    public EmissiveSkinFeatureRenderer(FeatureRendererContext<PlayerEntityRenderState, PlayerEntityModel> context) {
+public class EmissiveSkinFeatureRenderer extends RenderLayer<AvatarRenderState, PlayerModel> {
+    public EmissiveSkinFeatureRenderer(RenderLayerParent<AvatarRenderState, PlayerModel> context) {
         super(context);
     }
 
-    public SkinmaticsData getSkinmatics(PlayerEntityRenderState state) {
-        if (cachedSkinmaticsData == null) {
-            cachedSkinmaticsData = SkinmaticsClient.getSkinmaticsFromRenderState(state);
-        }
-
-        return cachedSkinmaticsData;
+    public Profile getProfile(AvatarRenderState state) {
+        SkinmaticsProfileHolder dataHolder = (SkinmaticsProfileHolder) state;
+        return dataHolder.skinmatics$getProfile();
     }
 
     @Override
-    public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light, PlayerEntityRenderState state, float limbAngle, float limbDistance) {
-        if (state.invisible) return;
-        PlayerEntityModel playerEntityModel = getContextModel();
-        SkinmaticsData data = getSkinmatics(state);
+    public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float limbAngle, float limbDistance) {
+        if (state.isInvisible) return;
+        PlayerModel playerEntityModel = getParentModel();
+        Profile profile = getProfile(state);
 
-        if (data != null && data.validateEmissiveSkin() && data.getEmissiveSkinTexture() != null) {
-            queue.getBatchingQueue(1).submitModel(playerEntityModel, state, matrices, data.getEmissiveRenderLayer(data.getEmissiveSkinTexture()), light, LivingEntityRenderer.getOverlay(state, 0.0F), state.outlineColor, null);
+        Identifier texture = profile != null ? profile.data.getSkin(true) : null;
+        if (texture != null) {
+            submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, profile.getEmissiveRenderType(texture), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), state.outlineColor, null);
         }
     }
 }

@@ -1,21 +1,21 @@
 package dev.proststuff.skinmatics.client.utility;
 
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.util.AssetInfo;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.core.ClientAsset;
+import net.minecraft.resources.Identifier;
 
-public class DummyTextureAsset implements AssetInfo.TextureAsset {
+public class DummyTextureAsset implements ClientAsset.Texture {
     public static DummyTextureAsset INSTANCE = new DummyTextureAsset();
 
     private DummyTextureAsset() {}
 
     @Override
     public Identifier texturePath() {
-        return MissingSprite.getMissingSpriteId();
+        return MissingTextureAtlasSprite.getLocation();
     }
 
     @Override
     public Identifier id() {
-        return MissingSprite.getMissingSpriteId();
+        return MissingTextureAtlasSprite.getLocation();
     }
 }

@@ -1,76 +1,93 @@
 package dev.proststuff.skinmatics.client.model;
 
-import com.google.gson.annotations.SerializedName;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsData;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsLayerState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.vertex.PoseStack;
+import dev.proststuff.skinmatics.client.skinmatics.Profile;
+import net.minecraft.client.model.player.PlayerModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.NonNull;
 
-@Environment(EnvType.CLIENT)
 public class EyeFeatureRenderer extends FaceFeatureRenderer {
-    public final EyePosition EYE_POSITION;
-    public final boolean OVERLAY;
+    public final EyePosition eyePosition;
 
-    protected EyeFeatureRenderer(FeatureRendererContext<PlayerEntityRenderState, PlayerEntityModel> context, EyePosition eyePosition, boolean overlay) {
+    public EyeFeatureRenderer(RenderLayerParent<AvatarRenderState, PlayerModel> context, EyePosition eyePosition) {
         super(context);
-        this.EYE_POSITION = eyePosition;
-        this.OVERLAY = overlay;
+        this.eyePosition = eyePosition;
     }
 
-    public EyeFeatureRenderer(FeatureRendererContext<PlayerEntityRenderState, PlayerEntityModel> context, EyePosition eyePosition) {
-        this(context, eyePosition, false);
-    }
+    public boolean isEnabled(Profile profile) {
+        if (profile == null) {
+            return false;
+        }
 
-    @Override
-    protected Identifier getTexture(PlayerEntityRenderState state) {
-        SkinmaticsData skinmatics = getSkinmatics(state);
-        return skinmatics.getEyeTexture(EYE_POSITION);
-    }
-
-    @Override
-    protected float getFaceOffset(PlayerEntityRenderState state) {
-        return 0.01F;
+        boolean enabled = profile.enabled.get();
+        boolean shown = profile.showEyes.get();
+        boolean hidden = (eyePosition == EyePosition.RIGHT ? profile.hideRightEye : profile.hideLeftEye).get();
+        return enabled && shown && !hidden;
     }
 
     @Override
-    protected RenderLayer getRenderLayer(Identifier texture) {
-        if (cachedSkinmaticsData == null) return RenderLayers.entityCutout(texture);
-        SkinmaticsLayerState skinmaticsLayerState = cachedSkinmaticsData.getFaceLayerStateOf(EYE_POSITION, OVERLAY);
-        return skinmaticsLayerState.getRenderLayer(texture, cachedSkinmaticsData);
-    }
+    public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float yRot, float xRot) {
+        if (state.isInvisible) return;
+        Profile profile = getProfile(state);
+        if (!isEnabled(profile)) return;
 
-    @Override
-    public boolean isEnabled() {
-        return cachedSkinmaticsData != null && cachedSkinmaticsData.enabled && cachedSkinmaticsData.eyesEnabled;
+        start(poseStack, 0.001F);
+        Identifier texture = profile.data.getEye(state, eyePosition, false);
+        if (texture != null) renderTexture(poseStack, 0, submitNodeCollector, lightCoords, state, RenderTypes.entityTranslucent(texture));
+
+        if (profile.addEmissiveEyes.get()) {
+            texture = profile.data.getEye(state, eyePosition, true);
+            if (texture != null) renderTexture(poseStack, 1, submitNodeCollector, lightCoords, state, profile.getEmissiveRenderType(texture));
+        }
+
+        stop(poseStack);
     }
 
     public enum EyeDirection {
-        @SerializedName("closed") CLOSED,
-        @SerializedName("front") FRONT,
-        @SerializedName("up") UP,
-        @SerializedName("down") DOWN,
+        CLOSED("closed"),
+        FRONT("front"),
+        UP("up"),
+        DOWN("down"),
 
-        @SerializedName("right") RIGHT,
-        @SerializedName("rightUp") RIGHT_UP,
-        @SerializedName("rightDown") RIGHT_DOWN,
+        RIGHT("right"),
+        RIGHT_UP("rightUp"),
+        RIGHT_DOWN("rightDown"),
 
-        @SerializedName("left") LEFT,
-        @SerializedName("leftUp") LEFT_UP,
-        @SerializedName("leftDown") LEFT_DOWN;
+        LEFT("left"),
+        LEFT_UP("leftUp"),
+        LEFT_DOWN("leftDown"),;
+
+        final String serializedName;
+
+        EyeDirection(String serializedName) {
+            this.serializedName = serializedName;
+        }
+
+        public String getSerializedName() {
+            return serializedName;
+        }
 
         public static EyeDirection fromOrdinal(int ordinal) {
             return values()[ordinal];
         }
+
+        public static EyeDirection fromSerializedName(String serializedName) {
+            for (EyeDirection eyeDirection : values()) {
+                if (eyeDirection.getSerializedName().equals(serializedName)) {
+                    return eyeDirection;
+                }
+            }
+
+            return EyeDirection.CLOSED;
+        }
     }
 
     public enum EyePosition {
-        @SerializedName("left") LEFT,
-        @SerializedName("right") RIGHT
+        LEFT,
+        RIGHT;
     }
 }

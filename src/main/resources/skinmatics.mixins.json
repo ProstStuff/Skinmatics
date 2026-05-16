@@ -11,12 +11,13 @@
     "requireAnnotations": true
   },
   "client": [
-    "client.skin.CapeFeatureRendererMixin",
-    "client.skin.ElytraFeatureRendererMixin",
-    "client.skin.EquipmentRendererMixin",
-    "client.skin.PlayerEntityRendererMixin",
-    "client.skin.PlayerSkinDownloaderMixin",
-    "client.ui.OptionSkinMixins",
-    "client.ui.SkinOptionsScreenMixin"
+    "client.skin.SkinmaticsAvatarRenderer",
+    "client.skin.SkinmaticsDataHolderRenderState",
+    "client.skin.CapeTextureSwapper",
+    "client.skin.EmissiveElytraRenderer",
+    "client.skin.AvatarModelSwapper",
+    "client.skin.PreventOnlineSkinModification",
+    "client.skin.ElytraTextureSwapper",
+    "client.ui.AddSkinmaticsButtonToSkinCustomization"
   ]
 }
