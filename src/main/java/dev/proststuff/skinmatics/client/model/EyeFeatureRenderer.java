@@ -1,6 +1,7 @@
 package dev.proststuff.skinmatics.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.proststuff.skinmatics.api.render.FaceFeatureRenderer;
 import dev.proststuff.skinmatics.client.skinmatics.Profile;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;

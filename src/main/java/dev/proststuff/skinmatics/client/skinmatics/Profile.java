@@ -4,19 +4,22 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.client.config.field.AnimatableConfigField;
+import dev.proststuff.skinmatics.api.config.field.AnimatableConfigField;
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
-import dev.proststuff.utilitary.serialization.ConfigFile;
-import dev.proststuff.utilitary.serialization.content.ConfigGroup;
-import dev.proststuff.utilitary.serialization.content.field.BooleanConfigField;
-import dev.proststuff.utilitary.serialization.content.field.math.IntegerConfigField;
-import dev.proststuff.utilitary.serialization.impl.ConfigSerializable;
+import dev.proststuff.skinmatics.api.render.SkinmaticsRenderTypes;
+import dev.proststuff.utilitary.api.config.ConfigFile;
+import dev.proststuff.utilitary.api.config.field.ConfigGroup;
+import dev.proststuff.utilitary.api.config.field.value.BooleanConfigField;
+import dev.proststuff.utilitary.api.config.field.value.math.IntegerConfigField;
+import dev.proststuff.utilitary.api.config.impl.ConfigSerializable;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.resources.Identifier;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Profile extends ConfigFile {
     protected final String profile;
@@ -104,7 +107,6 @@ public class Profile extends ConfigFile {
     @Override
     public void deserialize(JsonElement jsonElement, JsonDeserializationContext context) {
         super.deserialize(jsonElement, context);
-        Skinmatics.LOGGER.info("Deserialize");
 
         data.skin.clear();
         data.cape.clear();

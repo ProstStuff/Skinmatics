@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.impl.SkinmaticsProfileHolder;
+import dev.proststuff.skinmatics.api.impl.SkinmaticsProfileHolder;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;

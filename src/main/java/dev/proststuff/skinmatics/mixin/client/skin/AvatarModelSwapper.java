@@ -2,8 +2,8 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.impl.PlayerModelHolder;
-import dev.proststuff.skinmatics.client.skinmatics.impl.SkinmaticsProfileHolder;
+import dev.proststuff.skinmatics.api.impl.PlayerModelHolder;
+import dev.proststuff.skinmatics.api.impl.SkinmaticsProfileHolder;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;

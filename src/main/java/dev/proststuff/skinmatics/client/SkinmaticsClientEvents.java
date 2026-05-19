@@ -4,12 +4,12 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.skinmatics.Profile;
 import dev.proststuff.skinmatics.client.model.EmissiveSkinFeatureRenderer;
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
+import dev.proststuff.skinmatics.client.skinmatics.Profile;
 import dev.proststuff.skinmatics.client.skinmatics.ProfileHandler;
-import dev.proststuff.utilitary.utility.UtilitaryJsonUtils;
+import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsConfig;
+import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -132,7 +132,7 @@ public class SkinmaticsClientEvents {
                 .then(ClientCommands.literal("profile")
                         .then(ClientCommands.literal("open")
                                 .executes(context -> {
-                                    Util.getPlatform().openPath(UtilitaryJsonUtils.getConfigPath().resolve(Skinmatics.ID).resolve("profiles"));
+                                    Util.getPlatform().openPath(FileJsonUtils.getConfigPath().resolve(Skinmatics.ID).resolve("profiles"));
                                     context.getSource().sendFeedback(Component.literal("Opening profiles"));
                                     return 1;
                                 }))
@@ -253,7 +253,7 @@ public class SkinmaticsClientEvents {
                 .then(ClientCommands.literal("texture")
                         .then(ClientCommands.literal("open")
                                 .executes(context -> {
-                                    Util.getPlatform().openPath(UtilitaryJsonUtils.getConfigPath().resolve(Skinmatics.ID).resolve("profiles"));
+                                    Util.getPlatform().openPath(FileJsonUtils.getConfigPath().resolve(Skinmatics.ID).resolve("profiles"));
                                     context.getSource().sendFeedback(Component.literal("Opening textures"));
                                     return 1;
                                 }))

@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
 import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.impl.SkinmaticsProfileHolder;
+import dev.proststuff.skinmatics.api.impl.SkinmaticsProfileHolder;
 import net.minecraft.client.renderer.entity.layers.WingsLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;

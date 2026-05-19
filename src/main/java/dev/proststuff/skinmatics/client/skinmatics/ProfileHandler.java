@@ -2,8 +2,7 @@ package dev.proststuff.skinmatics.client.skinmatics;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
-import dev.proststuff.utilitary.utility.UtilitaryJsonUtils;
+import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -55,12 +54,14 @@ public final class ProfileHandler {
     }
 
     public static void loadCurrentProfile(Entity entity) {
+        if (entity == null) return;
+
         currentProfile = loadProfile(SkinmaticsConfig.INSTANCE.profile.get());
         assignProfile(entity, currentProfile);
     }
 
     public static Path getPath() {
-        return UtilitaryJsonUtils.getConfigPath().resolve(Skinmatics.ID).resolve("profiles");
+        return FileJsonUtils.getConfigPath().resolve(Skinmatics.ID).resolve("profiles");
     }
 
     public static void createDirectory() {

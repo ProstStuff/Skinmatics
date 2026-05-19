@@ -5,7 +5,7 @@ import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.client.skinmatics.texture.TextureData;
 import dev.proststuff.skinmatics.client.skinmatics.texture.TextureIdentifier;
-import dev.proststuff.utilitary.utility.UtilitaryJsonUtils;
+import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -91,7 +91,7 @@ public class SkinmaticsTextureManager {
     }
 
     public void load() {
-        Path root = UtilitaryJsonUtils.getConfigPath()
+        Path root = FileJsonUtils.getConfigPath()
                 .resolve(Skinmatics.ID)
                 .resolve("textures");
 
