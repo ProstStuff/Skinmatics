@@ -6,15 +6,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
+import java.util.function.Supplier;
+
 public abstract class AbstractRenderable implements ScreenEventListener {
     protected final Identifier identifier;
+    protected final Supplier<Component> componentSupplier;
     protected int screenWidth;
     protected int screenHeight;
     protected int x;
     protected int y;
 
-    public AbstractRenderable(Identifier identifier) {
+    public AbstractRenderable(Identifier identifier, Supplier<Component> component) {
         this.identifier = identifier;
+        this.componentSupplier = component;
+    }
+
+    public AbstractRenderable(Identifier identifier) {
+        this(identifier, () -> Component.translatable(identifier.toLanguageKey()));
     }
 
     public Identifier getIdentifier() {
@@ -34,7 +42,7 @@ public abstract class AbstractRenderable implements ScreenEventListener {
     }
 
     public Component getComponent() {
-        return Component.translatable(identifier.getNamespace() + "." + identifier.getPath());
+        return componentSupplier.get();
     }
 
     public abstract int getWidth();

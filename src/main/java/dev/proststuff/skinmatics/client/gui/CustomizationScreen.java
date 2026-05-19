@@ -53,7 +53,7 @@ public class CustomizationScreen extends Screen {
         load();
         sidebar.init(width, height);
         minimap.init(width, height);
-        minimap.setPosition(width - 32 - minimap.getFigureWidth(true) * 2 - minimap.getWidth() / 2, height - 32 - minimap.getHeight());
+        minimap.setPosition(width - 32 - minimap.getFigureWidth(true) * 2 - minimap.getWidth() / 2, GraphicsUtils.font().lineHeight);
 
         if (panel == null && sidebar.getFocused() != null && sidebar.getFocused().getPanel() != null) {
             panel = sidebar.getFocused().getPanel();

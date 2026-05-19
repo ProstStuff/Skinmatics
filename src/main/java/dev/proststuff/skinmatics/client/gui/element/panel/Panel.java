@@ -11,11 +11,13 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class Panel extends AbstractRenderable implements MouseEventListener, KeyEventListener {
     public static final int WIDTH = 128;
@@ -26,6 +28,10 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     public Panel(Identifier identifier) {
         super(identifier);
+    }
+
+    public Panel(Identifier identifier, Supplier<Component> component) {
+        super(identifier, component);
     }
 
     public void addButton(PanelButton button) {
@@ -99,7 +105,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
         if (sidebar == null) return 0;
         graphics.fill(SidebarButton.SIZE, 0, SidebarButton.SIZE + Panel.WIDTH, SidebarButton.SIZE, SkinmaticsConfig.accentColor());
         graphics.fill(SidebarButton.SIZE, 0, SidebarButton.SIZE + 1, SidebarButton.SIZE, SkinmaticsConfig.foregroundColor());
-        GraphicsUtils.text(graphics, sidebar.getComponent(), 0, 0, SidebarButton.SIZE + 5, GraphicsUtils.font().lineHeight / 2, SkinmaticsConfig.foregroundColor());
+        GraphicsUtils.text(graphics, getComponent(), 0, 0, SidebarButton.SIZE + 5, GraphicsUtils.font().lineHeight / 2, SkinmaticsConfig.foregroundColor());
         return SidebarButton.SIZE;
     }
 

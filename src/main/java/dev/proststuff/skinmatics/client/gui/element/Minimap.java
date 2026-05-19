@@ -1,10 +1,12 @@
 package dev.proststuff.skinmatics.client.gui.element;
 
 import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
+import dev.proststuff.skinmatics.client.skinmatics.ProfileHandler;
 import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import org.jspecify.annotations.NonNull;
 
 import java.util.EnumMap;
@@ -12,11 +14,9 @@ import java.util.Map;
 
 public class Minimap extends AbstractRenderable implements MouseEventListener {
     protected final Map<BodyPart, Boolean> visibleParts = new EnumMap<>(BodyPart.class);
-    protected boolean slim = true;
     protected double scale = 2.5;
 
     protected BodyPart hoveredBodyPart = null;
-    protected BodyPart focusedBodyPart = BodyPart.TORSO;
 
     public Minimap(Identifier identifier) {
         super(identifier);
@@ -26,15 +26,17 @@ public class Minimap extends AbstractRenderable implements MouseEventListener {
         }
     }
 
+    public boolean isSlim() {
+        return ProfileHandler.getCurrentProfile() != null ? ProfileHandler.getCurrentProfile().slim.get() : false;
+    }
+
     public boolean isPartVisible(BodyPart part) {
+        if (part == null) return false;
         return visibleParts.getOrDefault(part, false);
     }
 
-    public BodyPart getFocusedBodyPart() {
-        return focusedBodyPart;
-    }
-
     public int getFigureWidth(boolean includeInvisible) {
+        boolean slim = isSlim();
         int leftArmWidth = isPartVisible(BodyPart.LEFT_ARM) || includeInvisible ? BodyPart.LEFT_ARM.getWidth(slim) : 0;
         int rightArmWidth = isPartVisible(BodyPart.RIGHT_ARM) || includeInvisible ? BodyPart.RIGHT_ARM.getWidth(slim) : 0;
         int torsoWidth = isPartVisible(BodyPart.TORSO) || includeInvisible ? BodyPart.TORSO.getWidth(slim) : 0;
@@ -49,14 +51,11 @@ public class Minimap extends AbstractRenderable implements MouseEventListener {
     }
 
     public BodyPart getBodyPartAt(double pointX, double pointY) {
+        boolean slim = isSlim();
         int torsoX = x + (getWidth() / 2);
         int torsoY = y + (getHeight() / 2) - 6;
 
         for (BodyPart part : BodyPart.values()) {
-            if (!isPartVisible(part)) {
-                continue;
-            }
-
             int partX = (int) Math.round(torsoX + (part.getOffsetX(slim) * scale));
             int partY = (int) Math.round(torsoY + (part.offsetY * scale));
             int width = (int) Math.round(part.getWidth(slim) * scale);
@@ -74,7 +73,7 @@ public class Minimap extends AbstractRenderable implements MouseEventListener {
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
         if (event.button() == 0) {
             BodyPart bodyPart = getBodyPartAt(event.x(), event.y());
-            focusedBodyPart = bodyPart != null ? bodyPart : focusedBodyPart;
+            visibleParts.put(bodyPart, !visibleParts.getOrDefault(bodyPart, false));
             return true;
         }
 
@@ -83,8 +82,8 @@ public class Minimap extends AbstractRenderable implements MouseEventListener {
 
     public void renderPart(BodyPart part, GuiGraphicsExtractor graphics, int mouseX, int mouseY, int x, int y, int width, int height) {
         boolean inside = mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
-        boolean focused = focusedBodyPart == part;
-        graphics.fill(x, y, x + width, y + height, focused ? SkinmaticsConfig.accentColor() : SkinmaticsConfig.foregroundColor());
+        int color = isPartVisible(part) ? SkinmaticsConfig.foregroundColor() : SkinmaticsConfig.backgroundColor();
+        graphics.fill(x, y, x + width, y + height, ARGB.color(isPartVisible(part) ? 1.0F : 0.5F, color));
 
         if (inside) {
             hoveredBodyPart = part;
@@ -93,12 +92,12 @@ public class Minimap extends AbstractRenderable implements MouseEventListener {
 
     @Override
     public void render(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
+        boolean slim = isSlim();
         int torsoX = x + (getWidth() / 2);
         int torsoY = y + (getHeight() / 2) - 6;
 
+        hoveredBodyPart = null;
         for (BodyPart part : BodyPart.values()) {
-            if (!isPartVisible(part)) continue;
-
             int partX = (int) Math.round(torsoX + (part.getOffsetX(slim) * scale));
             int partY = (int) Math.round(torsoY + (part.offsetY * scale));
             int width = (int) Math.round(part.getWidth(slim) * scale);
@@ -113,7 +112,7 @@ public class Minimap extends AbstractRenderable implements MouseEventListener {
             int width = (int) Math.round(hoveredBodyPart.getWidth(slim) * scale);
             int height = (int) Math.round(hoveredBodyPart.height * scale);
 
-            graphics.outline(partX, partY, width, height, focusedBodyPart == hoveredBodyPart ? SkinmaticsConfig.foregroundColor() : SkinmaticsConfig.accentColor());
+            graphics.outline(partX, partY, width, height, isPartVisible(hoveredBodyPart) ? SkinmaticsConfig.accentColor() : SkinmaticsConfig.foregroundColor());
         }
     }
 
