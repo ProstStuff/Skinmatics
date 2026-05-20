@@ -1,10 +1,12 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.*;
-import dev.proststuff.skinmatics.api.impl.PlayerModelHolder;
-import dev.proststuff.skinmatics.api.impl.SkinmaticsProfileHolder;
+import dev.proststuff.skinmatics.api.impl.PlayerModelGetter;
+import dev.proststuff.skinmatics.api.impl.PlayerModelSetter;
+import dev.proststuff.skinmatics.api.impl.ProfileGetter;
+import dev.proststuff.skinmatics.api.skinmatics.Profile;
+import dev.proststuff.skinmatics.api.skinmatics.ProfileData;
+import dev.proststuff.skinmatics.api.skinmatics.ProfileHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -27,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AvatarRenderer.class)
-public class SkinmaticsAvatarRenderer implements SkinmaticsProfileHolder, PlayerModelHolder {
+public class SkinmaticsAvatarRenderer implements ProfileGetter, PlayerModelGetter {
 
     @Unique
     protected Profile skinmatics$profile;
@@ -49,7 +51,9 @@ public class SkinmaticsAvatarRenderer implements SkinmaticsProfileHolder, Player
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"))
     public <A extends Avatar & ClientAvatarEntity> void skinmatics$extractSkinmaticsData(A entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
-        SkinmaticsProfileHolder dataHolder = (SkinmaticsProfileHolder) state;
+        ProfileGetter profileGetter = (ProfileGetter) state;
+        PlayerModelSetter modelSetter = (PlayerModelSetter) state;
+
         Profile profile = ProfileHandler.getAssignedProfile(entity);
 
         LocalPlayer localPlayer = Minecraft.getInstance().player;
@@ -57,14 +61,17 @@ public class SkinmaticsAvatarRenderer implements SkinmaticsProfileHolder, Player
             profile = ProfileHandler.getCurrentProfile();
         }
 
-        dataHolder.skinmatics$setProfile(profile);
+        profileGetter.skinmatics$setProfile(profile);
         skinmatics$setProfile(profile);
+
+        modelSetter.skinmatics$setWide(skinmatics$getWide());
+        modelSetter.skinmatics$setSlim(skinmatics$getSlim());
     }
 
     @Inject(method = "getTextureLocation(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/resources/Identifier;", at = @At("RETURN"), cancellable = true)
     public void skinmatics$switchSkinTexture(AvatarRenderState state, CallbackInfoReturnable<Identifier> cir) {
-        SkinmaticsProfileHolder dataHolder = (SkinmaticsProfileHolder) state;
-        Profile profile = dataHolder.skinmatics$getProfile();
+        ProfileGetter profileGetter = (ProfileGetter) state;
+        Profile profile = profileGetter.skinmatics$getProfile();
 
         if (profile != null) {
             Identifier texture = profile.data.getSkin(false);

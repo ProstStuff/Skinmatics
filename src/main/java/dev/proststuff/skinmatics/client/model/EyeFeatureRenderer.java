@@ -1,8 +1,11 @@
 package dev.proststuff.skinmatics.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.proststuff.skinmatics.api.impl.AvatarPreviewState;
 import dev.proststuff.skinmatics.api.render.FaceFeatureRenderer;
-import dev.proststuff.skinmatics.client.skinmatics.Profile;
+import dev.proststuff.skinmatics.api.skinmatics.Profile;
+import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
+import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -19,7 +22,7 @@ public class EyeFeatureRenderer extends FaceFeatureRenderer {
         this.eyePosition = eyePosition;
     }
 
-    public boolean isEnabled(Profile profile) {
+    public boolean isEnabled(Profile profile, AvatarRenderState state) {
         if (profile == null) {
             return false;
         }
@@ -27,14 +30,17 @@ public class EyeFeatureRenderer extends FaceFeatureRenderer {
         boolean enabled = profile.enabled.get();
         boolean shown = profile.showEyes.get();
         boolean hidden = (eyePosition == EyePosition.RIGHT ? profile.hideRightEye : profile.hideLeftEye).get();
-        return enabled && shown && !hidden;
+        boolean isPreview = ((AvatarPreviewState) state).skinmatics$isPreviewing();
+        boolean headVisible = !isPreview || AvatarMinimap.isVisible(BodyPart.HEAD);
+
+        return enabled && headVisible && shown && !hidden;
     }
 
     @Override
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float yRot, float xRot) {
         if (state.isInvisible) return;
         Profile profile = getProfile(state);
-        if (!isEnabled(profile)) return;
+        if (!isEnabled(profile, state)) return;
 
         start(poseStack, 0.001F);
         Identifier texture = profile.data.getEye(state, eyePosition, false);

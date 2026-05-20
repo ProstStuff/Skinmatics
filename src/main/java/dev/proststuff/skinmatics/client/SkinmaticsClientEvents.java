@@ -4,11 +4,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
+import dev.proststuff.skinmatics.api.skinmatics.Profile;
+import dev.proststuff.skinmatics.api.skinmatics.ProfileHandler;
+import dev.proststuff.skinmatics.api.skinmatics.ProfileRuntime;
+import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.skinmatics.client.model.EmissiveSkinFeatureRenderer;
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
-import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.ProfileHandler;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
@@ -80,8 +82,24 @@ public class SkinmaticsClientEvents {
         ClientLevel level = minecraft.level;
         LocalPlayer clientPlayer = minecraft.player;
 
+        if (AvatarPreviewRenderer.PREVIEWER != null) {
+            AvatarPreviewRenderer.PREVIEWER.tick();
+            ProfileRuntime runtime = ProfileHandler.getRuntime(AvatarPreviewRenderer.PREVIEWER.getUUID());
+            if (runtime != null) {
+                runtime.tick(AvatarPreviewRenderer.PREVIEWER, AvatarPreviewRenderer.PREVIEWER.getRandom());
+            }
+
+            AvatarPreviewRenderer.PREVIEWER.tickCount ++;
+
+            if (level == null) {
+                ProfileHandler.unassignProfile(AvatarPreviewRenderer.PREVIEWER);
+                AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
+                AvatarPreviewRenderer.PREVIEWER = null;
+            }
+        }
+
         if (level == null || clientPlayer == null) return;
-        if (level.tickRateManager().isFrozen() || minecraft.isPaused()) return;
+        if (level.tickRateManager().isFrozen()) return;
         RandomSource random = level.getRandom();
 
         Map<String, Profile> profiles = ProfileHandler.getProfiles();
@@ -100,7 +118,7 @@ public class SkinmaticsClientEvents {
             UUID uuid = entry.getKey();
             Entity entity = level.getEntity(uuid);
 
-            if (entity instanceof LivingEntity living) {
+            if (entity != AvatarPreviewRenderer.PREVIEWER && entity instanceof LivingEntity living) {
                 Profile profile = entry.getValue();
                 BlockPos entityPosition = living.getOnPos();
 
@@ -124,6 +142,11 @@ public class SkinmaticsClientEvents {
 
     private static void left(ClientPacketListener listener, Minecraft minecraft) {
         ProfileHandler.clear();
+
+        if (AvatarPreviewRenderer.PREVIEWER != null) {
+            AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
+            AvatarPreviewRenderer.PREVIEWER = null;
+        }
     }
 
 

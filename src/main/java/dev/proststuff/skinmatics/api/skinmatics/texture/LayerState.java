@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.client.skinmatics.texture;
+package dev.proststuff.skinmatics.api.skinmatics.texture;
 
 import net.minecraft.resources.Identifier;
 

@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.client.skinmatics;
+package dev.proststuff.skinmatics.api.skinmatics;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.utilitary.api.config.ConfigFile;

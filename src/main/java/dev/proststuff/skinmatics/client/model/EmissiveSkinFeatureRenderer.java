@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.api.impl.SkinmaticsProfileHolder;
+import dev.proststuff.skinmatics.api.skinmatics.Profile;
+import dev.proststuff.skinmatics.api.impl.ProfileGetter;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -18,7 +18,7 @@ public class EmissiveSkinFeatureRenderer extends RenderLayer<AvatarRenderState, 
     }
 
     public Profile getProfile(AvatarRenderState state) {
-        SkinmaticsProfileHolder dataHolder = (SkinmaticsProfileHolder) state;
+        ProfileGetter dataHolder = (ProfileGetter) state;
         return dataHolder.skinmatics$getProfile();
     }
 

@@ -1,14 +1,15 @@
 package dev.proststuff.skinmatics.client.gui.element.sidebar;
 
 import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.HomePanel;
+import dev.proststuff.skinmatics.client.gui.element.panel.ProfilesPanel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
 import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -21,18 +22,18 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
     protected final List<SidebarButton> topButtons = new ArrayList<>();
     protected final List<SidebarButton> bottomButtons = new ArrayList<>();
 
-    public Sidebar(Identifier identifier) {
-        super(identifier);
-        addButton(new SidebarButton(Skinmatics.of("home"), Skinmatics.of("textures/gui/skinmatics.png"), new HomePanel(), false));
-        addButton(new SidebarButton(Skinmatics.of("customize"), Skinmatics.of("textures/gui/customize.png"), false));
-        addButton(new SidebarButton(Skinmatics.of("skin"), Skinmatics.of("textures/gui/skin.png"), false));
-        addButton(new SidebarButton(Skinmatics.of("eyes"), Skinmatics.of("textures/gui/eyes.png"), false));
-        addButton(new SidebarButton(Skinmatics.of("cape"), Skinmatics.of("textures/gui/cape.png"), false));
-        addButton(new SidebarButton(Skinmatics.of("wings"), Skinmatics.of("textures/gui/wings.png"), false));
+    public Sidebar() {
+        super(Skinmatics.of("sidebar"));
+        addButton(new SidebarButton(Skinmatics.of("home"), SkinmaticsAssets.SKINMATICS, new HomePanel(), false));
+        addButton(new SidebarButton(Skinmatics.of("customize"), SkinmaticsAssets.CUSTOMIZE, false));
+        addButton(new SidebarButton(Skinmatics.of("skin"), SkinmaticsAssets.SKIN, false));
+        addButton(new SidebarButton(Skinmatics.of("eyes"), SkinmaticsAssets.EYES, false));
+        addButton(new SidebarButton(Skinmatics.of("cape"), SkinmaticsAssets.CAPE, false));
+        addButton(new SidebarButton(Skinmatics.of("wings"), SkinmaticsAssets.WINGS, false));
 
-        addButton(new SidebarButton(Skinmatics.of("profiles"), Skinmatics.of("textures/gui/profiles.png"), true));
-        addButton(new SidebarButton(Skinmatics.of("textures"), Skinmatics.of("textures/gui/textures.png"), true));
-        addButton(new SidebarButton(Skinmatics.of("directory"), Skinmatics.of("textures/gui/directory.png"), true));
+        addButton(new SidebarButton(Skinmatics.of("profiles"), SkinmaticsAssets.PROFILES, new ProfilesPanel(), true));
+        addButton(new SidebarButton(Skinmatics.of("textures"), SkinmaticsAssets.TEXTURES, true));
+        addButton(new SidebarButton(Skinmatics.of("directory"), SkinmaticsAssets.DIRECTORY, true));
     }
 
     public @Nullable SidebarButton getFocused() {

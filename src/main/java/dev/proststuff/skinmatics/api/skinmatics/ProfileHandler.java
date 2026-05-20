@@ -1,7 +1,8 @@
-package dev.proststuff.skinmatics.client.skinmatics;
+package dev.proststuff.skinmatics.api.skinmatics;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
+import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -122,6 +123,7 @@ public final class ProfileHandler {
 
     public static Profile unassignProfile(UUID uuid) {
         ASSIGNED_RUNTIME_BY_UUID.remove(uuid);
+        ENTITY_ID_TO_UUID.values().removeIf(uuid::equals);
         return ASSIGNED_PROFILES.remove(uuid);
     }
 
@@ -140,6 +142,10 @@ public final class ProfileHandler {
     public static void cleanUp(ClientLevel level) {
         Set<UUID> activeUUIDs = new HashSet<>();
 
+        if (AvatarPreviewRenderer.PREVIEWER != null) {
+            activeUUIDs.add(AvatarPreviewRenderer.PREVIEWER.getUUID());
+        }
+
         level.entitiesForRendering().forEach(entity -> {
             if (entity instanceof ClientAvatarEntity) {
                 activeUUIDs.add(entity.getUUID());
@@ -148,7 +154,7 @@ public final class ProfileHandler {
         ASSIGNED_PROFILES.keySet()
                 .removeIf(uuid -> {
                     boolean remove = !activeUUIDs.contains(uuid);
-                    if (remove) ASSIGNED_RUNTIME_BY_UUID.remove(uuid);
+                    if (remove) ASSIGNED_RUNTIME_BY_UUID.remove(uuid);;
                     return remove;
                 });
 

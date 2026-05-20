@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.client.skinmatics;
+package dev.proststuff.skinmatics.api.skinmatics;
 
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
 import net.minecraft.util.Mth;
@@ -53,10 +53,10 @@ public class ProfileRuntime {
         EyeFeatureRenderer.EyeDirection eyeDirectionState = EyeFeatureRenderer.EyeDirection.FRONT;
 
         if (blinkingTicks <= 0 && !hasPose.hasPose(Pose.SLEEPING)) {
-            boolean up = pitch < -20;
-            boolean down = pitch > 20;
-            boolean right = yaw > 20;
-            boolean left = yaw < -20;
+            boolean up = pitch < -22.5;
+            boolean down = pitch > 22.5;
+            boolean right = yaw > 22.5;
+            boolean left = yaw < -22.5;
 
             if (up && right) eyeDirectionState = EyeFeatureRenderer.EyeDirection.RIGHT_UP;
             else if (up && left) eyeDirectionState = EyeFeatureRenderer.EyeDirection.LEFT_UP;

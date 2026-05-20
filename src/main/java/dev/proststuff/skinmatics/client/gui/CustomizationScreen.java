@@ -1,13 +1,12 @@
 package dev.proststuff.skinmatics.client.gui;
 
-import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.client.gui.element.Minimap;
+import dev.proststuff.skinmatics.api.skinmatics.ProfileHandler;
+import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.Sidebar;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
 import dev.proststuff.skinmatics.client.gui.impl.FileEventListener;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.skinmatics.ProfileHandler;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,8 +21,8 @@ import java.util.List;
 
 public class CustomizationScreen extends Screen {
     protected final Screen parent;
-    protected final Sidebar sidebar = new Sidebar(Skinmatics.of("sidebar"));
-    protected final Minimap minimap = new Minimap(Skinmatics.of("minimap"));
+    protected final Sidebar sidebar = new Sidebar();
+    protected final AvatarPreviewRenderer avatarPreview = new AvatarPreviewRenderer();
 
     protected Panel panel;
 
@@ -52,20 +51,24 @@ public class CustomizationScreen extends Screen {
 
         load();
         sidebar.init(width, height);
-        minimap.init(width, height);
-        minimap.setPosition(width - 32 - minimap.getFigureWidth(true) * 2 - minimap.getWidth() / 2, GraphicsUtils.font().lineHeight);
+        avatarPreview.init(width, height);
+        avatarPreview.setPosition(Sidebar.SIDEBAR_WIDTH + Panel.WIDTH, 0);
 
         if (panel == null && sidebar.getFocused() != null && sidebar.getFocused().getPanel() != null) {
             panel = sidebar.getFocused().getPanel();
         }
 
         panel.init(width, height);
+
+        if (minecraft.level != null) {
+            avatarPreview.setUpAvatar(minecraft.level);
+        }
     }
 
     @Override
     public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        avatarPreview.render(graphics, mouseX, mouseY, a);
         sidebar.render(graphics, mouseX, mouseY, a);
-        minimap.render(graphics, mouseX, mouseY, a);
 
         if (panel != null) {
             panel.render(graphics, mouseX, mouseY, a);
@@ -86,7 +89,7 @@ public class CustomizationScreen extends Screen {
             return true;
         }
 
-        if (minimap.mouseClicked(event, doubleClick)) {
+        if (avatarPreview.mouseClicked(event, doubleClick)) {
             return true;
         }
 
@@ -112,6 +115,10 @@ public class CustomizationScreen extends Screen {
 
     @Override
     public boolean mouseDragged(@NonNull MouseButtonEvent event, double dx, double dy) {
+        if (avatarPreview.mouseDragged(event, dx, dy)) {
+            return true;
+        }
+
         if (panel != null) {
             if (panel.mouseDragged(event, dx, dy)) {
                 return true;
@@ -123,6 +130,10 @@ public class CustomizationScreen extends Screen {
 
     @Override
     public boolean mouseReleased(@NonNull MouseButtonEvent event) {
+        if (avatarPreview.mouseReleased(event)) {
+            return true;
+        }
+
         if (panel != null) {
             if (panel.mouseReleased(event)) {
                 return true;
@@ -138,6 +149,10 @@ public class CustomizationScreen extends Screen {
             if (panel.mouseScrolled(x, y, scrollX, scrollY)) {
                 return true;
             }
+        }
+
+        if (avatarPreview.mouseScrolled(x, y, scrollX, scrollY)) {
+            return true;
         }
 
         return super.mouseScrolled(x, y, scrollX, scrollY);

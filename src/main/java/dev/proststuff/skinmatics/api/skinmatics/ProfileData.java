@@ -1,8 +1,8 @@
-package dev.proststuff.skinmatics.client.skinmatics;
+package dev.proststuff.skinmatics.api.skinmatics;
 
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
 import dev.proststuff.skinmatics.api.render.SkinmaticsRenderTypes;
-import dev.proststuff.skinmatics.client.skinmatics.texture.LayerState;
+import dev.proststuff.skinmatics.api.skinmatics.texture.LayerState;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;

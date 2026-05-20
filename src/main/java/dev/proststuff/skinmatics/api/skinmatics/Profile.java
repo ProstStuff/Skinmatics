@@ -1,12 +1,12 @@
-package dev.proststuff.skinmatics.client.skinmatics;
+package dev.proststuff.skinmatics.api.skinmatics;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.api.config.field.AnimatableConfigField;
-import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
 import dev.proststuff.skinmatics.api.render.SkinmaticsRenderTypes;
+import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
 import dev.proststuff.utilitary.api.config.ConfigFile;
 import dev.proststuff.utilitary.api.config.field.ConfigGroup;
 import dev.proststuff.utilitary.api.config.field.value.BooleanConfigField;

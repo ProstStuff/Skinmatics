@@ -2,8 +2,8 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.Profile;
-import dev.proststuff.skinmatics.api.impl.SkinmaticsProfileHolder;
+import dev.proststuff.skinmatics.api.impl.ProfileGetter;
+import dev.proststuff.skinmatics.api.skinmatics.Profile;
 import dev.proststuff.skinmatics.api.utility.DummyTextureAsset;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CapeLayer.class)
-public class CapeTextureSwapper implements SkinmaticsProfileHolder {
+public class CapeTextureSwapper implements ProfileGetter {
     @Shadow
     @Final
     private HumanoidModel<AvatarRenderState> model;
@@ -34,7 +34,7 @@ public class CapeTextureSwapper implements SkinmaticsProfileHolder {
 
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At("HEAD"), cancellable = true)
     public void skinmatics$render(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
-        SkinmaticsProfileHolder dataHolder = (SkinmaticsProfileHolder) state;
+        ProfileGetter dataHolder = (ProfileGetter) state;
         Profile profile = dataHolder.skinmatics$getProfile();
 
         if (profile != null) {
