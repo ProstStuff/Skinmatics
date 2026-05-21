@@ -23,6 +23,9 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.jspecify.annotations.NonNull;
@@ -43,7 +46,8 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
     protected double offsetY = 0;
     protected double scale = 64.0;
 
-    protected boolean isDragging = false;
+    protected boolean rotationDragging = false;
+    protected boolean positionDragging = false;
 
     public AvatarPreviewRenderer() {
         super(Skinmatics.of("previewer"));
@@ -55,6 +59,15 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         PREVIEWER.setUUID(UUID.randomUUID());
         PREVIEWER.setPos(0, 0, 0);
         changeProfile(ProfileHandler.getCurrentProfile());
+        equipElytra(true);
+    }
+
+    public void equipElytra(boolean equipped) {
+        if (equipped) {
+            PREVIEWER.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.ELYTRA));
+        } else {
+            PREVIEWER.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+        }
     }
 
     public void changeProfile(Profile profile) {
@@ -79,7 +92,7 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         minimap.init(width, height);
         headRotation.init(width, height);
 
-        minimap.setPosition(screenWidth - minimap.getWidth() - 16, minimap.getHeight() / 2 + 16);
+        minimap.setPosition(screenWidth - minimap.getWidth() - 16, 16);
         headRotation.setPosition(screenWidth - headRotation.getWidth() - 16, screenHeight - headRotation.getHeight() - 16);
     }
 
@@ -93,9 +106,14 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
             return true;
         }
 
-        if (event.button() == 0 && inside(event.x(), event.y())) {
-            isDragging = true;
-            return true;
+        if (inside(event.x(), event.y())) {
+            if (event.button() == 0) {
+                rotationDragging = true;
+                return true;
+            } else if (event.button() == 1) {
+                positionDragging = true;
+                return true;
+            }
         }
 
         return false;
@@ -107,15 +125,15 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
             return true;
         }
 
-        if (isDragging && inside(event.x(), event.y())) {
-            if (event.button() == 0) {
+        if (inside(event.x(), event.y())) {
+            if (rotationDragging && event.button() == 0) {
                 yaw -= dx;
                 pitch += dy;
 
                 yaw = Mth.wrapDegrees(yaw);
                 pitch = Mth.wrapDegrees(pitch);
                 return true;
-            } else if (event.button() == 1) {
+            } else if (positionDragging && event.button() == 1) {
                 offsetX += dx / scale;
                 offsetY += dy / scale;
             }
@@ -130,8 +148,13 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
             return true;
         }
 
-        if (event.button() == 0 && isDragging) {
-            isDragging = false;
+        if (event.button() == 0 && rotationDragging) {
+            rotationDragging = false;
+            return true;
+        }
+
+        if (event.button() == 1 && positionDragging) {
+            positionDragging = false;
             return true;
         }
 

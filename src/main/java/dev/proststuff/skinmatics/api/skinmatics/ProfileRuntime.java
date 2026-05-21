@@ -28,6 +28,18 @@ public class ProfileRuntime {
         this(profile, entity.getUUID(), entity.getId());
     }
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public UUID getUUID() {
+        return UUID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public void tick(Entity entity, RandomSource random) {
         if (entity instanceof LivingEntity living) {
             if (profile.showEyes.get()) {
@@ -53,10 +65,10 @@ public class ProfileRuntime {
         EyeFeatureRenderer.EyeDirection eyeDirectionState = EyeFeatureRenderer.EyeDirection.FRONT;
 
         if (blinkingTicks <= 0 && !hasPose.hasPose(Pose.SLEEPING)) {
-            boolean up = pitch < -22.5;
-            boolean down = pitch > 22.5;
-            boolean right = yaw > 22.5;
-            boolean left = yaw < -22.5;
+            boolean up = pitch <= -22.5F;
+            boolean down = pitch >= 22.5F;
+            boolean right = yaw >= 22.5F;
+            boolean left = yaw <= -22.5F;
 
             if (up && right) eyeDirectionState = EyeFeatureRenderer.EyeDirection.RIGHT_UP;
             else if (up && left) eyeDirectionState = EyeFeatureRenderer.EyeDirection.LEFT_UP;

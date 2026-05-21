@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.NonNull;
 
 public class HeadRotationPreviewer extends AbstractRenderable implements MouseEventListener {
-    public static float MAX_ROTATION = 75.0F;
+    public static float MAX_ROTATION = 90.0F;
     public static int LINES = 4;
 
     protected float yawPercentage = 0.5F;
@@ -28,12 +28,12 @@ public class HeadRotationPreviewer extends AbstractRenderable implements MouseEv
         entity.setXRot(-halfRotation + (MAX_ROTATION * pitchPercentage));
     }
 
-    protected float normalizedX(double mouseX) {
-        return 1.0F - Mth.clamp((float) ((mouseX - x) / getWidth()), 0.0F, 1.0F);
+    protected double normalizedX(double mouseX) {
+        return roundDecimal(1.0 - Mth.clamp((mouseX - x) / getWidth(), 0.0F, 1.0F), 3);
     }
 
-    protected float normalizedY(double mouseY) {
-        return Mth.clamp((float) ((mouseY - y) / getHeight()), 0.0F, 1.0F);
+    protected double normalizedY(double mouseY) {
+        return roundDecimal(Mth.clamp((mouseY - y) / getHeight(), 0.0F, 1.0F), 3);
     }
 
     @Override
@@ -48,17 +48,17 @@ public class HeadRotationPreviewer extends AbstractRenderable implements MouseEv
 
         for (int i = 1; i < LINES; i++) {
             int lineX = x + (cellWidth * i);
-            graphics.verticalLine(lineX, y, y + height, gridColor);
+            graphics.verticalLine(lineX, y - 1, y + height, gridColor);
         }
 
         for (int i = 1; i < LINES; i++) {
             int lineY = y + (cellHeight * i);
-            graphics.horizontalLine(x, x + width, lineY, gridColor);
+            graphics.horizontalLine(x, x + width - 1, lineY, gridColor);
         }
 
         int centerColor = SkinmaticsConfig.foregroundColor(0.5F);
-        graphics.verticalLine(x + width / 2, y, y + height, centerColor);
-        graphics.horizontalLine(x, x + width, y + height / 2, centerColor);
+        graphics.verticalLine(x + width / 2, y - 1, y + height, centerColor);
+        graphics.horizontalLine(x, x + width - 1, y + height / 2, centerColor);
 
         int pointerX = (int) (x + (1.0F - yawPercentage) * getWidth());
         int pointerY = (int) (y + pitchPercentage * getHeight());
@@ -68,8 +68,8 @@ public class HeadRotationPreviewer extends AbstractRenderable implements MouseEv
     @Override
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
         if (event.button() == 0 && inside(event.x(), event.y())) {
-            yawPercentage = normalizedX(event.x());
-            pitchPercentage = normalizedY(event.y());
+            yawPercentage = (float) normalizedX(event.x());
+            pitchPercentage = (float) normalizedY(event.y());
 
             isDragging = true;
             return true;
@@ -81,8 +81,8 @@ public class HeadRotationPreviewer extends AbstractRenderable implements MouseEv
     @Override
     public boolean mouseDragged(@NonNull MouseButtonEvent event, double dx, double dy) {
         if (isDragging && event.button() == 0 && inside(event.x(), event.y())) {
-            yawPercentage = normalizedX(event.x());
-            pitchPercentage = normalizedY(event.y());
+            yawPercentage = (float) normalizedX(event.x());
+            pitchPercentage = (float) normalizedY(event.y());
             return true;
         }
 
@@ -92,8 +92,8 @@ public class HeadRotationPreviewer extends AbstractRenderable implements MouseEv
     @Override
     public boolean mouseReleased(@NonNull MouseButtonEvent event) {
         if (event.button() == 0 && isDragging) {
-            yawPercentage = normalizedX(event.x());
-            pitchPercentage = normalizedY(event.y());
+            yawPercentage = (float) normalizedX(event.x());
+            pitchPercentage = (float) normalizedY(event.y());
             isDragging = false;
             return true;
         }
@@ -109,5 +109,10 @@ public class HeadRotationPreviewer extends AbstractRenderable implements MouseEv
     @Override
     public int getHeight() {
         return 64;
+    }
+
+    public static double roundDecimal(double value, int decimals) {
+        double scale = Math.pow(10, decimals);
+        return Math.round(value * scale) / scale;
     }
 }

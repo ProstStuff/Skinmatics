@@ -7,11 +7,11 @@ import java.util.List;
 
 public enum BodyPart {
     HEAD(-4, -8, 8, 8, EquipmentSlot.HEAD),
-    TORSO(-4, 0, 8, 12, EquipmentSlot.BODY),
-    RIGHT_ARM(-8, -7, 0, 4, 12, 3, EquipmentSlot.BODY),
-    LEFT_ARM(4, 4, 0, 4, 12, 3, EquipmentSlot.BODY),
-    RIGHT_LEG(-4, 12, 4, 12, EquipmentSlot.LEGS),
-    LEFT_LEG(0, 12, 4, 12, EquipmentSlot.LEGS);
+    TORSO(-4, 0, 8, 12, EquipmentSlot.CHEST),
+    RIGHT_ARM(-8, -7, 0, 4, 12, 3, EquipmentSlot.CHEST),
+    LEFT_ARM(4, 4, 0, 4, 12, 3, EquipmentSlot.CHEST),
+    RIGHT_LEG(-4, 12, 4, 12, EquipmentSlot.LEGS, EquipmentSlot.FEET),
+    LEFT_LEG(0, 12, 4, 12, EquipmentSlot.LEGS, EquipmentSlot.FEET);
 
     public final int offsetX;
     public final int slimOffsetX;

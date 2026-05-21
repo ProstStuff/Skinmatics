@@ -114,9 +114,10 @@ public class AvatarMinimap extends AbstractRenderable implements MouseEventListe
     public void render(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
         boolean slim = isSlim();
         int torsoX = x + (getWidth() / 2);
-        int torsoY = y + (getHeight() / 2) - 6;
+        int torsoY = y + (getHeight() / 2) - (int) Math.round(BodyPart.TORSO.height / 2.0 * scale);
 
         hoveredBodyPart = null;
+
         for (BodyPart part : BodyPart.values()) {
             int partX = (int) Math.round(torsoX + (part.getOffsetX(slim) * scale));
             int partY = (int) Math.round(torsoY + (part.offsetY * scale));
