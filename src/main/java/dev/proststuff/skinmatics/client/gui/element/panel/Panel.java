@@ -1,18 +1,19 @@
 package dev.proststuff.skinmatics.client.gui.element.panel;
 
+import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.button.PanelButton;
+import dev.proststuff.skinmatics.client.gui.element.sidebar.Sidebar;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
 import dev.proststuff.skinmatics.client.gui.impl.KeyEventListener;
 import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
-import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
+import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.network.chat.MutableComponent;
 import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
@@ -26,12 +27,18 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
     protected double scrollingPosition = 0;
     protected SidebarButton sidebar;
 
-    public Panel(Identifier identifier) {
+    public Panel(SimpleIdentifier identifier) {
         super(identifier);
     }
 
-    public Panel(Identifier identifier, Supplier<Component> component) {
+    public Panel(SimpleIdentifier identifier, Supplier<MutableComponent> component) {
         super(identifier, component);
+    }
+
+    @Override
+    public void init(int width, int height) {
+        super.init(width, height);
+        setPosition(Sidebar.SIDEBAR_WIDTH, 0);
     }
 
     public void addButton(PanelButton button) {
@@ -87,8 +94,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     public void renderButtons(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta, int startY) {
         int initialHeight = startY;
-        int maxHeight = getHeight() - SidebarButton.SIZE;
-        graphics.enableScissor(x, startY, x + getWidth(), maxHeight);
+        int maxHeight = startY + getHeight() - SidebarButton.SIZE;
 
         for (PanelButton button : buttons) {
             if (startY + button.getHeight() >= initialHeight && y <= maxHeight) {
@@ -98,7 +104,6 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
             startY += button.getHeight();
         }
-        graphics.disableScissor();
     }
 
     public int renderTitleBar(GuiGraphicsExtractor graphics) {

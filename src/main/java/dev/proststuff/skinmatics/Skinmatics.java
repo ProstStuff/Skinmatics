@@ -1,5 +1,6 @@
 package dev.proststuff.skinmatics;
 
+import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
@@ -17,6 +18,10 @@ public class Skinmatics implements ModInitializer {
 
 	public static Identifier of(String path) {
 		return Identifier.fromNamespaceAndPath(ID, path);
+	}
+
+	public static SimpleIdentifier ofSimple(String path) {
+		return SimpleIdentifier.of(ID, path);
 	}
 
 	public static String getVersion() {

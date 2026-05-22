@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.api.skinmatics;
+package dev.proststuff.skinmatics.api;
 
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
 import net.minecraft.util.Mth;
@@ -6,29 +6,34 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
 public class ProfileRuntime {
-    protected final Profile profile;
     protected final UUID UUID;
     protected final int id;
 
+    protected @Nullable Profile profile;
     protected int blinkingTicks = 0;
     protected EyeFeatureRenderer.EyeDirection rightEyeState = EyeFeatureRenderer.EyeDirection.FRONT;
     protected EyeFeatureRenderer.EyeDirection leftEyeState = EyeFeatureRenderer.EyeDirection.FRONT;
 
-    public ProfileRuntime(Profile profile, UUID uuid, int id) {
-        this.profile = profile;
+    public ProfileRuntime(UUID uuid, int id) {
         this.UUID = uuid;
         this.id = id;
     }
 
-    public ProfileRuntime(Profile profile, Entity entity) {
-        this(profile, entity.getUUID(), entity.getId());
+    public ProfileRuntime(Entity entity) {
+        this(entity.getUUID(), entity.getId());
     }
 
-    public Profile getProfile() {
+    public void setProfile(@Nullable Profile profile) {
+        this.profile = profile;
+        blinkingTicks = 0;
+    }
+
+    public @Nullable Profile getProfile() {
         return profile;
     }
 
@@ -42,7 +47,7 @@ public class ProfileRuntime {
 
     public void tick(Entity entity, RandomSource random) {
         if (entity instanceof LivingEntity living) {
-            if (profile.showEyes.get()) {
+            if (profile != null && profile.showEyes.get()) {
                 if (blinkingTicks > 0) {
                     blinkingTicks --;
                 }
@@ -90,6 +95,7 @@ public class ProfileRuntime {
     }
 
     public void blink() {
+        if (profile == null) return;
         blinkingTicks = profile.holdBlinkingFor.get();
     }
 

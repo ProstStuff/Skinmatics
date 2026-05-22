@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.api.skinmatics;
+package dev.proststuff.skinmatics.api;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -57,7 +57,7 @@ public class Profile extends ConfigFile {
     public final ConfigGroup emissiveLeftEye = new ConfigGroup("emissiveLeftEye");
 
     public Profile(String profile) {
-        super(Skinmatics.of("profiles/" + profile));
+        super(Skinmatics.ofSimple("profiles/" + profile));
         this.profile = profile;
         this.data = new ProfileData(this);
 
@@ -98,6 +98,10 @@ public class Profile extends ConfigFile {
                 emissiveRightEye,
                 emissiveLeftEye
         );
+    }
+
+    public String getProfileName() {
+        return profile;
     }
 
     public RenderType getEmissiveRenderType(Identifier texture) {

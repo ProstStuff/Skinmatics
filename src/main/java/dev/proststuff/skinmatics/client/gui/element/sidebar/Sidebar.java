@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.client.gui.element.sidebar;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.HomePanel;

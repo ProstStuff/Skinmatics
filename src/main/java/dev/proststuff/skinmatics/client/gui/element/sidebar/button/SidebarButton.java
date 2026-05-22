@@ -2,9 +2,10 @@ package dev.proststuff.skinmatics.client.gui.element.sidebar.button;
 
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
-import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -64,6 +65,11 @@ public class SidebarButton extends SimpleButton {
         }
 
         GraphicsUtils.sprite(graphics, texture, x, y, 0.0F, 0.0F, getWidth(), getHeight(), getWidth(), getHeight(), SkinmaticsConfig.foregroundColor());
+    }
+
+    @Override
+    public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
+        return event.button() == 0 && inside(event.x(), event.y());
     }
 
     public static @Nullable SidebarButton getFocused() {

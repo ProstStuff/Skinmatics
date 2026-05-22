@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.client.gui.element.avatar;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -11,8 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.NonNull;
 
 public class HeadRotationPreviewer extends AbstractRenderable implements MouseEventListener {
-    public static float MAX_ROTATION = 90.0F;
-    public static int LINES = 4;
+    public static final float MAX_ROTATION = 90.0F;
+    public static final int LINES = 4;
 
     protected float yawPercentage = 0.5F;
     protected float pitchPercentage = 0.5F;

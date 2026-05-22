@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.api.skinmatics;
+package dev.proststuff.skinmatics.api;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
@@ -115,7 +115,9 @@ public final class ProfileHandler {
 
     public static Profile assignProfile(Entity entity, Profile profile) {
         UUID uuid = entity.getUUID();
-        ASSIGNED_RUNTIME_BY_UUID.computeIfAbsent(entity.getUUID(), (_) -> new ProfileRuntime(profile, entity));
+
+        ASSIGNED_RUNTIME_BY_UUID.computeIfAbsent(uuid, (_) -> new ProfileRuntime(entity)).setProfile(profile);
+        ENTITY_ID_TO_UUID.values().removeIf(uuid::equals);
         ENTITY_ID_TO_UUID.put(entity.getId(), uuid);
 
         return assignProfile(uuid, profile);
@@ -154,7 +156,7 @@ public final class ProfileHandler {
         ASSIGNED_PROFILES.keySet()
                 .removeIf(uuid -> {
                     boolean remove = !activeUUIDs.contains(uuid);
-                    if (remove) ASSIGNED_RUNTIME_BY_UUID.remove(uuid);;
+                    if (remove) ASSIGNED_RUNTIME_BY_UUID.remove(uuid);
                     return remove;
                 });
 

@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.client.gui;
 
-import dev.proststuff.skinmatics.api.skinmatics.ProfileHandler;
-import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.ProfileHandler;
+import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.Sidebar;
@@ -33,8 +33,8 @@ public class CustomizationScreen extends Screen {
 
     public void load() {
         SkinmaticsConfig.INSTANCE.load();
-        //ProfileHandler.walkProfiles();
-        //ProfileHandler.loadProfiles();
+        ProfileHandler.walkProfiles();
+        ProfileHandler.loadProfiles();
         ProfileHandler.loadCurrentProfile(minecraft.player);
     }
 
@@ -61,7 +61,7 @@ public class CustomizationScreen extends Screen {
         panel.init(width, height);
 
         if (minecraft.level != null) {
-            avatarPreview.setUpAvatar(minecraft.level);
+            AvatarPreviewRenderer.setUpAvatar(minecraft.level);
         }
     }
 

@@ -3,9 +3,9 @@ package dev.proststuff.skinmatics.client.gui.element.avatar;
 import com.mojang.authlib.GameProfile;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.api.impl.AvatarPreviewState;
-import dev.proststuff.skinmatics.api.skinmatics.Profile;
-import dev.proststuff.skinmatics.api.skinmatics.ProfileHandler;
-import dev.proststuff.skinmatics.api.skinmatics.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.Profile;
+import dev.proststuff.skinmatics.api.ProfileHandler;
+import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
@@ -35,10 +35,10 @@ import java.util.UUID;
 public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEventListener {
     public static final float TORSO_HEIGHT = 1.125F;
     public static RemotePlayer PREVIEWER;
+    public static Profile PROFILE;
 
     protected final AvatarMinimap minimap = new AvatarMinimap();
     protected final HeadRotationPreviewer headRotation = new HeadRotationPreviewer();
-    protected Profile profile;
 
     protected double pitch = 0;
     protected double yaw = 0;
@@ -53,27 +53,29 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         super(Skinmatics.of("previewer"));
     }
 
-    public void setUpAvatar(ClientLevel level) {
+    public static void setUpAvatar(ClientLevel level) {
         GameProfile profile = Minecraft.getInstance().getGameProfile();
         PREVIEWER = new RemotePlayer(level, profile);
         PREVIEWER.setUUID(UUID.randomUUID());
         PREVIEWER.setPos(0, 0, 0);
+
         changeProfile(ProfileHandler.getCurrentProfile());
-        equipElytra(true);
     }
 
-    public void equipElytra(boolean equipped) {
-        if (equipped) {
-            PREVIEWER.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.ELYTRA));
-        } else {
-            PREVIEWER.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+    public static void equipElytra(boolean equipped) {
+        if (PREVIEWER != null) {
+            if (equipped) {
+                PREVIEWER.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.ELYTRA));
+            } else {
+                PREVIEWER.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            }
         }
     }
 
-    public void changeProfile(Profile profile) {
+    public static void changeProfile(Profile profile) {
         if (PREVIEWER != null) {
             ProfileHandler.assignProfile(PREVIEWER, profile);
-            this.profile = profile;
+            PROFILE = profile;
         }
     }
 

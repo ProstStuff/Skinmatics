@@ -3,7 +3,7 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.impl.ProfileGetter;
-import dev.proststuff.skinmatics.api.skinmatics.Profile;
+import dev.proststuff.skinmatics.api.Profile;
 import dev.proststuff.skinmatics.api.utility.DummyTextureAsset;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;

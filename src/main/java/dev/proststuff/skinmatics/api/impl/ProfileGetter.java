@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.api.impl;
 
-import dev.proststuff.skinmatics.api.skinmatics.Profile;
+import dev.proststuff.skinmatics.api.Profile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

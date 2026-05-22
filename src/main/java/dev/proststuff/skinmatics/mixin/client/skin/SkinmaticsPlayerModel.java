@@ -16,7 +16,6 @@ public class SkinmaticsPlayerModel {
     public void skinmatics$setupAnim(AvatarRenderState state, CallbackInfo ci) {
         AvatarPreviewState previewState = (AvatarPreviewState) state;
 
-        // TODO: Also control Equipment(s) visibility
         if (previewState.skinmatics$isPreviewing()) {
             PlayerModel model = (PlayerModel) (Object) this;
             model.head.visible = AvatarMinimap.isVisible(BodyPart.HEAD);

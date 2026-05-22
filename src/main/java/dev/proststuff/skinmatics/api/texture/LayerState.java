@@ -1,11 +1,14 @@
-package dev.proststuff.skinmatics.api.skinmatics.texture;
+package dev.proststuff.skinmatics.api.texture;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.Identifier;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Environment(EnvType.CLIENT)
 public class LayerState {
     protected TreeMap<Integer, Identifier>[] textures;
     protected Identifier[] currentStateTextures;

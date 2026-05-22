@@ -4,6 +4,8 @@
   "skinmatics.textures": "Textures",
   "skinmatics.directory": "Directory",
 
+  "skinmatics.profiles": "Profiles",
+
   "skinmatics.player_error": "A world is required to preview Skinmatics avatar!",
 
   "skinmatics.panel.config": "Click here to open config",

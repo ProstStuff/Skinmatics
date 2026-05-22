@@ -1,10 +1,13 @@
-package dev.proststuff.skinmatics.api.skinmatics.texture;
+package dev.proststuff.skinmatics.api.texture;
 
 import dev.proststuff.skinmatics.Skinmatics;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
+@Environment(EnvType.CLIENT)
 public record TextureIdentifier(Identifier identifier) {
     public static final TextureIdentifier EMPTY = new TextureIdentifier(MissingTextureAtlasSprite.getLocation());
 

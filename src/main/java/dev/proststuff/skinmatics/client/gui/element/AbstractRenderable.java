@@ -1,31 +1,37 @@
 package dev.proststuff.skinmatics.client.gui.element;
 
 import dev.proststuff.skinmatics.client.gui.impl.ScreenEventListener;
+import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Supplier;
 
 public abstract class AbstractRenderable implements ScreenEventListener {
-    protected final Identifier identifier;
-    protected final Supplier<Component> componentSupplier;
+    protected final SimpleIdentifier identifier;
+    protected final Supplier<MutableComponent> componentSupplier;
     protected int screenWidth;
     protected int screenHeight;
     protected int x;
     protected int y;
 
-    public AbstractRenderable(Identifier identifier, Supplier<Component> component) {
+    public AbstractRenderable(SimpleIdentifier identifier, Supplier<MutableComponent> component) {
         this.identifier = identifier;
         this.componentSupplier = component;
     }
 
-    public AbstractRenderable(Identifier identifier) {
+    public AbstractRenderable(SimpleIdentifier identifier) {
         this(identifier, () -> Component.translatable(identifier.toLanguageKey()));
     }
 
-    public Identifier getIdentifier() {
+    public AbstractRenderable(Identifier identifier) {
+        this(SimpleIdentifier.fromIdentifier(identifier));
+    }
+
+    public SimpleIdentifier getIdentifier() {
         return identifier;
     }
 
@@ -41,7 +47,7 @@ public abstract class AbstractRenderable implements ScreenEventListener {
         this.y = y;
     }
 
-    public Component getComponent() {
+    public MutableComponent getComponent() {
         return componentSupplier.get();
     }
 

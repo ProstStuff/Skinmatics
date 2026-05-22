@@ -5,6 +5,6 @@ import net.minecraft.network.chat.Component;
 
 public class HomePanel extends Panel {
     public HomePanel() {
-        super(Skinmatics.of("home"), () -> Component.translatable("skinmatics.home", Skinmatics.getVersion()));
+        super(Skinmatics.ofSimple("home"), () -> Component.translatable("skinmatics.home", Skinmatics.getVersion()));
     }
 }

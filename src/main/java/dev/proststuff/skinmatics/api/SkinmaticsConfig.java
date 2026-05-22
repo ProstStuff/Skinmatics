@@ -1,11 +1,14 @@
-package dev.proststuff.skinmatics.api.skinmatics;
+package dev.proststuff.skinmatics.api;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.utilitary.api.config.ConfigFile;
 import dev.proststuff.utilitary.api.config.field.value.StringConfigField;
-import dev.proststuff.utilitary.api.config.field.value.math.ColorConfigField;
+import dev.proststuff.utilitary.api.config.field.value.utilitary.ColorConfigField;
 import dev.proststuff.utilitary.api.config.field.value.math.IntegerConfigField;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
+@Environment(EnvType.CLIENT)
 public class SkinmaticsConfig extends ConfigFile {
     public static final SkinmaticsConfig INSTANCE = new SkinmaticsConfig();
 
