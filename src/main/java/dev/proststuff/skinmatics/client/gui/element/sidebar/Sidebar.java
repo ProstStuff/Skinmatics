@@ -4,6 +4,7 @@ import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
+import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.HomePanel;
 import dev.proststuff.skinmatics.client.gui.element.panel.ProfilesPanel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
@@ -24,16 +25,16 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
 
     public Sidebar() {
         super(Skinmatics.of("sidebar"));
-        addButton(new SidebarButton(Skinmatics.of("home"), SkinmaticsAssets.SKINMATICS, new HomePanel(), false));
-        addButton(new SidebarButton(Skinmatics.of("customize"), SkinmaticsAssets.CUSTOMIZE, false));
-        addButton(new SidebarButton(Skinmatics.of("skin"), SkinmaticsAssets.SKIN, false));
-        addButton(new SidebarButton(Skinmatics.of("eyes"), SkinmaticsAssets.EYES, false));
-        addButton(new SidebarButton(Skinmatics.of("cape"), SkinmaticsAssets.CAPE, false));
-        addButton(new SidebarButton(Skinmatics.of("wings"), SkinmaticsAssets.WINGS, false));
+        addButton(new SidebarButton(Skinmatics.ofSimple("home"), SkinmaticsAssets.SKINMATICS, new HomePanel(), false));
+        addButton(new SidebarButton(Skinmatics.ofSimple("customize"), SkinmaticsAssets.CUSTOMIZE, false));
+        addButton(new SidebarButton(Skinmatics.ofSimple("skin"), SkinmaticsAssets.SKIN, false));
+        addButton(new SidebarButton(Skinmatics.ofSimple("eyes"), SkinmaticsAssets.EYES, false));
+        addButton(new SidebarButton(Skinmatics.ofSimple("cape"), SkinmaticsAssets.CAPE, false));
+        addButton(new SidebarButton(Skinmatics.ofSimple("wings"), SkinmaticsAssets.WINGS, false));
 
-        addButton(new SidebarButton(Skinmatics.of("profiles"), SkinmaticsAssets.PROFILES, new ProfilesPanel(), true));
-        addButton(new SidebarButton(Skinmatics.of("textures"), SkinmaticsAssets.TEXTURES, true));
-        addButton(new SidebarButton(Skinmatics.of("directory"), SkinmaticsAssets.DIRECTORY, true));
+        addButton(new SidebarButton(Skinmatics.ofSimple("profiles"), SkinmaticsAssets.PROFILES, new ProfilesPanel(), true));
+        addButton(new SidebarButton(Skinmatics.ofSimple("textures"), SkinmaticsAssets.TEXTURES, true));
+        addButton(new SidebarButton(Skinmatics.ofSimple("directory"), SkinmaticsAssets.DIRECTORY, true));
     }
 
     public @Nullable SidebarButton getFocused() {
@@ -136,6 +137,6 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
             }
         }
 
-        SidebarButton.unhover();
+        SimpleButton.unhover();
     }
 }

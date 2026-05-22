@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
-import dev.proststuff.skinmatics.api.impl.AvatarPreviewState;
-import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
+import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
+import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SkinmaticsPlayerModel {
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)V", at = @At(value = "TAIL"))
     public void skinmatics$setupAnim(AvatarRenderState state, CallbackInfo ci) {
-        AvatarPreviewState previewState = (AvatarPreviewState) state;
+        EntityPreviewer previewState = (EntityPreviewer) state;
 
         if (previewState.skinmatics$isPreviewing()) {
             PlayerModel model = (PlayerModel) (Object) this;

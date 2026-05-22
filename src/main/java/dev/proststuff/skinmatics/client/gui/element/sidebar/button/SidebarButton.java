@@ -4,6 +4,7 @@ import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
+import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
@@ -12,12 +13,11 @@ import org.jspecify.annotations.Nullable;
 
 public class SidebarButton extends SimpleButton {
     protected static @Nullable SidebarButton focused = null;
-    protected static @Nullable SidebarButton hovered = null;
 
     protected final boolean bottom;
     protected final @Nullable Panel panel;
 
-    public SidebarButton(Identifier identifier, Identifier texture, @Nullable Panel panel, boolean bottom) {
+    public SidebarButton(SimpleIdentifier identifier, Identifier texture, @Nullable Panel panel, boolean bottom) {
         super(identifier, texture);
         this.panel = panel;
         this.bottom = bottom;
@@ -27,24 +27,16 @@ public class SidebarButton extends SimpleButton {
         }
     }
 
-    public boolean isHovered() {
-        return hovered == this;
+    public SidebarButton(SimpleIdentifier identifier, Identifier texture, boolean bottom) {
+        this(identifier, texture, null, bottom);
     }
 
     public boolean isFocused() {
         return focused == this;
     }
 
-    public void hover() {
-        hovered = this;
-    }
-
     public void focus() {
         focused = this;
-    }
-
-    public SidebarButton(Identifier identifier, Identifier texture, boolean bottom) {
-        this(identifier, texture, null, bottom);
     }
 
     public @Nullable Panel getPanel() {
@@ -83,12 +75,6 @@ public class SidebarButton extends SimpleButton {
     public static SidebarButton unfocus() {
         SidebarButton button = focused;
         focused = null;
-        return button;
-    }
-
-    public static SidebarButton unhover() {
-        SidebarButton button = hovered;
-        hovered = null;
         return button;
     }
 

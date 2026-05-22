@@ -1,9 +1,6 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
-import dev.proststuff.skinmatics.api.impl.AvatarPreviewState;
-import dev.proststuff.skinmatics.api.impl.PlayerModelGetter;
-import dev.proststuff.skinmatics.api.impl.PlayerModelSetter;
-import dev.proststuff.skinmatics.api.impl.ProfileGetter;
+import dev.proststuff.skinmatics.api.impl.*;
 import dev.proststuff.skinmatics.api.Profile;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -11,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(AvatarRenderState.class)
-public class SkinmaticsAvatarRenderState implements ProfileGetter, PlayerModelGetter, PlayerModelSetter, AvatarPreviewState {
+public class SkinmaticsAvatarRenderState implements ProfileHolder, PlayerModelGetter, PlayerModelSetter, EntityPreviewer {
     @Unique protected Profile skinmatics$profile = null;
     @Unique protected PlayerModel skinmatics$wideModel;
     @Unique protected PlayerModel skinmatics$slimModel;

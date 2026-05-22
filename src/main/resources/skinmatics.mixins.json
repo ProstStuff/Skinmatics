@@ -11,16 +11,17 @@
     "requireAnnotations": true
   },
   "client": [
+    "client.RemotePlayerPreviewer",
     "client.skin.AvatarModelSwapper",
     "client.skin.CapeTextureSwapper",
     "client.skin.ElytraTextureSwapper",
     "client.skin.EmissiveElytraRenderer",
     "client.skin.PreventOnlineSkinModification",
-    "client.ui.PreviewArmorHider",
-    "client.ui.PreviewElytraHider",
     "client.skin.SkinmaticsAvatarRenderer",
     "client.skin.SkinmaticsAvatarRenderState",
     "client.skin.SkinmaticsPlayerModel",
-    "client.ui.AddSkinmaticsButtonToSkinCustomization"
+    "client.ui.AddSkinmaticsButtonToSkinCustomization",
+    "client.ui.PreviewArmorHider",
+    "client.ui.PreviewElytraHider"
   ]
 }

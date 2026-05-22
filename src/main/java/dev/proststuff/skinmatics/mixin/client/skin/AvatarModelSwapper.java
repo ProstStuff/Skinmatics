@@ -3,7 +3,7 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.Profile;
 import dev.proststuff.skinmatics.api.impl.PlayerModelGetter;
-import dev.proststuff.skinmatics.api.impl.ProfileGetter;
+import dev.proststuff.skinmatics.api.impl.ProfileHolder;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -25,7 +25,7 @@ public class AvatarModelSwapper {
     public void skinmatics$changePlayerModel(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
         LivingEntityRenderer<?, ?, ?> livingEntityRenderer = (LivingEntityRenderer<?, ?, ?>) (Object) this;
 
-        if (livingEntityRenderer instanceof ProfileGetter dataHolder && livingEntityRenderer instanceof PlayerModelGetter modelHolder) {
+        if (livingEntityRenderer instanceof ProfileHolder dataHolder && livingEntityRenderer instanceof PlayerModelGetter modelHolder) {
             Profile profile = dataHolder.skinmatics$getProfile();
 
             if (profile != null) {

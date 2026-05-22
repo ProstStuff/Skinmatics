@@ -19,6 +19,9 @@ public class ProfileRuntime {
     protected EyeFeatureRenderer.EyeDirection rightEyeState = EyeFeatureRenderer.EyeDirection.FRONT;
     protected EyeFeatureRenderer.EyeDirection leftEyeState = EyeFeatureRenderer.EyeDirection.FRONT;
 
+    protected boolean shouldTickRightEye = true;
+    protected boolean shouldTickLeftEye = true;
+
     public ProfileRuntime(UUID uuid, int id) {
         this.UUID = uuid;
         this.id = id;
@@ -60,8 +63,8 @@ public class ProfileRuntime {
                 float pitch = entity.getXRot();
 
                 EyeFeatureRenderer.EyeDirection eyeDirection = getEyeDirection(yaw, pitch, entity::hasPose);
-                rightEyeState = eyeDirection;
-                leftEyeState = eyeDirection;
+                if (shouldTickRightEye) rightEyeState = eyeDirection;
+                if (shouldTickLeftEye) leftEyeState = eyeDirection;
             }
         }
     }

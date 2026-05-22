@@ -2,10 +2,10 @@ package dev.proststuff.skinmatics.client.gui.element.avatar;
 
 import com.mojang.authlib.GameProfile;
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.api.impl.AvatarPreviewState;
 import dev.proststuff.skinmatics.api.Profile;
 import dev.proststuff.skinmatics.api.ProfileHandler;
 import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
 import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -35,7 +36,7 @@ import java.util.UUID;
 public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEventListener {
     public static final float TORSO_HEIGHT = 1.125F;
     public static RemotePlayer PREVIEWER;
-    public static Profile PROFILE;
+    public static Profile PROFILE_PREVIEW = null;
 
     protected final AvatarMinimap minimap = new AvatarMinimap();
     protected final HeadRotationPreviewer headRotation = new HeadRotationPreviewer();
@@ -54,12 +55,21 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
     }
 
     public static void setUpAvatar(ClientLevel level) {
+        if (PREVIEWER != null) {
+            PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
+        }
+
         GameProfile profile = Minecraft.getInstance().getGameProfile();
         PREVIEWER = new RemotePlayer(level, profile);
-        PREVIEWER.setUUID(UUID.randomUUID());
+        ((EntityPreviewer) PREVIEWER).skinmatics$preview();
         PREVIEWER.setPos(0, 0, 0);
+        PREVIEWER.setUUID(UUID.randomUUID());
 
-        changeProfile(ProfileHandler.getCurrentProfile());
+        if (PROFILE_PREVIEW == null) {
+            PROFILE_PREVIEW = ProfileHandler.getCurrentProfile();
+        }
+
+        changeProfile(PROFILE_PREVIEW);
     }
 
     public static void equipElytra(boolean equipped) {
@@ -73,9 +83,10 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
     }
 
     public static void changeProfile(Profile profile) {
+        PROFILE_PREVIEW = profile;
+
         if (PREVIEWER != null) {
             ProfileHandler.assignProfile(PREVIEWER, profile);
-            PROFILE = profile;
         }
     }
 
@@ -83,7 +94,7 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         AvatarRenderer<AbstractClientPlayer> renderer = dispatcher.getPlayerRenderer(PREVIEWER);
         AvatarRenderState state = renderer.createRenderState();
-        ((AvatarPreviewState) state).skinmatics$preview();
+        ((EntityPreviewer) state).skinmatics$preview();
         renderer.extractRenderState(PREVIEWER, state, tickDelta);
         return state;
     }

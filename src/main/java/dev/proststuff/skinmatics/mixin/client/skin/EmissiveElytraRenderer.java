@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.impl.ProfileGetter;
+import dev.proststuff.skinmatics.api.impl.ProfileHolder;
 import dev.proststuff.skinmatics.api.Profile;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.object.equipment.ElytraModel;
@@ -34,7 +34,7 @@ public class EmissiveElytraRenderer {
     @Inject(method = "renderLayers(Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/world/item/ItemStack;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;II)V", at = @At(value = "TAIL"))
     public <S> void skinmatics$addEmissiveElytra(EquipmentClientInfo.LayerType layerType, ResourceKey<EquipmentAsset> equipmentAssetId, Model<? super S> model, S state, ItemStack itemStack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, @Nullable Identifier playerTextureOverride, int outlineColor, int order, CallbackInfo ci) {
         if (state instanceof AvatarRenderState avatarRenderState && model instanceof ElytraModel elytraModel) {
-            ProfileGetter dataHolder = (ProfileGetter) state;
+            ProfileHolder dataHolder = (ProfileHolder) state;
             Profile profile = dataHolder.skinmatics$getProfile();
 
             if (profile != null) {

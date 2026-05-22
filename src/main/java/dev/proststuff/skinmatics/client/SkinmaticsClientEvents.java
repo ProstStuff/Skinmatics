@@ -149,6 +149,9 @@ public class SkinmaticsClientEvents {
         }
     }
 
+    private static void registerKeybinds() {
+
+    }
 
     private static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandBuildContext buildContext) {
         dispatcher.register(ClientCommands.literal("skinmatics")

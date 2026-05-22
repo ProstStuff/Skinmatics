@@ -1,11 +1,11 @@
 package dev.proststuff.skinmatics.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.impl.AvatarPreviewState;
-import dev.proststuff.skinmatics.api.render.FaceFeatureRenderer;
 import dev.proststuff.skinmatics.api.Profile;
-import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
+import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.render.FaceFeatureRenderer;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
+import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -30,7 +30,7 @@ public class EyeFeatureRenderer extends FaceFeatureRenderer {
         boolean enabled = profile.enabled.get();
         boolean shown = profile.showEyes.get();
         boolean hidden = (eyePosition == EyePosition.RIGHT ? profile.hideRightEye : profile.hideLeftEye).get();
-        boolean isPreview = ((AvatarPreviewState) state).skinmatics$isPreviewing();
+        boolean isPreview = ((EntityPreviewer) state).skinmatics$isPreviewing();
         boolean headVisible = !isPreview || AvatarMinimap.isVisible(BodyPart.HEAD);
 
         return enabled && headVisible && shown && !hidden;

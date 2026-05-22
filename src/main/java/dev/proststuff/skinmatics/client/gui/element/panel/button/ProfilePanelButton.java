@@ -15,6 +15,8 @@ import net.minecraft.network.chat.MutableComponent;
 import org.jspecify.annotations.NonNull;
 
 public class ProfilePanelButton extends PanelButton {
+    protected static Profile selectedProfile = null;
+
     protected final Profile profile;
 
     public ProfilePanelButton(SimpleIdentifier identifier, Profile profile) {
@@ -44,7 +46,7 @@ public class ProfilePanelButton extends PanelButton {
     @Override
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
         if (event.button() == 0 && inside(event.x(), event.y())) {
-            if (AvatarPreviewRenderer.PROFILE == profile) {
+            if (selectedProfile == profile) {
                 SkinmaticsConfig.INSTANCE.profile.set(profile.getProfileName());
                 SkinmaticsConfig.INSTANCE.save();
 
@@ -54,6 +56,7 @@ public class ProfilePanelButton extends PanelButton {
             }
 
             AvatarPreviewRenderer.changeProfile(profile);
+            selectedProfile = profile;
             return true;
         }
 

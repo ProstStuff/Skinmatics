@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.api.impl;
 
-public interface AvatarPreviewState {
-    boolean skinmatics$isPreviewing();
+public interface EntityPreviewer {
     void skinmatics$preview();
+    boolean skinmatics$isPreviewing();
 }
