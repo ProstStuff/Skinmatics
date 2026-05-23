@@ -6,6 +6,7 @@ import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.utilitary.api.config.field.ConfigField;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -31,7 +32,7 @@ public abstract class TextboxPanelButton<V> extends ConfigFieldPanelButton<V> {
     public int getHeight() {
         int labelHeight = super.getHeight();
         int textboxHeight = textbox.getTextHeight();
-        return Math.max(16, Math.max(labelHeight, textboxHeight));
+        return Math.max(16, Math.max(labelHeight, textboxHeight) + 4);
     }
 
     @Override
@@ -99,6 +100,8 @@ public abstract class TextboxPanelButton<V> extends ConfigFieldPanelButton<V> {
     @Override
     public void render(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
         super.render(graphics, mouseX, mouseY, tickDelta);
+        Font font = GraphicsUtils.font();
+        graphics.textWithWordWrap(font, getComponent(), x + 4, y + 8 - GraphicsUtils.font().lineHeight / 2, getWidth() / 2, SkinmaticsConfig.foregroundColor());
         textbox.render(graphics, mouseX, mouseY, tickDelta, getTextColor());
     }
 }

@@ -188,12 +188,16 @@ public class TextboxController implements MouseEventListener, KeyEventListener, 
         if (focused && text.isEmpty()) {
             boolean visible = ((System.currentTimeMillis() / 500) % 2 == 0);
             if (visible) {
-                graphics.fill(x + PADDING, y + PADDING, x + PADDING + 1, y + PADDING + font.lineHeight, color);
+                graphics.fill(x + PADDING, drawY, x + PADDING + 1, drawY + font.lineHeight, color);
             }
         }
     }
 
+    public void renderOutline(GuiGraphicsExtractor graphics) {
+        graphics.outline(x, y, width, Math.max(GraphicsUtils.font().lineHeight, getTextHeight()), -1);
+    }
+
     public boolean inside(double pointX, double pointY) {
-        return pointX >= x && pointX < x + width && pointY >= y && pointY < y + getTextHeight();
+        return pointX >= x && pointX < x + width && pointY >= y && pointY < y + Math.max(GraphicsUtils.font().lineHeight, getTextHeight());
     }
 }
