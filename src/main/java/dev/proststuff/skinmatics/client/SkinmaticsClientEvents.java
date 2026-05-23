@@ -9,8 +9,8 @@ import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.ProfileRuntime;
 import dev.proststuff.skinmatics.api.client.ProfileRuntimeManager;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
-import dev.proststuff.skinmatics.client.model.EmissiveSkinFeatureRenderer;
-import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
+import dev.proststuff.skinmatics.client.model.EmissiveSkinRenderLayer;
+import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
@@ -72,10 +72,10 @@ public class SkinmaticsClientEvents {
     @SuppressWarnings("unchecked")
     private static void registerPlayerFeatures(EntityType<? extends LivingEntity> entityType, LivingEntityRenderer<?, ?, ?> livingEntityRenderer, LivingEntityRenderLayerRegistrationCallback.RegistrationHelper registrationHelper, EntityRendererProvider.Context context) {
         if (livingEntityRenderer instanceof AvatarRenderer avatarRenderer) {
-            registrationHelper.register(new EyeFeatureRenderer(avatarRenderer, EyeFeatureRenderer.EyePosition.RIGHT));
-            registrationHelper.register(new EyeFeatureRenderer(avatarRenderer, EyeFeatureRenderer.EyePosition.LEFT));
+            registrationHelper.register(new EyeRenderLayer(avatarRenderer, EyeRenderLayer.EyePosition.RIGHT));
+            registrationHelper.register(new EyeRenderLayer(avatarRenderer, EyeRenderLayer.EyePosition.LEFT));
 
-            registrationHelper.register(new EmissiveSkinFeatureRenderer(avatarRenderer));
+            registrationHelper.register(new EmissiveSkinRenderLayer(avatarRenderer));
         }
     }
 

@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.api.client;
 
-import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
+import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -19,8 +19,8 @@ public class ProfileRuntime {
 
     protected @Nullable Profile profile;
     protected int blinkingTicks = 0;
-    protected EyeFeatureRenderer.EyeDirection rightEyeState = EyeFeatureRenderer.EyeDirection.FRONT;
-    protected EyeFeatureRenderer.EyeDirection leftEyeState = EyeFeatureRenderer.EyeDirection.FRONT;
+    protected EyeRenderLayer.EyeDirection rightEyeState = EyeRenderLayer.EyeDirection.FRONT;
+    protected EyeRenderLayer.EyeDirection leftEyeState = EyeRenderLayer.EyeDirection.FRONT;
 
     protected boolean shouldTickRightEye = true;
     protected boolean shouldTickLeftEye = true;
@@ -65,15 +65,15 @@ public class ProfileRuntime {
                 float yaw = Mth.wrapDegrees(entity.getYHeadRot() - living.yBodyRot);
                 float pitch = entity.getXRot();
 
-                EyeFeatureRenderer.EyeDirection eyeDirection = getEyeDirection(yaw, pitch, entity::hasPose);
+                EyeRenderLayer.EyeDirection eyeDirection = getEyeDirection(yaw, pitch, entity::hasPose);
                 if (shouldTickRightEye) rightEyeState = eyeDirection;
                 if (shouldTickLeftEye) leftEyeState = eyeDirection;
             }
         }
     }
 
-    public EyeFeatureRenderer.EyeDirection getEyeDirection(float yaw, float pitch, HasPose hasPose) {
-        EyeFeatureRenderer.EyeDirection eyeDirectionState = EyeFeatureRenderer.EyeDirection.FRONT;
+    public EyeRenderLayer.EyeDirection getEyeDirection(float yaw, float pitch, HasPose hasPose) {
+        EyeRenderLayer.EyeDirection eyeDirectionState = EyeRenderLayer.EyeDirection.FRONT;
 
         if (blinkingTicks <= 0 && !hasPose.hasPose(Pose.SLEEPING)) {
             boolean up = pitch <= -22.5F;
@@ -81,23 +81,23 @@ public class ProfileRuntime {
             boolean right = yaw >= 22.5F;
             boolean left = yaw <= -22.5F;
 
-            if (up && right) eyeDirectionState = EyeFeatureRenderer.EyeDirection.RIGHT_UP;
-            else if (up && left) eyeDirectionState = EyeFeatureRenderer.EyeDirection.LEFT_UP;
-            else if (down && right) eyeDirectionState = EyeFeatureRenderer.EyeDirection.RIGHT_DOWN;
-            else if (down && left) eyeDirectionState = EyeFeatureRenderer.EyeDirection.LEFT_DOWN;
-            else if (up) eyeDirectionState =  EyeFeatureRenderer.EyeDirection.UP;
-            else if (down) eyeDirectionState =   EyeFeatureRenderer.EyeDirection.DOWN;
-            else if (right) eyeDirectionState = EyeFeatureRenderer.EyeDirection.RIGHT;
-            else if (left) eyeDirectionState =  EyeFeatureRenderer.EyeDirection.LEFT;
+            if (up && right) eyeDirectionState = EyeRenderLayer.EyeDirection.RIGHT_UP;
+            else if (up && left) eyeDirectionState = EyeRenderLayer.EyeDirection.LEFT_UP;
+            else if (down && right) eyeDirectionState = EyeRenderLayer.EyeDirection.RIGHT_DOWN;
+            else if (down && left) eyeDirectionState = EyeRenderLayer.EyeDirection.LEFT_DOWN;
+            else if (up) eyeDirectionState =  EyeRenderLayer.EyeDirection.UP;
+            else if (down) eyeDirectionState =   EyeRenderLayer.EyeDirection.DOWN;
+            else if (right) eyeDirectionState = EyeRenderLayer.EyeDirection.RIGHT;
+            else if (left) eyeDirectionState =  EyeRenderLayer.EyeDirection.LEFT;
         } else {
-            eyeDirectionState = EyeFeatureRenderer.EyeDirection.CLOSED;
+            eyeDirectionState = EyeRenderLayer.EyeDirection.CLOSED;
         }
 
         return eyeDirectionState;
     }
 
-    public int getEyeLayerStateOffset(EyeFeatureRenderer.EyePosition eyePosition, boolean emissive) {
-        return ProfileData.getEyeLayerStateEmissive(emissive) + (eyePosition == EyeFeatureRenderer.EyePosition.RIGHT ? rightEyeState.ordinal() : leftEyeState.ordinal());
+    public int getEyeLayerStateOffset(EyeRenderLayer.EyePosition eyePosition, boolean emissive) {
+        return ProfileData.getEyeLayerStateEmissive(emissive) + (eyePosition == EyeRenderLayer.EyePosition.RIGHT ? rightEyeState.ordinal() : leftEyeState.ordinal());
     }
 
     public void blink() {

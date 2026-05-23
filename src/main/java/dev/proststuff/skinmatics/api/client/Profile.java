@@ -6,7 +6,7 @@ import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.api.config.field.AnimatableConfigField;
 import dev.proststuff.skinmatics.api.client.render.SkinmaticsRenderTypes;
-import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
+import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
 import dev.proststuff.utilitary.api.config.ConfigFile;
 import dev.proststuff.utilitary.api.config.field.ConfigGroup;
 import dev.proststuff.utilitary.api.config.field.value.BooleanConfigField;
@@ -68,7 +68,7 @@ public class Profile extends ConfigFile {
         this.profile = profile;
         this.data = new ProfileData(this);
 
-        for (EyeFeatureRenderer.EyeDirection eyeDirection : EyeFeatureRenderer.EyeDirection.values()) {
+        for (EyeRenderLayer.EyeDirection eyeDirection : EyeRenderLayer.EyeDirection.values()) {
             String name = eyeDirection.getSerializedName();
             rightEye.add(new AnimatableConfigField(name));
             leftEye.add(new AnimatableConfigField(name));
@@ -128,10 +128,10 @@ public class Profile extends ConfigFile {
         iterate(elytra, data.elytra.getState(0));
         iterate(emissiveElytra, data.elytra.getState(1));
 
-        iterateEyes(EyeFeatureRenderer.EyePosition.RIGHT, data, rightEye, false);
-        iterateEyes(EyeFeatureRenderer.EyePosition.LEFT, data, leftEye, false);
-        iterateEyes(EyeFeatureRenderer.EyePosition.RIGHT, data, emissiveRightEye, true);
-        iterateEyes(EyeFeatureRenderer.EyePosition.LEFT, data, emissiveLeftEye, true);
+        iterateEyes(EyeRenderLayer.EyePosition.RIGHT, data, rightEye, false);
+        iterateEyes(EyeRenderLayer.EyePosition.LEFT, data, leftEye, false);
+        iterateEyes(EyeRenderLayer.EyePosition.RIGHT, data, emissiveRightEye, true);
+        iterateEyes(EyeRenderLayer.EyePosition.LEFT, data, emissiveLeftEye, true);
     }
 
     @Override
@@ -139,10 +139,10 @@ public class Profile extends ConfigFile {
         return profile.hashCode();
     }
 
-    private static void iterateEyes(EyeFeatureRenderer.EyePosition eyePosition, ProfileData data, ConfigGroup configGroup, boolean emissive) {
+    private static void iterateEyes(EyeRenderLayer.EyePosition eyePosition, ProfileData data, ConfigGroup configGroup, boolean emissive) {
         for (Map.Entry<String, ConfigSerializable> entry : configGroup.children.entrySet()) {
             if (entry.getValue() instanceof AnimatableConfigField animatableConfigField) {
-                EyeFeatureRenderer.EyeDirection direction = EyeFeatureRenderer.EyeDirection.fromSerializedName(entry.getKey());
+                EyeRenderLayer.EyeDirection direction = EyeRenderLayer.EyeDirection.fromSerializedName(entry.getKey());
                 iterate(animatableConfigField, data.getEyeLayerState(eyePosition).getState(direction.ordinal() + ProfileData.getEyeLayerStateEmissive(emissive)));
             }
         }

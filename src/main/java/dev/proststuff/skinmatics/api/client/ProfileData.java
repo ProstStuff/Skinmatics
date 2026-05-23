@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.api.client;
 
 import dev.proststuff.skinmatics.api.client.render.SkinmaticsRenderTypes;
 import dev.proststuff.skinmatics.api.client.texture.LayerState;
-import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
+import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -61,11 +61,11 @@ public class ProfileData {
         return profile.enabled.get() && (emissive ? profile.addEmissiveElytra.get() : profile.useCustomElytra.get()) ? elytra.getTexture(emissive ? 1 : 0) : getCape(emissive);
     }
 
-    public LayerState getEyeLayerState(EyeFeatureRenderer.EyePosition eyePosition) {
-        return eyePosition == EyeFeatureRenderer.EyePosition.RIGHT ? rightEye : leftEye;
+    public LayerState getEyeLayerState(EyeRenderLayer.EyePosition eyePosition) {
+        return eyePosition == EyeRenderLayer.EyePosition.RIGHT ? rightEye : leftEye;
     }
 
-    public Identifier getEye(AvatarRenderState state, EyeFeatureRenderer.EyePosition eyePosition, boolean emissive) {
+    public Identifier getEye(AvatarRenderState state, EyeRenderLayer.EyePosition eyePosition, boolean emissive) {
         ProfileRuntime runtime = ProfileRuntimeManager.get(state);
         return profile.enabled.get() && runtime != null ? getEyeLayerState(eyePosition).getTexture(runtime.getEyeLayerStateOffset(eyePosition, emissive)) : null;
     }

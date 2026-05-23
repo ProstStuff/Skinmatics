@@ -3,7 +3,7 @@ package dev.proststuff.skinmatics.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
-import dev.proststuff.skinmatics.api.client.render.FaceFeatureRenderer;
+import dev.proststuff.skinmatics.api.client.render.FaceRenderLayer;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
 import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
 import net.minecraft.client.model.player.PlayerModel;
@@ -14,10 +14,10 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
-public class EyeFeatureRenderer extends FaceFeatureRenderer {
+public class EyeRenderLayer extends FaceRenderLayer {
     public final EyePosition eyePosition;
 
-    public EyeFeatureRenderer(RenderLayerParent<AvatarRenderState, PlayerModel> context, EyePosition eyePosition) {
+    public EyeRenderLayer(RenderLayerParent<AvatarRenderState, PlayerModel> context, EyePosition eyePosition) {
         super(context);
         this.eyePosition = eyePosition;
     }
@@ -37,8 +37,13 @@ public class EyeFeatureRenderer extends FaceFeatureRenderer {
     }
 
     @Override
+    public boolean alwaysRender() {
+        return true;
+    }
+
+    @Override
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float yRot, float xRot) {
-        if (state.isInvisible) return;
+        if (state.isInvisible && !state.isSpectator) return;
         Profile profile = getProfile(state);
         if (!isEnabled(profile, state)) return;
 

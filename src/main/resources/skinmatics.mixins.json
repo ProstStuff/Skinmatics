@@ -16,6 +16,7 @@
     "client.skin.CapeTextureSwapper",
     "client.skin.ElytraTextureSwapper",
     "client.skin.EmissiveElytraRenderer",
+    "client.skin.ForceRenderLayerVisibility",
     "client.skin.PreventOnlineSkinModification",
     "client.skin.SkinmaticsAvatarRenderer",
     "client.skin.SkinmaticsAvatarRenderState",

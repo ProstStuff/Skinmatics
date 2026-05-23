@@ -46,7 +46,7 @@
 				"modmenu.modrinth": "https://modrinth.com/mod/skinmatics",
 				"modmenu.youtube": "https://www.youtube.com/@ProstStuff"
 			},
-			"update_checker": false
+			"update_checker": true
 		}
 	}
 }

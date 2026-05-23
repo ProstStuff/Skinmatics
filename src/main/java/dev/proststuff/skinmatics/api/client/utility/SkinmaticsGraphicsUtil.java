@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.api.client.utility;
 
 import dev.proststuff.skinmatics.api.client.Profile;
-import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
+import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -21,11 +21,11 @@ public class SkinmaticsGraphicsUtil {
         if (skinEmissive != null) GraphicsUtils.sprite(graphics, skinEmissive, x, y, FACE_POSITION, FACE_SIZE, FACE_SIZE, FACE_SIZE, SKIN_SIZE, SKIN_SIZE);
 
         if (profile.showEyes.get()) {
-            int direction = EyeFeatureRenderer.EyeDirection.FRONT.ordinal();
+            int direction = EyeRenderLayer.EyeDirection.FRONT.ordinal();
 
             if (!profile.hideRightEye.get()) {
-                Identifier baseEye = profile.data.getEyeLayerState(EyeFeatureRenderer.EyePosition.RIGHT).getTexture(direction);
-                Identifier emissiveEye = profile.data.getEyeLayerState(EyeFeatureRenderer.EyePosition.RIGHT).getTexture(10 + direction);
+                Identifier baseEye = profile.data.getEyeLayerState(EyeRenderLayer.EyePosition.RIGHT).getTexture(direction);
+                Identifier emissiveEye = profile.data.getEyeLayerState(EyeRenderLayer.EyePosition.RIGHT).getTexture(10 + direction);
 
                 if (baseEye != null) GraphicsUtils.sprite(graphics, baseEye, x, y, FACE_SIZE, FACE_SIZE);
                 if (emissiveEye != null) GraphicsUtils.sprite(graphics, emissiveEye, x, y, FACE_SIZE, FACE_SIZE);
@@ -34,8 +34,8 @@ public class SkinmaticsGraphicsUtil {
             }
 
             if (!profile.hideLeftEye.get()) {
-                Identifier baseEye = profile.data.getEyeLayerState(EyeFeatureRenderer.EyePosition.LEFT).getTexture(direction);
-                Identifier emissiveEye = profile.data.getEyeLayerState(EyeFeatureRenderer.EyePosition.LEFT).getTexture(10 + direction);
+                Identifier baseEye = profile.data.getEyeLayerState(EyeRenderLayer.EyePosition.LEFT).getTexture(direction);
+                Identifier emissiveEye = profile.data.getEyeLayerState(EyeRenderLayer.EyePosition.LEFT).getTexture(10 + direction);
 
                 if (baseEye != null) GraphicsUtils.sprite(graphics, baseEye, x, y, FACE_SIZE, FACE_SIZE);
                 if (emissiveEye != null) GraphicsUtils.sprite(graphics, emissiveEye, x, y, FACE_SIZE, FACE_SIZE);
