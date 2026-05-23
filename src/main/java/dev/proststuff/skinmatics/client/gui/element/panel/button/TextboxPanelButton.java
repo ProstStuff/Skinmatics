@@ -28,11 +28,15 @@ public abstract class TextboxPanelButton<V> extends ConfigFieldPanelButton<V> {
         super(identifier, component, configField);
     }
 
+    public TextboxController getTextbox() {
+        return textbox;
+    }
+
     @Override
     public int getHeight() {
         int labelHeight = super.getHeight();
-        int textboxHeight = textbox.getTextHeight();
-        return Math.max(16, Math.max(labelHeight, textboxHeight) + 4);
+        int textboxHeight = textbox.getTextHeight() + 4;
+        return Math.max(16, Math.max(labelHeight, textboxHeight));
     }
 
     @Override

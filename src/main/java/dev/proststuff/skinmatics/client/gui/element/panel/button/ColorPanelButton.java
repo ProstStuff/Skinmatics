@@ -20,6 +20,12 @@ public class ColorPanelButton extends TextboxPanelButton<Color> {
         super(identifier, component, configField);
     }
 
+    @Override
+    public void init(int width, int height) {
+        super.init(width, height);
+        textbox.setPlaceholderText("FFFFFF");
+    }
+
     public int hexToInt() {
         String hex = textbox.get();
         if (hex.startsWith("#")) {
@@ -62,6 +68,6 @@ public class ColorPanelButton extends TextboxPanelButton<Color> {
 
     @Override
     public int getTextColor() {
-        return hexToInt();
+        return textbox.isFocused() ? hexToInt() : ARGB.color(0.75F, hexToInt());
     }
 }

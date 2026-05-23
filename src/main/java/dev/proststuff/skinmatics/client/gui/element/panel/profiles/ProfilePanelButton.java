@@ -1,10 +1,11 @@
-package dev.proststuff.skinmatics.client.gui.element.panel.button;
+package dev.proststuff.skinmatics.client.gui.element.panel.profiles;
 
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.utility.SkinmaticsGraphicsUtil;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
+import dev.proststuff.skinmatics.client.gui.element.panel.button.PanelButton;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;

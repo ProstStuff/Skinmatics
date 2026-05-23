@@ -6,7 +6,7 @@ import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.home.HomePanel;
-import dev.proststuff.skinmatics.client.gui.element.panel.ProfilesPanel;
+import dev.proststuff.skinmatics.client.gui.element.panel.profiles.ProfilesPanel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
 import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

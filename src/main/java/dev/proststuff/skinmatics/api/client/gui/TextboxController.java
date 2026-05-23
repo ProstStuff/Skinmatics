@@ -1,10 +1,10 @@
 package dev.proststuff.skinmatics.api.client.gui;
 
-import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.api.client.impl.gui.GuiRenderable;
 import dev.proststuff.skinmatics.api.client.impl.gui.KeyEventListener;
 import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import dev.proststuff.skinmatics.api.client.impl.gui.ScreenEventListener;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -14,6 +14,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.ARGB;
 import org.jspecify.annotations.NonNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -22,11 +23,12 @@ import java.util.List;
 // TODO: Move this to Utilitary
 public class TextboxController implements MouseEventListener, KeyEventListener, ScreenEventListener, GuiRenderable {
     public static int PADDING = 4;
+    protected static TextboxController focused = null;
 
+    protected Component placeholderText = Component.empty();
     protected String text;
     protected boolean editable = true;
     protected int cursor = 0;
-    protected boolean focused = false;
 
     protected final int width;
 
@@ -45,6 +47,14 @@ public class TextboxController implements MouseEventListener, KeyEventListener, 
 
     public TextboxController(int width) {
         this("", width);
+    }
+
+    public void setPlaceholderText(Component placeholderText) {
+        this.placeholderText = placeholderText;
+    }
+
+    public void setPlaceholderText(String placeholderText) {
+        setPlaceholderText(Component.literal(placeholderText));
     }
 
     public void set(String text) {
@@ -68,7 +78,7 @@ public class TextboxController implements MouseEventListener, KeyEventListener, 
     }
 
     public boolean isFocused() {
-        return focused;
+        return focused == this;
     }
 
     public int getWidth() {
@@ -97,15 +107,15 @@ public class TextboxController implements MouseEventListener, KeyEventListener, 
 
     @Override
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
-        focused = event.button() == 0 && inside(event.x(), event.y());
-        if (focused) cursor = text.length();
+        focused = event.button() == 0 && inside(event.x(), event.y()) ? this : null;
+        if (isFocused()) cursor = text.length();
 
-        return focused;
+        return isFocused();
     }
 
     @Override
     public boolean keyPressed(@NonNull KeyEvent event) {
-        if (!(focused && editable)) return false;
+        if (!(isFocused() && editable)) return false;
         int key = event.key();
 
         switch (key) {
@@ -139,7 +149,7 @@ public class TextboxController implements MouseEventListener, KeyEventListener, 
 
     @Override
     public boolean charTyped(@NonNull CharacterEvent event) {
-        if (!(focused && editable)) return false;
+        if (!(isFocused() && editable)) return false;
         int c = event.codepoint();
         if (Character.isISOControl(c)) return false;
 
@@ -160,35 +170,39 @@ public class TextboxController implements MouseEventListener, KeyEventListener, 
         List<String> lines = font.getSplitter().splitLines(text, width - (PADDING * 2), Style.EMPTY).stream().map(FormattedText::getString).toList();
         int remainingCursor = cursor;
 
-        for (String line : lines) {
-            graphics.text(font, line, x + PADDING, drawY, color);
+            for (String line : lines) {
+                graphics.text(font, line, x + PADDING, drawY, color);
 
-            if (focused && remainingCursor >= 0) {
-                boolean cursorInThisLine = remainingCursor <= line.length();
+                if (isFocused() && remainingCursor >= 0) {
+                    boolean cursorInThisLine = remainingCursor <= line.length();
 
-                if (cursorInThisLine) {
-                    boolean visible = ((System.currentTimeMillis() / 500) % 2 == 0);
+                    if (cursorInThisLine) {
+                        boolean visible = ((System.currentTimeMillis() / 500) % 2 == 0);
 
-                    if (visible) {
-                        String beforeCursor = line.substring(0, remainingCursor);
-                        int cursorX = x + PADDING + font.width(beforeCursor);
+                        if (visible) {
+                            String beforeCursor = line.substring(0, remainingCursor);
+                            int cursorX = x + PADDING + font.width(beforeCursor);
 
-                        graphics.fill(cursorX, drawY, cursorX + 1, drawY + font.lineHeight, color);
+                            graphics.fill(cursorX, drawY, cursorX + 1, drawY + font.lineHeight, color);
+                        }
+
+                        remainingCursor = -1;
+                    } else {
+                        remainingCursor -= line.length();
                     }
-
-                    remainingCursor = -1;
-                } else {
-                    remainingCursor -= line.length();
                 }
+
+                drawY += font.lineHeight;
             }
+        if (text.isEmpty()) {
+            if (isFocused()) {
+                boolean visible = ((System.currentTimeMillis() / 500) % 2 == 0);
+                if (visible) {
+                    graphics.fill(x + PADDING, drawY, x + PADDING + 1, drawY + font.lineHeight, color);
+                }
 
-            drawY += font.lineHeight;
-        }
-
-        if (focused && text.isEmpty()) {
-            boolean visible = ((System.currentTimeMillis() / 500) % 2 == 0);
-            if (visible) {
-                graphics.fill(x + PADDING, drawY, x + PADDING + 1, drawY + font.lineHeight, color);
+            } else if (!placeholderText.getString().isBlank()) {
+                graphics.textWithWordWrap(font, placeholderText, x + PADDING, drawY, width - (PADDING * 2), ARGB.color(0.5F, color));
             }
         }
     }

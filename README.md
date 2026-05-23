@@ -155,3 +155,6 @@ You can use Notepad or any other JSON file manipulation app to modify this
 ## Incompatibilities
 
 There are currently no known incompatibilities with other mods.
+
+## Contributing
+The project does not accept any other contribution outside the project's team (which is currently 2 people).

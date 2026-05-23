@@ -16,6 +16,10 @@ repositories {
 	}
 
 	maven {
+		url = "https://jitpack.io"
+	}
+
+	maven {
 		name = "Terraformers"
 		url = "https://maven.terraformersmc.com/"
 	}
@@ -27,11 +31,13 @@ dependencies {
 
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	implementation "com.terraformersmc:modmenu:${modmenu_version}"
-	implementation "maven.modrinth:utilitary:${utilitary_version}"
+	implementation "com.github.ProstStuff:Utilitary:${utilitary_version}"
 
 	runtimeOnly "maven.modrinth:sodium:${sodium_version}"
 	runtimeOnly "maven.modrinth:iris:${iris_version}"
 	runtimeOnly "maven.modrinth:immediatelyfast:${immediately_fast_version}"
+
+	runtimeOnly "maven.modrinth:flashback:${flashback_version}"
 }
 
 processResources {

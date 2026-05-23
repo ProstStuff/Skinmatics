@@ -1,11 +1,11 @@
-package dev.proststuff.skinmatics.client.gui.element.panel.button;
+package dev.proststuff.skinmatics.client.gui.element.panel.profiles;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.gui.TextboxController;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
-import dev.proststuff.skinmatics.client.gui.element.panel.ProfilesPanel;
+import dev.proststuff.skinmatics.client.gui.element.panel.button.PanelButton;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -33,6 +33,7 @@ public class NewProfilePanelButton extends PanelButton {
     public void init(int width, int height) {
         super.init(width, height);
         textbox.init(width, height);
+        textbox.setPlaceholderText("Name...");
         textbox.set("");
     }
 
@@ -62,6 +63,7 @@ public class NewProfilePanelButton extends PanelButton {
         } else if (event.input() == GLFW.GLFW_KEY_ENTER && !textbox.get().isBlank()) {
             ProfileManager.load(textbox.get()).save();
             ProfilesPanel.rescan();
+            textbox.set("");
             return true;
         }
 
@@ -92,6 +94,5 @@ public class NewProfilePanelButton extends PanelButton {
         Font font = GraphicsUtils.font();
         graphics.textWithWordWrap(font, getComponent(), x + 4, y + 8 - GraphicsUtils.font().lineHeight / 2, getWidth() / 2, SkinmaticsConfig.foregroundColor());
         textbox.render(graphics, mouseX, mouseY, tickDelta, getTextColor());
-        textbox.renderOutline(graphics);
     }
 }

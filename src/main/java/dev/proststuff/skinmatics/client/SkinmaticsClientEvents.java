@@ -15,6 +15,7 @@ import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -26,6 +27,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
@@ -36,6 +38,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,13 +51,17 @@ import java.util.concurrent.Executor;
 
 public class SkinmaticsClientEvents {
     private static final SkinmaticsConfig CONFIG = SkinmaticsConfig.INSTANCE;
+    private static int cleanUpTime = 0;
 
     public static void init() {
         ClientLifecycleEvents.CLIENT_STARTED.register(SkinmaticsClientEvents::clientInitialized);
         LivingEntityRenderLayerRegistrationCallback.EVENT.register(SkinmaticsClientEvents::registerPlayerFeatures);
-        ClientTickEvents.END_CLIENT_TICK.register(SkinmaticsClientEvents::clientTicked);
+        ClientTickEvents.END_CLIENT_TICK.register(SkinmaticsClientEvents::tickAvatarPreviewAndClean);
+        ClientTickEvents.START_LEVEL_TICK.register(SkinmaticsClientEvents::tickRuntimes);
         ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(Skinmatics.of("skinmatics_textures"), SkinmaticsClientEvents::onResourceReload);
         ClientCommandRegistrationCallback.EVENT.register(SkinmaticsClientEvents::registerCommands);
+        ClientEntityEvents.ENTITY_LOAD.register(SkinmaticsClientEvents::entityLoad);
+        ClientEntityEvents.ENTITY_UNLOAD.register(SkinmaticsClientEvents::entityUnload);
         ClientPlayConnectionEvents.JOIN.register(SkinmaticsClientEvents::joined);
         ClientPlayConnectionEvents.DISCONNECT.register(SkinmaticsClientEvents::left);
     }
@@ -79,40 +86,14 @@ public class SkinmaticsClientEvents {
         }
     }
 
-    private static void clientTicked(Minecraft minecraft) {
-        ClientLevel level = minecraft.level;
-        LocalPlayer clientPlayer = minecraft.player;
+    private static void tickRuntimes(ClientLevel level) {
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer localPlayer = minecraft.player;
 
-        if (AvatarPreviewRenderer.PREVIEWER != null) {
-            AvatarPreviewRenderer.PREVIEWER.tick();
-            ProfileRuntime runtime = ProfileRuntimeManager.get(AvatarPreviewRenderer.PREVIEWER);
-            if (runtime != null) {
-                runtime.tick(AvatarPreviewRenderer.PREVIEWER, AvatarPreviewRenderer.PREVIEWER.getRandom());
-            }
-
-            AvatarPreviewRenderer.PREVIEWER.tickCount ++;
-
-            if (level == null) {
-                ProfileManager.unassign(AvatarPreviewRenderer.PREVIEWER);
-                AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
-                AvatarPreviewRenderer.PREVIEWER = null;
-            }
-        }
-
-        if (level == null || clientPlayer == null) return;
-        if (level.tickRateManager().isFrozen()) return;
+        if (localPlayer == null) return;
         RandomSource random = level.getRandom();
-
-        Map<String, Profile> profiles = ProfileManager.getAll();
         Map<UUID, Profile> assignedProfiles = ProfileManager.getAllAssigned();
-
-        for (Profile profile : profiles.values()) {
-            if (profile.maxTicks.get() > 0 && assignedProfiles.containsValue(profile)) {
-                profile.data.tick();
-            }
-        }
-
-        BlockPos clientPos = clientPlayer.getOnPos();
+        BlockPos clientPos = localPlayer.getOnPos();
         int updateRange = CONFIG.updateRange.get();
 
         for (Map.Entry<UUID, Profile> entry : assignedProfiles.entrySet()) {
@@ -133,9 +114,58 @@ public class SkinmaticsClientEvents {
                 }
             }
         }
+    }
 
-        if (level.getGameTime() % 200 == 0) {
-            ProfileManager.cleanUp(level);
+    private static void tickAvatarPreviewAndClean(Minecraft minecraft) {
+        RemotePlayer previewer = AvatarPreviewRenderer.PREVIEWER;
+        ClientLevel level = minecraft.level;
+
+        if (level != null) {
+            if (previewer != null) {
+                RandomSource random = previewer.getRandom();
+                ProfileRuntime runtime = ProfileRuntimeManager.get(previewer);
+
+                if (runtime != null) {
+                    previewer.tick();
+                    runtime.tick(previewer, random);
+                    previewer.tickCount ++;
+                }
+            }
+
+            cleanUpTime --;
+
+            if (cleanUpTime <= 0) {
+                ProfileManager.cleanUp(level);
+                cleanUpTime = 200;
+            }
+        } else if (AvatarPreviewRenderer.PREVIEWER != null) {
+            ProfileManager.unassign(AvatarPreviewRenderer.PREVIEWER);
+            AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
+            AvatarPreviewRenderer.PREVIEWER = null;
+        }
+    }
+
+    private static void entityLoad(Entity entity, ClientLevel level) {
+        if (entity instanceof Avatar && entity != Minecraft.getInstance().player) {
+            String name = entity.getName().getString();
+            String uuidString = entity.getUUID().toString();
+
+            for (Map.Entry<String, String> entry : SkinmaticsConfig.INSTANCE.autoAssign.get().entrySet()) {
+                String target = entry.getKey();
+                String profileName = entry.getValue();
+
+                Profile profile = ProfileManager.get(profileName);
+
+                if ((target.equals(name) || uuidString.equals(name)) && profile != null) {
+                    ProfileManager.assign(entity, profile);
+                }
+            }
+        }
+    }
+
+    private static void entityUnload(Entity entity, ClientLevel level) {
+        if (entity instanceof Avatar && entity != Minecraft.getInstance().player) {
+            ProfileManager.unassign(entity);
         }
     }
 
@@ -147,6 +177,7 @@ public class SkinmaticsClientEvents {
         ProfileManager.clear();
 
         if (AvatarPreviewRenderer.PREVIEWER != null) {
+            ProfileManager.unassign(AvatarPreviewRenderer.PREVIEWER);
             AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
             AvatarPreviewRenderer.PREVIEWER = null;
         }

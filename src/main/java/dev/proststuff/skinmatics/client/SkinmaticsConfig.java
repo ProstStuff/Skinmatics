@@ -2,11 +2,15 @@ package dev.proststuff.skinmatics.client;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.utilitary.api.config.ConfigFile;
+import dev.proststuff.utilitary.api.config.codec.ConfigCodecs;
+import dev.proststuff.utilitary.api.config.field.value.MapConfigField;
 import dev.proststuff.utilitary.api.config.field.value.StringConfigField;
-import dev.proststuff.utilitary.api.config.field.value.utilitary.ColorConfigField;
 import dev.proststuff.utilitary.api.config.field.value.math.IntegerConfigField;
+import dev.proststuff.utilitary.api.config.field.value.utilitary.ColorConfigField;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import java.util.LinkedHashMap;
 
 @Environment(EnvType.CLIENT)
 public class SkinmaticsConfig extends ConfigFile {
@@ -17,6 +21,7 @@ public class SkinmaticsConfig extends ConfigFile {
     public final ColorConfigField backgroundColor = new ColorConfigField("backgroundColor", 0xFF000000);
     public final ColorConfigField foregroundColor = new ColorConfigField("foregroundColor", 0xFFFFFFFF);
     public final ColorConfigField accentColor = new ColorConfigField("accentColor", 0xFF3948CC);
+    public final MapConfigField<String> autoAssign = new MapConfigField<>("autoAssign", new LinkedHashMap<>(), ConfigCodecs.STRING);
     //public final IntegerConfigField gridSize = new IntegerConfigField("gridSize", 8).clamp(1, Integer.MAX_VALUE);
     //public final ColorConfigField primaryGridColor = new ColorConfigField("primaryGridColor", 0xFF808080);
     //public final ColorConfigField secondaryGridColor = new ColorConfigField("secondaryGridColor", 0xFFFFFFFF);
@@ -28,7 +33,8 @@ public class SkinmaticsConfig extends ConfigFile {
                 updateRange,
                 backgroundColor,
                 foregroundColor,
-                accentColor//,
+                accentColor,
+                autoAssign
                 //gridSize,
                 //primaryGridColor,
                 //secondaryGridColor

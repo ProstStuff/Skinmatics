@@ -40,26 +40,19 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
         super.init(width, height);
         setPosition(Sidebar.SIDEBAR_WIDTH, 0);
 
-        int viewportTop = y;
-        int viewportBottom = y + getHeight();
         int currentY = 16 - (int) scrollingPosition;
 
         for (PanelButton button : buttons) {
-            int buttonTop = currentY;
-            int buttonBottom = currentY + button.getHeight();
-            boolean visible = buttonBottom >= viewportTop && buttonTop <= viewportBottom;
-
-            if (visible) {
-                button.setPosition(x, currentY);
-                button.init(width, height);
-            }
+            button.setPosition(x, currentY);
+            button.init(width, height);
 
             currentY += button.getHeight();
         }
     }
 
-    public void addButton(PanelButton button) {
+    public <P extends PanelButton> P addButton(P button) {
         buttons.add(button);
+        return button;
     }
 
     public void setSidebar(SidebarButton sidebar) {

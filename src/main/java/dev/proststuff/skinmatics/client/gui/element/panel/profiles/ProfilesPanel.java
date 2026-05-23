@@ -1,10 +1,9 @@
-package dev.proststuff.skinmatics.client.gui.element.panel;
+package dev.proststuff.skinmatics.client.gui.element.panel.profiles;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
-import dev.proststuff.skinmatics.client.gui.element.panel.button.NewProfilePanelButton;
-import dev.proststuff.skinmatics.client.gui.element.panel.button.ProfilePanelButton;
+import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.jspecify.annotations.NonNull;
 
