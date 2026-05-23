@@ -31,7 +31,7 @@ public class EmissiveSkinRenderLayer extends RenderLayer<AvatarRenderState, Play
 
     @Override
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float limbAngle, float limbDistance) {
-        if (state.isInvisible && !state.isSpectator) return;
+        if (ForceRenderLayer.isInvisible(state)) return;
         int color = state.isSpectator ? ARGB.multiply(654311423, 0xFFFFFFFF) : 0xFFFFFFFF;
 
         PlayerModel playerEntityModel = getParentModel();

@@ -124,7 +124,7 @@ public class SkinmaticsClientEvents {
                 BlockPos entityPosition = living.getOnPos();
 
                 if (profile.showEyes.get()) {
-                    if (living.isInvisible() || entityPosition.distSqr(clientPos) > (updateRange * updateRange)) continue;
+                    if (entityPosition.distSqr(clientPos) > (updateRange * updateRange)) continue;
                     ProfileRuntime runtime = ProfileRuntimeManager.get(entity);
 
                     if (runtime != null) {

@@ -3,6 +3,7 @@ package dev.proststuff.skinmatics.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.client.impl.ForceRenderLayer;
 import dev.proststuff.skinmatics.api.client.render.FaceRenderLayer;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
 import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
@@ -43,7 +44,7 @@ public class EyeRenderLayer extends FaceRenderLayer {
 
     @Override
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float yRot, float xRot) {
-        if (state.isInvisible && !state.isSpectator) return;
+        if (ForceRenderLayer.isInvisible(state)) return;
         Profile profile = getProfile(state);
         if (!isEnabled(profile, state)) return;
 
