@@ -1,9 +1,9 @@
 package dev.proststuff.skinmatics.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.Profile;
-import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
-import dev.proststuff.skinmatics.api.render.FaceFeatureRenderer;
+import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.client.render.FaceFeatureRenderer;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
 import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
 import net.minecraft.client.model.player.PlayerModel;

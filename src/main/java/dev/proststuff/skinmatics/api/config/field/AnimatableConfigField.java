@@ -5,15 +5,12 @@ import com.google.gson.JsonObject;
 import dev.proststuff.skinmatics.api.config.Animatable;
 import dev.proststuff.utilitary.api.config.codec.ConfigCodec;
 import dev.proststuff.utilitary.api.config.field.ConfigField;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class AnimatableConfigField extends ConfigField<Animatable> {
     public static final ConfigCodec<Animatable> CODEC = new ConfigCodec<>(
             (animatable, context) -> {

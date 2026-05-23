@@ -1,10 +1,10 @@
 package dev.proststuff.skinmatics.client.gui.element.panel.button;
 
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
-import dev.proststuff.skinmatics.client.gui.impl.KeyEventListener;
-import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.KeyEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.MutableComponent;

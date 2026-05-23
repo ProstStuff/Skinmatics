@@ -1,6 +1,7 @@
 package dev.proststuff.skinmatics.client.gui.element;
 
-import dev.proststuff.skinmatics.client.gui.impl.ScreenEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.GuiRenderable;
+import dev.proststuff.skinmatics.api.client.impl.gui.ScreenEventListener;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
@@ -10,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.function.Supplier;
 
-public abstract class AbstractRenderable implements ScreenEventListener {
+public abstract class AbstractRenderable implements ScreenEventListener, GuiRenderable {
     protected final SimpleIdentifier identifier;
     protected final Supplier<MutableComponent> componentSupplier;
     protected int screenWidth;

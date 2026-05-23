@@ -1,12 +1,12 @@
 package dev.proststuff.skinmatics.client.gui;
 
-import dev.proststuff.skinmatics.api.ProfileHandler;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.client.ProfileManager;
+import dev.proststuff.skinmatics.api.client.impl.gui.FileEventListener;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.Sidebar;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
-import dev.proststuff.skinmatics.client.gui.impl.FileEventListener;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -33,14 +33,12 @@ public class CustomizationScreen extends Screen {
 
     public void load() {
         SkinmaticsConfig.INSTANCE.load();
-        ProfileHandler.walkProfiles();
-        ProfileHandler.loadProfiles();
-        ProfileHandler.loadCurrentProfile(minecraft.player);
+        ProfileManager.scanAndLoad();
     }
 
     public void save() {
         SkinmaticsConfig.INSTANCE.save();
-        ProfileHandler.saveProfiles();
+        ProfileManager.saveAll();
 
         load();
     }

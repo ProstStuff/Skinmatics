@@ -2,9 +2,9 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.impl.ProfileHolder;
-import dev.proststuff.skinmatics.api.Profile;
-import dev.proststuff.skinmatics.api.utility.DummyTextureAsset;
+import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
+import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.utility.DummyTextureAsset;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.CapeLayer;
@@ -34,8 +34,8 @@ public class CapeTextureSwapper implements ProfileHolder {
 
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At("HEAD"), cancellable = true)
     public void skinmatics$render(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
-        ProfileHolder dataHolder = (ProfileHolder) state;
-        Profile profile = dataHolder.skinmatics$getProfile();
+        ProfileHolder holder = (ProfileHolder) state;
+        Profile profile = holder.skinmatics$getProfile();
 
         if (profile != null) {
             skinmatics$setProfile(profile);

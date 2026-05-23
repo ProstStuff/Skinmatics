@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.client.gui.element.sidebar.button;
 
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

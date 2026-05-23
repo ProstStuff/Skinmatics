@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
-import dev.proststuff.skinmatics.api.impl.*;
-import dev.proststuff.skinmatics.api.Profile;
+import dev.proststuff.skinmatics.api.client.impl.*;
+import dev.proststuff.skinmatics.api.client.Profile;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import org.spongepowered.asm.mixin.Mixin;

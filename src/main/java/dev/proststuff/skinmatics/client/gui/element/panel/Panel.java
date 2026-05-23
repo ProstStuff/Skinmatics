@@ -1,12 +1,12 @@
 package dev.proststuff.skinmatics.client.gui.element.panel;
 
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.button.PanelButton;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.Sidebar;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
-import dev.proststuff.skinmatics.client.gui.impl.KeyEventListener;
-import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.KeyEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -39,6 +39,23 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
     public void init(int width, int height) {
         super.init(width, height);
         setPosition(Sidebar.SIDEBAR_WIDTH, 0);
+
+        int viewportTop = y;
+        int viewportBottom = y + getHeight();
+        int currentY = 16 - (int) scrollingPosition;
+
+        for (PanelButton button : buttons) {
+            int buttonTop = currentY;
+            int buttonBottom = currentY + button.getHeight();
+            boolean visible = buttonBottom >= viewportTop && buttonTop <= viewportBottom;
+
+            if (visible) {
+                button.setPosition(x, currentY);
+                button.init(width, height);
+            }
+
+            currentY += button.getHeight();
+        }
     }
 
     public void addButton(PanelButton button) {
@@ -50,7 +67,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
     }
 
     public int getHeightContents() {
-        int height = 0;
+        int height = sidebar != null ? SidebarButton.SIZE : 0;
 
         for (PanelButton button : buttons) {
             height += button.getHeight();
@@ -66,7 +83,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
             scrollingPosition = 0;
         }
 
-        int visibleHeight = getHeight() - 16;
+        int visibleHeight = getHeight();
         int maxScroll = Math.max(0, getHeightContents() - visibleHeight);
 
         if (scrollingPosition > maxScroll) {
@@ -87,29 +104,37 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
     @Override
     public void render(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
         graphics.fill(SidebarButton.SIZE, 0, SidebarButton.SIZE + getWidth(), getHeight(), SkinmaticsConfig.backgroundColor());
-
-        int titleBarHeight = renderTitleBar(graphics);
-        renderButtons(graphics, mouseX, mouseY, tickDelta, titleBarHeight);
+        renderButtons(graphics, mouseX, mouseY, tickDelta, renderTitleBar(graphics));
     }
 
     public void renderButtons(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta, int startY) {
-        int initialHeight = startY;
-        int maxHeight = startY + getHeight() - SidebarButton.SIZE;
+        int viewportTop = y;
+        int viewportBottom = y + getHeight();
+
+        graphics.enableScissor(Sidebar.SIDEBAR_WIDTH, viewportTop + 16, Sidebar.SIDEBAR_WIDTH + getWidth(), viewportBottom);
+
+        int currentY = startY - (int) scrollingPosition;
 
         for (PanelButton button : buttons) {
-            if (startY + button.getHeight() >= initialHeight && y <= maxHeight) {
-                button.setPosition(x, startY);
+            int buttonTop = currentY;
+            int buttonBottom = currentY + button.getHeight();
+            boolean visible = buttonBottom >= viewportTop && buttonTop <= viewportBottom;
+
+            if (visible) {
+                button.setPosition(x, currentY);
                 button.render(graphics, mouseX, mouseY, tickDelta);
             }
 
-            startY += button.getHeight();
+            currentY += button.getHeight();
         }
+
+        graphics.disableScissor();
     }
 
     public int renderTitleBar(GuiGraphicsExtractor graphics) {
         if (sidebar == null) return 0;
         graphics.fill(SidebarButton.SIZE, 0, SidebarButton.SIZE + Panel.WIDTH, SidebarButton.SIZE, SkinmaticsConfig.accentColor());
-        graphics.fill(SidebarButton.SIZE, 0, SidebarButton.SIZE + 1, SidebarButton.SIZE, SkinmaticsConfig.foregroundColor());
+        graphics.verticalLine(SidebarButton.SIZE, -1, SidebarButton.SIZE, SkinmaticsConfig.foregroundColor());
         GraphicsUtils.text(graphics, getComponent(), 0, 0, SidebarButton.SIZE + 5, GraphicsUtils.font().lineHeight / 2, SkinmaticsConfig.foregroundColor());
         return SidebarButton.SIZE;
     }
@@ -130,7 +155,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public boolean mouseDragged(@NonNull MouseButtonEvent event, double dx, double dy) {
-        if (inside(event.x(), event.y())) {
+        if (event.button() == 0 && inside(event.x(), event.y())) {
             increment(-dy);
             return true;
         }

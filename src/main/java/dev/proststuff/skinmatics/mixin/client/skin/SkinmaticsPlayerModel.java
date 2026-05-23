@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
-import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
 import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
 import net.minecraft.client.model.player.PlayerModel;

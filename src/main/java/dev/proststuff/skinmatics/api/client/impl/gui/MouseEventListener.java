@@ -1,0 +1,24 @@
+package dev.proststuff.skinmatics.api.client.impl.gui;
+
+import net.minecraft.client.input.MouseButtonEvent;
+import org.jspecify.annotations.NonNull;
+
+public interface MouseEventListener {
+    default boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
+        return false;
+    }
+
+    default void mouseMoved(double x, double y) {}
+
+    default boolean mouseDragged(@NonNull MouseButtonEvent event, double dx, double dy) {
+        return false;
+    }
+
+    default boolean mouseReleased(@NonNull MouseButtonEvent event) {
+        return false;
+    }
+
+    default boolean mouseScrolled(double x, double y, double scrollX, double scrollY) {
+        return false;
+    }
+}

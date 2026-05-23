@@ -4,10 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.api.Profile;
-import dev.proststuff.skinmatics.api.ProfileHandler;
-import dev.proststuff.skinmatics.api.ProfileRuntime;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.ProfileManager;
+import dev.proststuff.skinmatics.api.client.ProfileRuntime;
+import dev.proststuff.skinmatics.api.client.ProfileRuntimeManager;
 import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.skinmatics.client.model.EmissiveSkinFeatureRenderer;
 import dev.proststuff.skinmatics.client.model.EyeFeatureRenderer;
@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegist
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
@@ -84,7 +85,7 @@ public class SkinmaticsClientEvents {
 
         if (AvatarPreviewRenderer.PREVIEWER != null) {
             AvatarPreviewRenderer.PREVIEWER.tick();
-            ProfileRuntime runtime = ProfileHandler.getRuntime(AvatarPreviewRenderer.PREVIEWER.getUUID());
+            ProfileRuntime runtime = ProfileRuntimeManager.get(AvatarPreviewRenderer.PREVIEWER);
             if (runtime != null) {
                 runtime.tick(AvatarPreviewRenderer.PREVIEWER, AvatarPreviewRenderer.PREVIEWER.getRandom());
             }
@@ -92,7 +93,7 @@ public class SkinmaticsClientEvents {
             AvatarPreviewRenderer.PREVIEWER.tickCount ++;
 
             if (level == null) {
-                ProfileHandler.unassignProfile(AvatarPreviewRenderer.PREVIEWER);
+                ProfileManager.unassign(AvatarPreviewRenderer.PREVIEWER);
                 AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
                 AvatarPreviewRenderer.PREVIEWER = null;
             }
@@ -102,8 +103,8 @@ public class SkinmaticsClientEvents {
         if (level.tickRateManager().isFrozen()) return;
         RandomSource random = level.getRandom();
 
-        Map<String, Profile> profiles = ProfileHandler.getProfiles();
-        Map<UUID, Profile> assignedProfiles = ProfileHandler.getAssignedProfiles();
+        Map<String, Profile> profiles = ProfileManager.getAll();
+        Map<UUID, Profile> assignedProfiles = ProfileManager.getAllAssigned();
 
         for (Profile profile : profiles.values()) {
             if (profile.maxTicks.get() > 0 && assignedProfiles.containsValue(profile)) {
@@ -124,33 +125,31 @@ public class SkinmaticsClientEvents {
 
                 if (profile.showEyes.get()) {
                     if (living.isInvisible() || entityPosition.distSqr(clientPos) > (updateRange * updateRange)) continue;
-                    ProfileHandler.getRuntime(entity).tick(entity, random);
+                    ProfileRuntime runtime = ProfileRuntimeManager.get(entity);
+
+                    if (runtime != null) {
+                        runtime.tick(entity, random);
+                    }
                 }
             }
         }
 
         if (level.getGameTime() % 200 == 0) {
-            ProfileHandler.cleanUp(level);
+            ProfileManager.cleanUp(level);
         }
     }
 
     private static void joined(ClientPacketListener listener, PacketSender sender, Minecraft minecraft) {
-        ProfileHandler.walkProfiles();
-        ProfileHandler.loadProfiles();
-        ProfileHandler.loadCurrentProfile(minecraft.player);
+        ProfileManager.scanAndLoad();
     }
 
     private static void left(ClientPacketListener listener, Minecraft minecraft) {
-        ProfileHandler.clear();
+        ProfileManager.clear();
 
         if (AvatarPreviewRenderer.PREVIEWER != null) {
             AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
             AvatarPreviewRenderer.PREVIEWER = null;
         }
-    }
-
-    private static void registerKeybinds() {
-
     }
 
     private static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandBuildContext buildContext) {
@@ -165,12 +164,12 @@ public class SkinmaticsClientEvents {
                         .then(ClientCommands.literal("create")
                                 .then(ClientCommands.argument("profile", StringArgumentType.string())
                                         .executes(context -> {
-                                            String profileName = StringArgumentType.getString(context, "profile");
-                                            Profile profile = ProfileHandler.loadProfile(profileName);
+                                            String name = StringArgumentType.getString(context, "profile");
+                                            Profile profile = ProfileManager.load(name);
                                             profile.save();
 
                                             Util.getPlatform().openFile(profile.getDestination().toFile());
-                                            context.getSource().sendFeedback(Component.literal(String.format("Created %s profile (%s.json) ", profileName, profileName)));
+                                            context.getSource().sendFeedback(Component.literal(String.format("Created %s profile (%s.json) ", name, name)));
                                             return 1;
                                         })
                                 )
@@ -180,7 +179,7 @@ public class SkinmaticsClientEvents {
                                         .executes(context -> {
                                             String profileName = StringArgumentType.getString(context, "profile");
                                             SkinmaticsConfig.INSTANCE.profile.set(profileName);
-                                            ProfileHandler.loadCurrentProfile(context.getSource().getPlayer());
+                                            ProfileManager.loadCurrent(context.getSource().getPlayer());
                                             SkinmaticsConfig.INSTANCE.save();
                                             context.getSource().sendFeedback(Component.literal(String.format("Loaded %s profile to self", profileName)));
                                             return 1;
@@ -189,10 +188,8 @@ public class SkinmaticsClientEvents {
                         )
                         .then(ClientCommands.literal("reload")
                                 .executes(context -> {
-                                    ProfileHandler.walkProfiles();
-                                    ProfileHandler.loadProfiles();
-                                    ProfileHandler.loadCurrentProfile(context.getSource().getPlayer());
-                                    context.getSource().sendFeedback(Component.literal(String.format("Reloaded %s profiles", ProfileHandler.getProfiles().size())));
+                                    ProfileManager.scanAndLoad();
+                                    context.getSource().sendFeedback(Component.literal(String.format("Reloaded %s profiles", ProfileManager.getAll().size())));
                                     return 1;
                                 })
                         )
@@ -207,21 +204,21 @@ public class SkinmaticsClientEvents {
                                             }
 
                                             Entity entity = entityHitResult.getEntity();
-                                            String profileName = StringArgumentType.getString(context, "profile");
-                                            Profile profile = ProfileHandler.getProfile(profileName);
+                                            String name = StringArgumentType.getString(context, "profile");
+                                            Profile profile = ProfileManager.get(name);
 
                                             if (profile == null) {
-                                                context.getSource().sendError(Component.literal(String.format("Profile %s not found", profileName)));
+                                                context.getSource().sendError(Component.literal(String.format("Profile %s not found", name)));
                                                 return 0;
                                             }
 
-                                            Profile oldData = ProfileHandler.assignProfile(entity, profile);
+                                            Profile oldData = ProfileManager.assign(entity, profile);
                                             String entityName = entity.getName().getString();
 
                                             if (oldData == null) {
-                                                context.getSource().sendFeedback(Component.literal(String.format("Assigned %s to %s", profileName, entityName)));
+                                                context.getSource().sendFeedback(Component.literal(String.format("Assigned %s to %s", name, entityName)));
                                             } else {
-                                                context.getSource().sendFeedback(Component.literal(String.format("Assigned %s to %s, previously assigned to %s", profileName, entityName, oldData.getName())));
+                                                context.getSource().sendFeedback(Component.literal(String.format("Assigned %s to %s, previously assigned to %s", name, entityName, oldData.getName())));
                                             }
 
                                             return 1;
@@ -238,7 +235,7 @@ public class SkinmaticsClientEvents {
                                     }
 
                                     Entity entity = entityHitResult.getEntity();
-                                    Profile data = ProfileHandler.unassignProfile(entity);
+                                    Profile data = ProfileManager.unassign(entity);
 
                                     if (data != null) {
                                         context.getSource().sendFeedback(Component.literal(String.format("Removed %s from %s", data.getName(), entity.getName().getString())));
@@ -288,6 +285,15 @@ public class SkinmaticsClientEvents {
                                     Minecraft.getInstance().reloadResourcePacks().whenComplete((_, _) -> context.getSource().sendFeedback(Component.literal("Reloaded textures")));
                                     return 1;
                                 }))
+                )
+
+                .then(ClientCommands.literal("gui")
+                        .executes(context -> {
+                            Minecraft minecraft = context.getSource().getClient();
+                            Screen screen = minecraft.screen;
+                            minecraft.setScreen(SkinmaticsClient.openCustomizationScreen(screen));
+                            return 1;
+                        })
                 )
         );
     }

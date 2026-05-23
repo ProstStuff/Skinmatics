@@ -1,13 +1,13 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
-import dev.proststuff.skinmatics.api.impl.PlayerModelGetter;
-import dev.proststuff.skinmatics.api.impl.PlayerModelSetter;
-import dev.proststuff.skinmatics.api.impl.ProfileHolder;
-import dev.proststuff.skinmatics.api.Profile;
-import dev.proststuff.skinmatics.api.ProfileData;
-import dev.proststuff.skinmatics.api.ProfileHandler;
+import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.ProfileData;
+import dev.proststuff.skinmatics.api.client.ProfileManager;
+import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.client.impl.PlayerModelGetter;
+import dev.proststuff.skinmatics.api.client.impl.PlayerModelSetter;
+import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -56,11 +56,11 @@ public class SkinmaticsAvatarRenderer implements ProfileHolder, PlayerModelGette
             ((EntityPreviewer) state).skinmatics$preview();
         }
 
-        Profile profile = ProfileHandler.getAssignedProfile(entity);
+        Profile profile = ProfileManager.getAssigned(entity);
         LocalPlayer localPlayer = Minecraft.getInstance().player;
 
         if (localPlayer != null && entity.is(localPlayer)) {
-            profile = ProfileHandler.getCurrentProfile();
+            profile = ProfileManager.getCurrent();
         }
 
         ((ProfileHolder) state).skinmatics$setProfile(profile);
@@ -82,7 +82,9 @@ public class SkinmaticsAvatarRenderer implements ProfileHolder, PlayerModelGette
 
     @ModifyArg(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModelPart(Lnet/minecraft/client/model/geom/ModelPart;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"), index = 2)
     public RenderType skinmatics$switchHandTexture(RenderType defaultRenderType) {
-        ProfileData data = skinmatics$profile != null ? skinmatics$profile.data : ProfileHandler.getCurrentProfileData();
+        Profile current = ProfileManager.getCurrent();
+        ProfileData currentData = current != null ? current.data : null;
+        ProfileData data = skinmatics$profile != null ? skinmatics$profile.data : currentData;
 
         if (data != null) {
             Identifier texture = data.getSkin(false);
@@ -97,7 +99,9 @@ public class SkinmaticsAvatarRenderer implements ProfileHolder, PlayerModelGette
 
     @Inject(method = "renderHand", at = @At("TAIL"))
     public void skinmatics$renderEmissiveHand(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, Identifier skinTexture, net.minecraft.client.model.geom.ModelPart arm, boolean hasSleeve, CallbackInfo ci) {
-        ProfileData data = skinmatics$profile != null ? skinmatics$profile.data : ProfileHandler.getCurrentProfileData();
+        Profile current = ProfileManager.getCurrent();
+        ProfileData currentData = current != null ? current.data : null;
+        ProfileData data = skinmatics$profile != null ? skinmatics$profile.data : currentData;
 
         if (data != null) {
             Identifier texture = data.getSkin(true);

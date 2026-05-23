@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics;
 
 import dev.proststuff.skinmatics.client.SkinmaticsClientEvents;
 import dev.proststuff.skinmatics.client.SkinmaticsTextureManager;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.CustomizationScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screens.Screen;

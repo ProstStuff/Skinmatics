@@ -2,15 +2,15 @@ package dev.proststuff.skinmatics.client.gui.element.avatar;
 
 import com.mojang.authlib.GameProfile;
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.api.Profile;
-import dev.proststuff.skinmatics.api.ProfileHandler;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
-import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
-import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.ProfileManager;
+import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
+import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.Sidebar;
-import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -34,7 +34,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.UUID;
 
 public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEventListener {
-    public static final float TORSO_HEIGHT = 1.125F;
+    public static final float ANCHOR_HEIGHT = 1.125F;
     public static RemotePlayer PREVIEWER;
     public static Profile PROFILE_PREVIEW = null;
 
@@ -45,7 +45,7 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
     protected double yaw = 0;
     protected double offsetX = 0;
     protected double offsetY = 0;
-    protected double scale = 64.0;
+    protected double scale = 64;
 
     protected boolean rotationDragging = false;
     protected boolean positionDragging = false;
@@ -66,7 +66,7 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         PREVIEWER.setUUID(UUID.randomUUID());
 
         if (PROFILE_PREVIEW == null) {
-            PROFILE_PREVIEW = ProfileHandler.getCurrentProfile();
+            PROFILE_PREVIEW = ProfileManager.getCurrent();
         }
 
         changeProfile(PROFILE_PREVIEW);
@@ -86,7 +86,7 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         PROFILE_PREVIEW = profile;
 
         if (PREVIEWER != null) {
-            ProfileHandler.assignProfile(PREVIEWER, profile);
+            ProfileManager.assign(PREVIEWER, profile);
         }
     }
 
@@ -204,7 +204,7 @@ public class AvatarPreviewRenderer extends AbstractRenderable implements MouseEv
         Quaternionf rotation = new Quaternionf()
                 .rotateY((float) Math.toRadians(yaw))
                 .rotateX((float) (Math.toRadians(pitch) + Math.PI));
-        Vector3f translation = new Vector3f(0, -TORSO_HEIGHT, 0)
+        Vector3f translation = new Vector3f(0, -ANCHOR_HEIGHT, 0)
                 .rotate(rotation)
                 .add((float) offsetX, (float) (offsetY), 0);
 

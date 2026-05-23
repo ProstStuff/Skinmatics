@@ -1,10 +1,11 @@
 package dev.proststuff.skinmatics.client.gui.element.avatar;
 
 import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.ProfileManager;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
-import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
-import dev.proststuff.skinmatics.api.ProfileHandler;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -50,7 +51,8 @@ public class AvatarMinimap extends AbstractRenderable implements MouseEventListe
     }
 
     public boolean isSlim() {
-        return ProfileHandler.getCurrentProfile() != null ? ProfileHandler.getCurrentProfile().slim.get() : false;
+        Profile current = ProfileManager.getCurrent();
+        return current != null ? current.slim.get() : false;
     }
 
     public boolean isFocused(BodyPart part) {

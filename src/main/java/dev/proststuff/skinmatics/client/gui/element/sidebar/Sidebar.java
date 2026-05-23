@@ -1,14 +1,14 @@
 package dev.proststuff.skinmatics.client.gui.element.sidebar;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
-import dev.proststuff.skinmatics.api.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
+import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
-import dev.proststuff.skinmatics.client.gui.element.panel.HomePanel;
+import dev.proststuff.skinmatics.client.gui.element.panel.home.HomePanel;
 import dev.proststuff.skinmatics.client.gui.element.panel.ProfilesPanel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
-import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import org.jspecify.annotations.NonNull;

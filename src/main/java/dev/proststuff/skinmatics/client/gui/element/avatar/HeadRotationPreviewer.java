@@ -1,9 +1,9 @@
 package dev.proststuff.skinmatics.client.gui.element.avatar;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.api.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
-import dev.proststuff.skinmatics.client.gui.impl.MouseEventListener;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.util.Mth;

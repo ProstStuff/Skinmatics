@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.mixin.client;
 
-import dev.proststuff.skinmatics.api.impl.EntityPreviewer;
+import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
 import net.minecraft.client.player.RemotePlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
