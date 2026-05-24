@@ -46,6 +46,12 @@ public class SimpleButton extends AbstractRenderable implements MouseEventListen
         return hovered == this;
     }
 
+    public void checkHover(double x, double y) {
+        if (inside(x, y)) {
+            hover();
+        }
+    }
+
     @Override
     public int getWidth() {
         return SIZE;
@@ -58,9 +64,7 @@ public class SimpleButton extends AbstractRenderable implements MouseEventListen
 
     @Override
     public void mouseMoved(double x, double y) {
-        if (inside(x, y)) {
-            hover();
-        }
+        checkHover(x, y);
     }
 
     @Override

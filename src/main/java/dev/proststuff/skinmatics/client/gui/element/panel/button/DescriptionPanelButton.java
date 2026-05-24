@@ -7,18 +7,25 @@ import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jspecify.annotations.NonNull;
+
+import java.util.function.Supplier;
 
 public class DescriptionPanelButton extends PanelButton {
     public DescriptionPanelButton(SimpleIdentifier identifier) {
         super(identifier);
     }
 
+    public DescriptionPanelButton(SimpleIdentifier identifier, Supplier<MutableComponent> componentSupplier) {
+        super(identifier, componentSupplier);
+    }
+
     @Override
     public int getHeight() {
         Component component = getComponent();
         Font font = GraphicsUtils.font();
-        return Math.max(16, font.wordWrapHeight(component, Panel.WIDTH - 8)) + 8;
+        return Math.max(16, font.wordWrapHeight(component, Panel.WIDTH - 8) + 8);
     }
 
     @Override

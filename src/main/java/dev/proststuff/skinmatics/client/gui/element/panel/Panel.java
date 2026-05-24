@@ -62,7 +62,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
     public int getHeightContents() {
         int height = sidebar != null ? SidebarButton.SIZE : 0;
 
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             height += button.getHeight();
         }
 
@@ -100,6 +100,10 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
         renderButtons(graphics, mouseX, mouseY, tickDelta, renderTitleBar(graphics));
     }
 
+    public List<? extends PanelButton> getButtons() {
+        return buttons;
+    }
+
     public void renderButtons(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta, int startY) {
         int viewportTop = y;
         int viewportBottom = y + getHeight();
@@ -108,7 +112,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
         int currentY = startY - (int) scrollingPosition;
 
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             int buttonTop = currentY;
             int buttonBottom = currentY + button.getHeight();
             boolean visible = buttonBottom >= viewportTop && buttonTop <= viewportBottom;
@@ -139,7 +143,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
             return true;
         }
 
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             button.mouseScrolled(x, y, scrollX, scrollY);
         }
 
@@ -153,7 +157,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
             return true;
         }
 
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.mouseDragged(event, dx, dy)) {
                 return true;
             }
@@ -164,7 +168,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.mouseClicked(event, doubleClick)) {
                 return true;
             }
@@ -175,7 +179,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public boolean mouseReleased(@NonNull MouseButtonEvent event) {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.mouseReleased(event)) {
                 return true;
             }
@@ -186,14 +190,14 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public void mouseMoved(double x, double y) {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             button.mouseMoved(x, y);
         }
     }
 
     @Override
     public boolean keyPressed(@NonNull KeyEvent event) {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.keyPressed(event)) {
                 return true;
             }
@@ -204,7 +208,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public boolean keyReleased(@NonNull KeyEvent event) {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.keyReleased(event)) {
                 return true;
             }
@@ -215,7 +219,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public boolean charTyped(@NonNull CharacterEvent event) {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.charTyped(event)) {
                 return true;
             }
@@ -225,7 +229,7 @@ public abstract class Panel extends AbstractRenderable implements MouseEventList
 
     @Override
     public boolean onClose() {
-        for (PanelButton button : buttons) {
+        for (PanelButton button : getButtons()) {
             if (button.onClose()) {
                 return true;
             }

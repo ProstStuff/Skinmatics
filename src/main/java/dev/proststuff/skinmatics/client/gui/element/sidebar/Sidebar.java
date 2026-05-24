@@ -7,6 +7,7 @@ import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.home.HomePanel;
 import dev.proststuff.skinmatics.client.gui.element.panel.profiles.ProfilesPanel;
+import dev.proststuff.skinmatics.client.gui.element.panel.textures.TexturesPanel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
 import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -33,7 +34,7 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
         addButton(new SidebarButton(Skinmatics.ofSimple("wings"), SkinmaticsAssets.WINGS, false));
 
         addButton(new SidebarButton(Skinmatics.ofSimple("profiles"), SkinmaticsAssets.PROFILES, new ProfilesPanel(), true));
-        addButton(new SidebarButton(Skinmatics.ofSimple("textures"), SkinmaticsAssets.TEXTURES, true));
+        addButton(new SidebarButton(Skinmatics.ofSimple("textures"), SkinmaticsAssets.TEXTURES, new TexturesPanel(), true));
         addButton(new SidebarButton(Skinmatics.ofSimple("directory"), SkinmaticsAssets.DIRECTORY, true));
     }
 
