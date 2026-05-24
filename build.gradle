@@ -37,7 +37,7 @@ dependencies {
 	runtimeOnly "maven.modrinth:iris:${iris_version}"
 	runtimeOnly "maven.modrinth:immediatelyfast:${immediately_fast_version}"
 
-	//runtimeOnly "maven.modrinth:flashback:${flashback_version}"
+	runtimeOnly "maven.modrinth:flashback:${flashback_version}"
 }
 
 processResources {

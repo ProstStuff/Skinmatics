@@ -11,15 +11,22 @@ import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import java.nio.file.Path;
+import java.util.function.Supplier;
+
 public class SidebarButton extends SimpleButton {
     protected static @Nullable SidebarButton focused = null;
 
     protected final boolean bottom;
     protected final @Nullable Panel panel;
+    protected final @Nullable Supplier<Path> path;
+    protected final @Nullable OnClick onClick;
 
     public SidebarButton(SimpleIdentifier identifier, Identifier texture, @Nullable Panel panel, boolean bottom) {
         super(identifier, texture);
         this.panel = panel;
+        this.path = null;
+        this.onClick = null;
         this.bottom = bottom;
 
         if (panel != null) {
@@ -27,8 +34,28 @@ public class SidebarButton extends SimpleButton {
         }
     }
 
+    public SidebarButton(SimpleIdentifier identifier, Identifier texture, @Nullable Supplier<Path> path, boolean bottom) {
+        super(identifier, texture);
+        this.panel = null;
+        this.path = path;
+        this.onClick = null;
+        this.bottom = bottom;
+    }
+
+    public SidebarButton(SimpleIdentifier identifier, Identifier texture, @Nullable OnClick onClick, boolean bottom) {
+        super(identifier, texture);
+        this.panel = null;
+        this.path = null;
+        this.onClick = onClick;
+        this.bottom = bottom;
+    }
+
     public SidebarButton(SimpleIdentifier identifier, Identifier texture, boolean bottom) {
-        this(identifier, texture, null, bottom);
+        super(identifier, texture);
+        this.panel = null;
+        this.path = null;
+        this.onClick = null;
+        this.bottom = bottom;
     }
 
     public boolean isFocused() {
@@ -37,6 +64,10 @@ public class SidebarButton extends SimpleButton {
 
     public void focus() {
         focused = this;
+    }
+
+    public @Nullable Supplier<Path> getPath() {
+        return path;
     }
 
     public @Nullable Panel getPanel() {
@@ -61,7 +92,7 @@ public class SidebarButton extends SimpleButton {
 
     @Override
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
-        return event.button() == 0 && inside(event.x(), event.y());
+        return event.button() == 0 && inside(event.x(), event.y()) && (onClick == null || onClick.onClick(this));
     }
 
     public static @Nullable SidebarButton getFocused() {
@@ -81,5 +112,9 @@ public class SidebarButton extends SimpleButton {
     public static void reset() {
         unfocus();
         unhover();
+    }
+
+    public interface OnClick {
+        boolean onClick(SidebarButton button);
     }
 }

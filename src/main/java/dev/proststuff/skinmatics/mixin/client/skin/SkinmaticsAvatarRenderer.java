@@ -67,6 +67,8 @@ public class SkinmaticsAvatarRenderer implements ProfileHolder, PlayerModelGette
         PlayerModelSetter modelSetter = (PlayerModelSetter) state;
         modelSetter.skinmatics$setWide(skinmatics$getWide());
         modelSetter.skinmatics$setSlim(skinmatics$getSlim());
+
+        skinmatics$setProfile(profile);
     }
 
     @Inject(method = "getTextureLocation(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/resources/Identifier;", at = @At("RETURN"), cancellable = true)

@@ -23,9 +23,7 @@ public class AvatarModelSwapper {
 
     @Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At("HEAD"))
     public void skinmatics$changePlayerModel(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-        LivingEntityRenderer<?, ?, ?> livingEntityRenderer = (LivingEntityRenderer<?, ?, ?>) (Object) this;
-
-        if (livingEntityRenderer instanceof ProfileHolder holder && livingEntityRenderer instanceof PlayerModelGetter modelHolder) {
+        if (state instanceof ProfileHolder holder && state instanceof PlayerModelGetter modelHolder) {
             Profile profile = holder.skinmatics$getProfile();
 
             if (profile != null) {

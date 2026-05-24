@@ -1,20 +1,25 @@
 package dev.proststuff.skinmatics.client.gui.element.sidebar;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.client.SkinmaticsConfig;
+import dev.proststuff.skinmatics.SkinmaticsClient;
+import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
 import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.home.HomePanel;
 import dev.proststuff.skinmatics.client.gui.element.panel.profiles.ProfilesPanel;
 import dev.proststuff.skinmatics.client.gui.element.panel.textures.TexturesPanel;
 import dev.proststuff.skinmatics.client.gui.element.sidebar.button.SidebarButton;
-import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
+import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.util.Util;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +40,12 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
 
         addButton(new SidebarButton(Skinmatics.ofSimple("profiles"), SkinmaticsAssets.PROFILES, new ProfilesPanel(), true));
         addButton(new SidebarButton(Skinmatics.ofSimple("textures"), SkinmaticsAssets.TEXTURES, new TexturesPanel(), true));
-        addButton(new SidebarButton(Skinmatics.ofSimple("directory"), SkinmaticsAssets.DIRECTORY, true));
+        addButton(new SidebarButton(Skinmatics.ofSimple("reload"), SkinmaticsAssets.RELOAD, (_) -> {
+            SkinmaticsClient.TEXTURE_MANAGER.reload();
+            TexturesPanel.RESCAN = true;
+            return true;
+        }, true));
+        addButton(new SidebarButton(Skinmatics.ofSimple("directory"), SkinmaticsAssets.DIRECTORY, () -> FileJsonUtils.getConfigPath().resolve(Skinmatics.ID), true));
     }
 
     public @Nullable SidebarButton getFocused() {
@@ -106,14 +116,36 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
         if (event.button() == 0) {
             for (SidebarButton button : topButtons) {
                 if (button.mouseClicked(event, doubleClick)) {
-                    button.focus();
+                    if (button.getPath() != null) {
+                        Path path = button.getPath().get();
+                        File file = path.toFile();
+
+                        if (file.isFile()) {
+                            Util.getPlatform().openFile(file);
+                        } else {
+                            Util.getPlatform().openPath(path);
+                        }
+                    } else if (button.getPanel() != null) {
+                        button.focus();
+                    }
                     return true;
                 }
             }
 
             for (SidebarButton button : bottomButtons) {
                 if (button.mouseClicked(event, doubleClick)) {
-                    button.focus();
+                    if (button.getPath() != null) {
+                        Path path = button.getPath().get();
+                        File file = path.toFile();
+
+                        if (file.isFile()) {
+                            Util.getPlatform().openFile(file);
+                        } else {
+                            Util.getPlatform().openPath(path);
+                        }
+                    } else if (button.getPanel() != null) {
+                        button.focus();
+                    }
                     return true;
                 }
             }

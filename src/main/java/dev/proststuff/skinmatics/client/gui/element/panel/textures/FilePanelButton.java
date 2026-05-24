@@ -92,6 +92,8 @@ public class FilePanelButton extends DescriptionPanelButton {
         if (event.button() == 0 && inside(event.x(), event.y())) {
             if (!isFile()) {
                 if (FOCUSED == this) {
+                    FOCUSED = null;
+
                     if (isReturn() && parent != null) {
                         TO_RENDER = parent;
                     } else {
@@ -105,6 +107,11 @@ public class FilePanelButton extends DescriptionPanelButton {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean isHovered() {
+        return FOCUSED == this || super.isHovered();
     }
 
     @Override
