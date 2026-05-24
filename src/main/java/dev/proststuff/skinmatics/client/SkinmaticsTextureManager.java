@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class SkinmaticsTextureManager {
+    public static final SkinmaticsTextureManager INSTANCE = new SkinmaticsTextureManager();
     private final Map<Identifier, TextureData> loaded = new LinkedHashMap<>();
 
     public TextureManager textureManager() {

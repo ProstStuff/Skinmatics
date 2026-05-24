@@ -3,9 +3,9 @@ package dev.proststuff.skinmatics.api.client;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.api.config.field.AnimatableConfigField;
 import dev.proststuff.skinmatics.api.client.render.SkinmaticsRenderTypes;
+import dev.proststuff.skinmatics.api.config.field.AnimatableConfigField;
+import dev.proststuff.skinmatics.client.SkinmaticsTextureManager;
 import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
 import dev.proststuff.utilitary.api.config.ConfigFile;
 import dev.proststuff.utilitary.api.config.field.ConfigGroup;
@@ -150,7 +150,7 @@ public class Profile extends ConfigFile {
 
     private static void iterate(AnimatableConfigField configField, TreeMap<Integer, Identifier> storage) {
         for (Map.Entry<String, List<Integer>> entry : configField.get().textures().entrySet()) {
-            Identifier id = SkinmaticsClient.TEXTURE_MANAGER.resolve(entry.getKey()).textureIdentifier().identifier();
+            Identifier id = SkinmaticsTextureManager.INSTANCE.resolve(entry.getKey()).textureIdentifier().identifier();
 
             if (id != null && id != MissingTextureAtlasSprite.getLocation()) {
                 for (Integer i : entry.getValue()) {

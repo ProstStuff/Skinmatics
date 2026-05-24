@@ -21,7 +21,7 @@
     "client.skin.SkinmaticsAvatarRenderer",
     "client.skin.SkinmaticsAvatarRenderState",
     "client.skin.SkinmaticsPlayerModel",
-    "client.ui.AddSkinmaticsButtonToSkinCustomization",
+    "client.ui.AddSkinmaticsButton",
     "client.ui.PreviewArmorHider",
     "client.ui.PreviewElytraHider"
   ]

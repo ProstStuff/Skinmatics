@@ -6,7 +6,7 @@ import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
 import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
-import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.api.client.texture.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;

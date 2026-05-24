@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(SkinCustomizationScreen.class)
-public abstract class AddSkinmaticsButtonToSkinCustomization extends OptionsSubScreen {
-    public AddSkinmaticsButtonToSkinCustomization(Screen parent, Options gameOptions, Component title) {
+public abstract class AddSkinmaticsButton extends OptionsSubScreen {
+    public AddSkinmaticsButton(Screen parent, Options gameOptions, Component title) {
         super(parent, gameOptions, title);
     }
 

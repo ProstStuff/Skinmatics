@@ -39,6 +39,6 @@ public abstract class ConfigFieldPanelButton<V> extends PanelButton {
 
     public void renderConfigName(GuiGraphicsExtractor graphics) {
         Font font = GraphicsUtils.font();
-        graphics.textWithWordWrap(font, getComponent(), x + 4, y + 8 - GraphicsUtils.font().lineHeight / 2, getWidth() / 2, SkinmaticsConfig.foregroundColor());
+        graphics.textWithWordWrap(font, getComponent(), x + 4, y + 8 - font.lineHeight / 2, getWidth() / 2, SkinmaticsConfig.foregroundColor());
     }
 }

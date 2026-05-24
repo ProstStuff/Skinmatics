@@ -1,10 +1,10 @@
 package dev.proststuff.skinmatics.client.gui.element.sidebar;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.api.client.impl.gui.MouseEventListener;
-import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.api.client.texture.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsTextureManager;
 import dev.proststuff.skinmatics.client.gui.element.AbstractRenderable;
 import dev.proststuff.skinmatics.client.gui.element.SimpleButton;
 import dev.proststuff.skinmatics.client.gui.element.panel.home.HomePanel;
@@ -41,7 +41,7 @@ public class Sidebar extends AbstractRenderable implements MouseEventListener {
         addButton(new SidebarButton(Skinmatics.ofSimple("profiles"), SkinmaticsAssets.PROFILES, new ProfilesPanel(), true));
         addButton(new SidebarButton(Skinmatics.ofSimple("textures"), SkinmaticsAssets.TEXTURES, new TexturesPanel(), true));
         addButton(new SidebarButton(Skinmatics.ofSimple("reload"), SkinmaticsAssets.RELOAD, (_) -> {
-            SkinmaticsClient.TEXTURE_MANAGER.reload();
+            SkinmaticsTextureManager.INSTANCE.reload();
             TexturesPanel.RESCAN = true;
             return true;
         }, true));

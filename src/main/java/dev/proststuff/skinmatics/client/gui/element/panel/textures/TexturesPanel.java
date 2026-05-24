@@ -4,8 +4,9 @@ import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.api.client.impl.gui.FileEventListener;
 import dev.proststuff.skinmatics.api.client.texture.TextureData;
-import dev.proststuff.skinmatics.api.client.utility.SkinmaticsAssets;
+import dev.proststuff.skinmatics.api.client.texture.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.SkinmaticsTextureManager;
 import dev.proststuff.skinmatics.client.gui.element.panel.Panel;
 import dev.proststuff.skinmatics.client.gui.element.panel.button.PanelButton;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
@@ -34,11 +35,11 @@ public class TexturesPanel extends Panel implements FileEventListener {
 
     public void scan() {
         FilePanelButton.TO_RENDER = root;
-        SkinmaticsClient.TEXTURE_MANAGER.reload();
+        SkinmaticsTextureManager.INSTANCE.reload();
 
         root.clear();
 
-        for (Map.Entry<Identifier, TextureData> textureEntry : SkinmaticsClient.TEXTURE_MANAGER.textures().entrySet()) {
+        for (Map.Entry<Identifier, TextureData> textureEntry : SkinmaticsTextureManager.INSTANCE.textures().entrySet()) {
             TextureData textureData = textureEntry.getValue();
             String[] path = textureData.texturePath().split("/");
 

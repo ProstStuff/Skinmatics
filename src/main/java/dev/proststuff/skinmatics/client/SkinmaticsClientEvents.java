@@ -67,13 +67,12 @@ public class SkinmaticsClientEvents {
     }
 
     private static CompletableFuture<Void> onResourceReload(PreparableReloadListener.SharedState sharedState, Executor executor, PreparableReloadListener.PreparationBarrier preparationBarrier, Executor applyExecutor) {
-        return CompletableFuture.completedFuture(null).thenCompose(preparationBarrier::wait).thenRunAsync(() -> SkinmaticsClient.TEXTURE_MANAGER.reload(), applyExecutor);
+        return CompletableFuture.completedFuture(null).thenCompose(preparationBarrier::wait).thenRunAsync(SkinmaticsTextureManager.INSTANCE::reload, applyExecutor);
     }
 
     private static void clientInitialized(Minecraft minecraft) {
-        SkinmaticsClient.CONFIG.load();
-        SkinmaticsClient.TEXTURE_MANAGER = new SkinmaticsTextureManager();
-        SkinmaticsClient.CONFIG.save();
+        SkinmaticsConfig.INSTANCE.load();
+        SkinmaticsConfig.INSTANCE.save();
     }
 
     @SuppressWarnings("unchecked")
