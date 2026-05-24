@@ -20,7 +20,7 @@ public class SkinmaticsConfig extends ConfigFile {
     public final IntegerConfigField updateRange = new IntegerConfigField("updateRange", 64).clamp(1, Integer.MAX_VALUE);
     public final ColorConfigField backgroundColor = new ColorConfigField("backgroundColor", 0xFF000000);
     public final ColorConfigField foregroundColor = new ColorConfigField("foregroundColor", 0xFFFFFFFF);
-    public final ColorConfigField accentColor = new ColorConfigField("accentColor", 0xFF3948CC);
+    public final ColorConfigField accentColor = new ColorConfigField("accentColor", 0xE88A36);
     public final MapConfigField<String> autoAssign = new MapConfigField<>("autoAssign", new LinkedHashMap<>(), ConfigCodecs.STRING);
     //public final IntegerConfigField gridSize = new IntegerConfigField("gridSize", 8).clamp(1, Integer.MAX_VALUE);
     //public final ColorConfigField primaryGridColor = new ColorConfigField("primaryGridColor", 0xFF808080);

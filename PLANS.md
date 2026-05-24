@@ -1,2 +1,0 @@
-- Dynamic eye state
-- Server-side syncing

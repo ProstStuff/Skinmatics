@@ -1,160 +1,105 @@
-# Skinmatics
-A versatile yet minimal player customization mod. Vanilla-friendly!
+<p align="center">
+  <img src="assets/sprite/skinmatics_high_res.png" width="512" alt="Skinmatics">
+</p>
+
+<h3 align="center">
+  A versatile yet minimal player customization mod.
+</h3>
 
 ---
 
-## About
-Want custom animated skins? emissive (glowing) skins? and maybe even animated and reactive eyes?
+## What is Skinmatics?
+Skinmatics is a versatile yet minimal player customization mod.
+Skinmatics adds cosmetic features to your player character without
+replacing the entire model.
 
-Skinmatics gives you just that.
-Adding customization to existing aspect of the game without overriding it, while staying relatively vanilla-friendly
+### What does Skinmatics provide?
+Skinmatics allow the player character to customize their character, especially the textures.
 
-[Utilitary](https://modrinth.com/mod/skinmatics) is required to use this mod
+Skinmatics mainly adds dynamic eyes to your character
+so your character appears more lively and natural.
 
-## Features
+![Eyes](assets/eyes.gif)
 
-- Skin
+Additionally, Skinmatics adds a bunch of emissive (glowing) features such as
 
-  ![Image](assets/emissive_skin.jpg)
-  ![Image](assets/emissive_hand.jpg)
-- Cape
-  
-  ![Image](assets/cape.gif)
-- Elytra
+#### Skin
+![Image](assets/emissive_custom_elytra.png)
 
-  ![Image](assets/elytra.gif)
-  > *Yes, they looked goofy since the wings are mirrored.*
-- Eyes
+Extras: Minecraft account skin* can now be transparent
 
-  ![Image](assets/herobrine.png)
-  ![Image](assets/eyes.gif)
+*Skinmatics does not sync your skin to your Minecraft account and will never be.
 
-Note: The mod does not come with pre-made textures, players must create their own textures to use these features
+#### Elytra
 
----
+![Image](assets/cape.gif)
+![Image](assets/elytra.gif)
 
-## Documentation
-Currently, the editor screen for the mod is still a work-in-progress, and only serves as a shortcut to open files.
-To open it, open `Options` > `Skin Customizations` > `Skinmatics...` or from Mod Menu
+#### Eyes
+![Image](assets/herobrine.png)
 
-You can change your profile in the config (`config/skinmatics/config.json` > `profile`).
-Textures are stored in `config/skinmatics/textures`.
-
-You can safely ignore the config's `"identity"` field in the config, it serves as an identification for Utilitary to load the config file.
-
-Alternatively, you can use commands:
-
-- `/skinmatics profile`
-  - `/skinmatics profile open` opens `config/skinmatics/profiles` directory
-  - `/skinmatics profile create <profile>` creates and opens a new profile with the <profile> as the name
-  - `/skinmatics profile load <profile>` loads a profile to your player character
-  - `/skinmatics profile reload` reloads/loads all profiles in `config/skinmatics/profiles`
-  - `/skinmatics profile assign <profile>` assign an entity with the profile, must look at an entity to assign. You can assign this to a mannequin entity to preview your profile
-  - `/skinmatics profile unassign` unassigns an entity with the profile (if they have one). You must look at an entity to unassign
-- `/skinmatics config`
-  - `/skinmatics config open` opens `config/skinmatics/config.json`
-  - `/skinmatics config reload` reloads Skinmatics config
-- `/skinmatics texture`
-  - `/skinmatics texture open` opens `config/skinmatics/textures` directory
-  - `/skinmatics texture reload` reloads/loads all textures (the same as F3 + T)
-- `/skinmatics documentation` opens Skinmatics Github page
-
-<details>
-<summary>Profile (In JSON)</summary>
-
-You can use Notepad or any other JSON file manipulation app to modify this
-
-```json
-{
-  "identity": "skinmatics:profiles/<profile>", // Change <profile> to your profile file name, this is Utilitary way of loading config files
-  "enabled": true, // Wheter this Skinmatics profile is enabled
-  "maxTicks": 0, // In ticks, numbers above 0 will tick your skin, resulting in an animated texture. The amount of ticks to do a texture change is maxTicks - 1
-  "strongerEmissiveGlow": false, // Use the same rendering method as spider eyes (glow in the dark and not affected by light)
-  "useCustomSkin": false, // Use the profile's skin texture instead of your Minecraft account skin texture
-  "addEmissiveSkin": false, // Add emissive layers to your skin
-  "showCape": true, // Show cape texture, elytra cape texture included
-  "useCustomCape": false, // Use custom cape texture, elytra cape texture affected if not using custom elytra texture
-  "addEmissiveCape": false, // Add emissive layer to your cape
-  "useCustomElytra": false, // Use custom elytra texture
-  "addEmissiveElytra": false, // Add emissive layer to your elytra
-  "showEyes": false, // Show eyes
-  "addEmissiveEyes": false, // Add emissive eyes to your skin (if showEyes is true)
-  "rightEyeHidden": false, // Hide your right eye
-  "leftEyeHidden": false, // Hide your left eye
-  "blinkingChance": 48, // Chance to blink for every tick
-  "holdBlinkingFor": 4, // How many tick it took to blink
-  
-  // These fields use the same format
-  // "<Image Path>": [<Ticks>]
-  // <Image Path> refers to the image texture, can be from the game resource packs (minecraft:textures/...) or imported from `config/skinmatics/textures`
-  // [<Ticks>] refers to the tick time for the texture to switch
-  "skin": {
-    // Example (if maxTicks is 20, textures can be changed between 0-19)
-    "skin/my_skin": [5, 15] // Use this texture at tick 5 and 15 (if no textures start at tick 0, then it will use the end tick's texture). This texture file path is config/skinmatics/textures/skin/my_skin.png
-    "minecraft:textures/entity/player/wide/steve": [10, 19] // Switch to this texture at tick 10 and 19 (and use this texture at tick 0-4 since there's no texture at tick 0)
-  },
-  "emissiveSkin": {},
-  "cape": {},
-  "emissiveCape": {},
-  "elytra": {},
-  "emissiveElytra": {},
-  "rightEye": {
-    "closed": {},
-    "front": {},
-    "up": {},
-    "down": {},
-    "right": {},
-    "rightUp": {},
-    "rightDown": {},
-    "left": {},
-    "leftUp": {},
-    "leftDown": {}
-  },
-  "leftEye": {
-    "closed": {},
-    "front": {},
-    "up": {},
-    "down": {},
-    "right": {},
-    "rightUp": {},
-    "rightDown": {},
-    "left": {},
-    "leftUp": {},
-    "leftDown": {}
-  },
-  "emissiveRightEye": {
-    "closed": {},
-    "front": {},
-    "up": {},
-    "down": {},
-    "right": {},
-    "rightUp": {},
-    "rightDown": {},
-    "left": {},
-    "leftUp": {},
-    "leftDown": {}
-  },
-  "emissiveLeftEye": {
-    "closed": {},
-    "front": {},
-    "up": {},
-    "down": {},
-    "right": {},
-    "rightUp": {},
-    "rightDown": {},
-    "left": {},
-    "leftUp": {},
-    "leftDown": {}
-  }
-}
-```
-</details>
+There will be more customization features in the near future
 
 ---
 
-## Incompatibilities
+## How do I use Skinmatics?
 
-There are currently no known incompatibilities with other mods.
+---
 
-## Contributing
-The project does not accept any other contribution outside the project's team (which is currently 2 people).
+## What is the goal of Skinmatics?
+Skinmatics aims to be not just a regular cosmetic mod,
+but allowing players to have freedom to express themselves
+through their Minecraft character,
+making the characters to be more lively than ever before.
+
+### We have design rules
+
+We have enforced our design rules to be as vanilla-as-possible, meaning:
+- We will not add 3D-geometry models that is not cube or plane
+- We will not fully replace vanilla models
+- We will not add custom animations
+- We will not add something that is high-resolution
+> Also because of difficulty with adding all of these, please don't ask us to make these.
+- We will try making Skinmatics to have the most compatibility with other mods
+- We use our creativity to find workarounds to make a feature possible
+
+These design rule can be ignored if we separate the contents as addon to Skinmatics.
+
+> You mod developers don't need to follow these rules...
+
+### What will be added to Skinmatics?
+Our plans for Skinmatics keep adding as times goes on,
+we may also get community ideas that we liked and fit with Skinmatics design-rule to add it in the future
+
+- Player Head block supporting Skinmatics features
+- Keybinds to toggle/switch eyes expressions
+- Custom eye expressions
+- Addon support
+- Halo (a crown of light rays, circle or disk of light) (possibly as an addon)
+- Mouth (possibly as an addon)
+- Ears (possibly as an addon)
+- Tail (possibly as an addon)
+- Additional features/supports with other mods
+- Replacing elytra model to have different texture for each wings instead of one texture for both wings (if possible)
+- Eye tracking (if possible)
+
+### Will Skinmatics be ported to Forge / NeoForge / other loaders?
+No, Skinmatics have no development plan for porting to other mod loaders as of now.
+However, we might consider community-driven ports.
+
+### Will Skinmatics be backported to Minecraft version below 26.1?
+No, Skinmatics have no development plan for backporting the mod as of now.
+Even though the mod first developed at 1.21.11,
+we figured 26.1 and above is the optimal version to develop Skinmatics.
+
+Minecraft prior to 26.1 is inconsistent with their sematic version,
+making it difficult to differentiate changes to their code,
+we might encounter essential code that never exists in older version.
+
+## Can I contribute to Skinmatics?
+Skinmatics currently not accepting any contributors,
+the codebase is not stable and is prone to major changes,
+this might slow down contributors to make changes or updates.
+
+The code is licensed under MIT License,
+meanwhile the assets are licensed under All Rights Reserved.

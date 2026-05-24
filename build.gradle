@@ -26,10 +26,10 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${loader_version}"
 
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 	implementation "com.terraformersmc:modmenu:${modmenu_version}"
 	implementation "com.github.ProstStuff:Utilitary:${utilitary_version}"
 
@@ -37,7 +37,7 @@ dependencies {
 	runtimeOnly "maven.modrinth:iris:${iris_version}"
 	runtimeOnly "maven.modrinth:immediatelyfast:${immediately_fast_version}"
 
-	runtimeOnly "maven.modrinth:flashback:${flashback_version}"
+	//runtimeOnly "maven.modrinth:flashback:${flashback_version}"
 }
 
 processResources {
@@ -62,7 +62,7 @@ java {
 jar {
 	inputs.property "archivesName", project.base.archivesName
 
-	from("LICENSE") {
+	from("LICENSE.md") {
 		rename { "${it}_${inputs.properties.archivesName}"}
 	}
 }
