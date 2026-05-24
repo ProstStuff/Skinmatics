@@ -147,18 +147,20 @@ public class SkinmaticsClientEvents {
 
     private static void entityLoad(Entity entity, ClientLevel level) {
         if (entity instanceof Avatar && entity != Minecraft.getInstance().player) {
-            String name = entity.getName().getString();
-            String uuidString = entity.getUUID().toString();
+            UUID uuid = entity.getUUID();
+            Map<UUID, String> autoAssigns = ProfileManager.getAutoAssigns();
 
-            for (Map.Entry<String, String> entry : SkinmaticsConfig.INSTANCE.autoAssign.get().entrySet()) {
-                String target = entry.getKey();
-                String profileName = entry.getValue();
+            if (autoAssigns.containsKey(uuid)) {
+                Profile profile = ProfileManager.get(autoAssigns.get(uuid));
+                if (profile != null) ProfileManager.assign(entity, profile);
+            }
 
-                Profile profile = ProfileManager.get(profileName);
+            Map<String, String> configAutoAssigns = SkinmaticsConfig.INSTANCE.autoAssign.get();
+            String uuidString = uuid.toString();
 
-                if ((target.equals(name) || uuidString.equals(name)) && profile != null) {
-                    ProfileManager.assign(entity, profile);
-                }
+            if (configAutoAssigns.containsKey(uuidString)) {
+                Profile profile = ProfileManager.get(configAutoAssigns.get(uuidString));
+                if (profile != null) ProfileManager.assign(entity, profile);
             }
         }
     }
@@ -277,6 +279,19 @@ public class SkinmaticsClientEvents {
 
                                     return 1;
                                 })
+                        )
+
+                        .then(ClientCommands.literal("clear")
+                                        .executes(context -> {
+                                            Map<UUID, String> autoAssigned = ProfileManager.getAutoAssigns();
+
+                                            for (UUID uuid : autoAssigned.keySet()) {
+                                                ProfileManager.unassign(uuid);
+                                            }
+
+                                            context.getSource().sendFeedback(Component.literal("Unassigned all assigned profiles"));
+                                            return 1;
+                                        })
                         )
 
                         .then(ClientCommands.literal("documentation")

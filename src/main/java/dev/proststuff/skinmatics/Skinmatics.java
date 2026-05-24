@@ -26,7 +26,7 @@ public class Skinmatics implements ModInitializer {
 
 	public static String getVersion() {
 		AtomicReference<String> version = new AtomicReference<>();
-		version.set("<ERROR>");
+		version.set("");
 		FabricLoader.getInstance().getModContainer(ID).ifPresent(container -> version.set(container.getMetadata().getVersion().getFriendlyString()));
 		return version.get();
 	}

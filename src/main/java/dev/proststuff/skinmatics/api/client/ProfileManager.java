@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 public final class ProfileManager {
     private static final Logger LOGGER = SkinmaticsClient.LOGGER;
     private static final Map<String, Profile> PROFILES = new LinkedHashMap<>();
+    private static final Map<UUID, String> AUTO_ASSIGNS = new LinkedHashMap<>();
     private static final Map<UUID, Profile> ASSIGNED_PROFILES = new LinkedHashMap<>();
 
     private static Profile current;
@@ -30,6 +31,10 @@ public final class ProfileManager {
 
     public static Map<UUID, Profile> getAllAssigned() {
         return ASSIGNED_PROFILES;
+    }
+
+    public static Map<UUID, String> getAutoAssigns() {
+        return AUTO_ASSIGNS;
     }
 
     public static Profile get(String name) {
@@ -45,6 +50,7 @@ public final class ProfileManager {
     }
 
     public static Profile assign(UUID uuid, Profile profile) {
+        AUTO_ASSIGNS.put(uuid, profile.getProfileName());
         return ASSIGNED_PROFILES.put(uuid, profile);
     }
 
@@ -87,6 +93,7 @@ public final class ProfileManager {
     }
 
     public static void clear() {
+        //AUTO_ASSIGNS.clear();
         ASSIGNED_PROFILES.clear();
         ProfileRuntimeManager.clear();
     }
