@@ -13,6 +13,15 @@ Skinmatics is a versatile yet minimal player customization mod.
 Skinmatics adds cosmetic features to your player character without
 replacing the entire model.
 
+<p align="center">
+    <a href="https://modrinth.com/mod/utilitary">
+        <img src="assets/sprite/utilitary_high_res.png" width="256" alt="Utilitary">
+    </a>
+</p>
+<p align="center">
+    Utilitary is required for Skinmatics to function
+</p>
+
 ### What does Skinmatics provide?
 Skinmatics allow the player character to customize their character, especially the textures.
 
@@ -28,7 +37,8 @@ Additionally, Skinmatics adds a bunch of emissive (glowing) features such as
 
 Extras: Minecraft account skin* can now be transparent
 
-*Skinmatics does not sync your skin to your Minecraft account and will never be.
+*Skinmatics does not sync your skin to your Minecraft account, you are free to customize.
+Currently, other players can't see your customization.
 
 #### Elytra
 
