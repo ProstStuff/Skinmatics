@@ -33,18 +33,15 @@ public class AvatarModelSwapper {
             }
 
             if (profile != null) {
-                if (profile.slim.get()) {
-                    this.model = modelHolder.skinmatics$getSlim();
-                } else {
-                    this.model = modelHolder.skinmatics$getWide();
-                }
+                EntityModel<?> switchModel = profile.slim.get() ? modelHolder.skinmatics$getSlim() : modelHolder.skinmatics$getWide();
+                this.model = switchModel != null ? switchModel : model;
             }
         }
     }
 
     @Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At("HEAD"))
     public void skinmatics$changePlayerModel(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-        if (model instanceof PlayerModel && state instanceof ProfileHolder holder && state instanceof PlayerModelGetter modelHolder) {
+        if (state instanceof ProfileHolder holder && state instanceof PlayerModelGetter modelHolder && model instanceof PlayerModel) {
             Profile profile = holder.skinmatics$getProfile();
 
             if (profile == null) {
@@ -52,11 +49,8 @@ public class AvatarModelSwapper {
             }
 
             if (profile != null) {
-                if (profile.slim.get()) {
-                    this.model = modelHolder.skinmatics$getSlim();
-                } else {
-                    this.model = modelHolder.skinmatics$getWide();
-                }
+                EntityModel<?> switchModel = profile.slim.get() ? modelHolder.skinmatics$getSlim() : modelHolder.skinmatics$getWide();
+                this.model = switchModel != null ? switchModel : model;
             }
         }
     }
