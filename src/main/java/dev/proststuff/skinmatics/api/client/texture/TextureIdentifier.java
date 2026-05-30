@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.api.client.texture;
 
-import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -12,7 +12,7 @@ public record TextureIdentifier(Identifier identifier) {
     public static final TextureIdentifier EMPTY = new TextureIdentifier(MissingTextureAtlasSprite.getLocation());
 
     public TextureIdentifier(String path) {
-        this(Skinmatics.of(normalize(path)));
+        this(SkinmaticsMod.of(normalize(path)));
     }
 
     private static String normalize(String path) {

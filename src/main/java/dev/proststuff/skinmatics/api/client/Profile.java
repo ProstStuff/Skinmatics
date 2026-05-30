@@ -2,11 +2,11 @@ package dev.proststuff.skinmatics.api.client;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
-import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import dev.proststuff.skinmatics.api.client.render.SkinmaticsRenderTypes;
 import dev.proststuff.skinmatics.api.config.field.AnimatableConfigField;
 import dev.proststuff.skinmatics.client.SkinmaticsTextureManager;
-import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
+import dev.proststuff.skinmatics.client.render.EyeRenderLayer;
 import dev.proststuff.utilitary.api.config.ConfigFile;
 import dev.proststuff.utilitary.api.config.field.ConfigGroup;
 import dev.proststuff.utilitary.api.config.field.value.BooleanConfigField;
@@ -37,8 +37,8 @@ public class Profile extends ConfigFile {
     public final BooleanConfigField showCape = new BooleanConfigField("showCape", true);
     public final BooleanConfigField useCustomCape = new BooleanConfigField("useCustomCape", false);
     public final BooleanConfigField addEmissiveCape = new BooleanConfigField("addEmissiveCape", false);
-    public final BooleanConfigField useCustomElytra = new BooleanConfigField("useCustomElytra", false);
-    public final BooleanConfigField addEmissiveElytra = new BooleanConfigField("addEmissiveElytra", false);
+    public final BooleanConfigField useCustomWings = new BooleanConfigField("useCustomWings", false);
+    public final BooleanConfigField addEmissiveWings = new BooleanConfigField("addEmissiveWings", false);
 
     // Eyes
     public final BooleanConfigField showEyes = new BooleanConfigField("showEyes", false);
@@ -53,8 +53,8 @@ public class Profile extends ConfigFile {
     public final AnimatableConfigField emissiveSkin = new AnimatableConfigField("emissiveSkin");
     public final AnimatableConfigField cape = new AnimatableConfigField("cape");
     public final AnimatableConfigField emissiveCape = new AnimatableConfigField("emissiveCape");
-    public final AnimatableConfigField elytra = new AnimatableConfigField("elytra");
-    public final AnimatableConfigField emissiveElytra = new AnimatableConfigField("emissiveElytra");
+    public final AnimatableConfigField wings = new AnimatableConfigField("wings");
+    public final AnimatableConfigField emissiveWings = new AnimatableConfigField("emissiveWings");
 
     public final ConfigGroup rightEye = new ConfigGroup("rightEye");
     public final ConfigGroup leftEye = new ConfigGroup("leftEye");
@@ -64,7 +64,7 @@ public class Profile extends ConfigFile {
     //public final ConfigGroup custom = new ConfigGroup("custom");
 
     public Profile(String profile) {
-        super(Skinmatics.ofSimple("profiles/" + profile));
+        super(SkinmaticsMod.ofSimple("profiles/" + profile));
         this.profile = profile;
         this.data = new ProfileData(this);
 
@@ -86,8 +86,8 @@ public class Profile extends ConfigFile {
                 showCape,
                 useCustomCape,
                 addEmissiveCape,
-                useCustomElytra,
-                addEmissiveElytra,
+                useCustomWings,
+                addEmissiveWings,
                 showEyes,
                 addEmissiveEyes,
                 hideRightEye,
@@ -98,8 +98,8 @@ public class Profile extends ConfigFile {
                 emissiveSkin,
                 cape,
                 emissiveCape,
-                elytra,
-                emissiveElytra,
+                wings,
+                emissiveWings,
                 rightEye,
                 leftEye,
                 emissiveRightEye,
@@ -125,8 +125,8 @@ public class Profile extends ConfigFile {
         iterate(emissiveSkin, data.skin.getState(1));
         iterate(cape, data.cape.getState(0));
         iterate(emissiveCape, data.cape.getState(1));
-        iterate(elytra, data.elytra.getState(0));
-        iterate(emissiveElytra, data.elytra.getState(1));
+        iterate(wings, data.wings.getState(0));
+        iterate(emissiveWings, data.wings.getState(1));
 
         iterateEyes(EyeRenderLayer.EyePosition.RIGHT, data, rightEye, false);
         iterateEyes(EyeRenderLayer.EyePosition.LEFT, data, leftEye, false);

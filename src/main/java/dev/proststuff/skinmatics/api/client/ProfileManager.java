@@ -2,12 +2,15 @@ package dev.proststuff.skinmatics.api.client;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import org.slf4j.Logger;
 
@@ -51,13 +54,18 @@ public final class ProfileManager {
 
     public static Profile assign(UUID uuid, Profile profile) {
         AUTO_ASSIGNS.put(uuid, profile.getProfileName());
+        ProfileRuntimeManager.create(uuid, profile);
         return ASSIGNED_PROFILES.put(uuid, profile);
     }
 
     public static Profile assign(Entity entity, Profile profile) {
-        UUID uuid = entity.getUUID();
-        ProfileRuntimeManager.create(entity, profile);
-        return assign(uuid, profile);
+        EntityRenderer<?, ?> entityRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+
+        if (entityRenderer instanceof ProfileHolder profileHolder) {
+            profileHolder.skinmatics$setProfile(profile);
+        }
+
+        return assign(entity.getUUID(), profile);
     }
 
     public static Profile unassign(UUID uuid) {
@@ -66,6 +74,12 @@ public final class ProfileManager {
     }
 
     public static Profile unassign(Entity entity) {
+        EntityRenderer<?, ?> entityRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+
+        if (entityRenderer instanceof ProfileHolder profileHolder) {
+            profileHolder.skinmatics$setProfile(null);
+        }
+
         return unassign(entity.getUUID());
     }
 
@@ -76,16 +90,26 @@ public final class ProfileManager {
         return profile;
     }
 
-    public static Profile loadCurrent(Entity entity) {
-        if (entity == null) return null;
+    public static Profile loadCurrent(UUID uuid) {
+        current = load(SkinmaticsConfig.INSTANCE.profile.get());
+        assign(uuid, current);
+        return current;
+    }
 
+    public static Profile loadCurrent(Entity entity) {
         current = load(SkinmaticsConfig.INSTANCE.profile.get());
         assign(entity, current);
         return current;
     }
 
     public static Profile loadCurrent() {
-        return loadCurrent(Minecraft.getInstance().player);
+        LocalPlayer localPlayer = Minecraft.getInstance().player;
+
+        if (localPlayer != null) {
+            return loadCurrent(localPlayer);
+        } else {
+            return loadCurrent(getLocalUUID());
+        }
     }
 
     public static Profile getCurrent() {
@@ -94,7 +118,7 @@ public final class ProfileManager {
 
     public static void clear() {
         //AUTO_ASSIGNS.clear();
-        ASSIGNED_PROFILES.clear();
+        ASSIGNED_PROFILES.values().removeIf((profile -> !profile.getProfileName().equals(current.getProfileName())));
         ProfileRuntimeManager.clear();
     }
 
@@ -123,10 +147,11 @@ public final class ProfileManager {
         }
     }
 
-    public static void scanAndLoad() {
+    public static Map<String, Profile> scanAndLoad() {
         scan();
         loadAll();
         loadCurrent();
+        return getAll();
     }
 
     public static Path getPath() {
@@ -144,8 +169,8 @@ public final class ProfileManager {
     public static void cleanUp(ClientLevel level) {
         Set<UUID> activeUUIDs = new HashSet<>();
 
-        if (AvatarPreviewRenderer.PREVIEWER != null) {
-            activeUUIDs.add(AvatarPreviewRenderer.PREVIEWER.getUUID());
+        if (AvatarGUIRenderer.getPreviewer() != null) {
+            activeUUIDs.add(AvatarGUIRenderer.getPreviewer().getUUID());
         }
 
         level.entitiesForRendering().forEach(entity -> {
@@ -157,5 +182,13 @@ public final class ProfileManager {
             if (remove) ProfileRuntimeManager.remove(uuid);
             return remove;
         });
+    }
+
+    public static UUID getLocalUUID() {
+        return Minecraft.getInstance().getGameProfile().id();
+    }
+
+    public static boolean isLocalPlayer(Entity entity) {
+        return Minecraft.getInstance().player != null ? entity.is(Minecraft.getInstance().player) : entity.getUUID() == getLocalUUID();
     }
 }

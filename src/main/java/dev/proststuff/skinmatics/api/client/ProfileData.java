@@ -1,9 +1,8 @@
 package dev.proststuff.skinmatics.api.client;
 
+import dev.proststuff.skinmatics.client.render.EyeRenderLayer;
 import dev.proststuff.skinmatics.api.client.render.SkinmaticsRenderTypes;
 import dev.proststuff.skinmatics.api.client.texture.LayerState;
-import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
@@ -15,7 +14,7 @@ public class ProfileData {
     public final Profile profile;
     public final LayerState skin = new LayerState(2);
     public final LayerState cape = new LayerState(2);
-    public final LayerState elytra = new LayerState(2);
+    public final LayerState wings = new LayerState(2);
     public final LayerState rightEye = new LayerState(20);
     public final LayerState leftEye = new LayerState(20);
 
@@ -31,7 +30,7 @@ public class ProfileData {
 
         skin.tick(ticks);
         cape.tick(ticks);
-        elytra.tick(ticks);
+        wings.tick(ticks);
 
         if (profile.showEyes.get()) {
             rightEye.tick(ticks);
@@ -44,7 +43,7 @@ public class ProfileData {
 
         skin.clear();
         cape.clear();
-        elytra.clear();
+        wings.clear();
         rightEye.clear();
         leftEye.clear();
     }
@@ -57,17 +56,12 @@ public class ProfileData {
         return profile.enabled.get() && profile.showCape.get() && (emissive ? profile.addEmissiveCape.get() : profile.useCustomCape.get()) ? cape.getTexture(emissive ? 1 : 0) : null;
     }
 
-    public Identifier getElytra(boolean emissive) {
-        return profile.enabled.get() && (emissive ? profile.addEmissiveElytra.get() : profile.useCustomElytra.get()) ? elytra.getTexture(emissive ? 1 : 0) : getCape(emissive);
+    public Identifier getWings(boolean emissive) {
+        return profile.enabled.get() && (emissive ? profile.addEmissiveWings.get() : profile.useCustomWings.get()) ? wings.getTexture(emissive ? 1 : 0) : getCape(emissive);
     }
 
     public LayerState getEyeLayerState(EyeRenderLayer.EyePosition eyePosition) {
         return eyePosition == EyeRenderLayer.EyePosition.RIGHT ? rightEye : leftEye;
-    }
-
-    public Identifier getEye(AvatarRenderState state, EyeRenderLayer.EyePosition eyePosition, boolean emissive) {
-        ProfileRuntime runtime = ProfileRuntimeManager.get(state);
-        return profile.enabled.get() && runtime != null ? getEyeLayerState(eyePosition).getTexture(runtime.getEyeLayerStateOffset(eyePosition, emissive)) : null;
     }
 
     public RenderType getEmissiveRenderType(Identifier texture) {

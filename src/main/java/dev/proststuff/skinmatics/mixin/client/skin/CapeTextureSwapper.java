@@ -2,8 +2,8 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
 import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import dev.proststuff.skinmatics.api.client.utility.DummyTextureAsset;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -69,8 +69,11 @@ public class CapeTextureSwapper implements ProfileHolder {
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IIILnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V"))
     public void skinmatics$renderEmissiveCape(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
         if (skinmatics$profile != null) {
-            Identifier texture =  skinmatics$profile.data.getCape(true);
-            submitNodeCollector.order(1).submitModel(model, state, poseStack, skinmatics$profile.data.getEmissiveRenderType(texture), lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+            Identifier texture = skinmatics$profile.data.getCape(true);
+
+            if (texture != null) {
+                submitNodeCollector.order(1).submitModel(model, state, poseStack, skinmatics$profile.data.getEmissiveRenderType(texture), lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+            }
         }
     }
 

@@ -1,7 +1,8 @@
 package dev.proststuff.skinmatics.api.client;
 
-import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
-import net.minecraft.util.Mth;
+import dev.proststuff.skinmatics.api.client.impl.mixin.UIRendered;
+import dev.proststuff.skinmatics.client.render.EyeRenderLayer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,23 +16,22 @@ import java.util.UUID;
  */
 public class ProfileRuntime {
     protected final UUID UUID;
-    protected final int id;
 
     protected @Nullable Profile profile;
     protected int blinkingTicks = 0;
+
+    // Unused atm, might reuse it for locked eye state
     protected EyeRenderLayer.EyeDirection rightEyeState = EyeRenderLayer.EyeDirection.FRONT;
     protected EyeRenderLayer.EyeDirection leftEyeState = EyeRenderLayer.EyeDirection.FRONT;
-
     protected boolean shouldTickRightEye = true;
     protected boolean shouldTickLeftEye = true;
 
-    public ProfileRuntime(UUID uuid, int id) {
+    public ProfileRuntime(UUID uuid) {
         this.UUID = uuid;
-        this.id = id;
     }
 
-    public ProfileRuntime(Entity entity) {
-        this(entity.getUUID(), entity.getId());
+    public boolean isBlinking() {
+        return blinkingTicks > 0;
     }
 
     public void setProfile(@Nullable Profile profile) {
@@ -47,39 +47,31 @@ public class ProfileRuntime {
         return UUID;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void tick(Entity entity, RandomSource random) {
-        if (entity instanceof LivingEntity living) {
+        if (entity instanceof LivingEntity) {
             if (profile != null && profile.showEyes.get()) {
                 if (blinkingTicks > 0) {
                     blinkingTicks --;
                 }
 
-                if (blinkingTicks == 0 && random.nextInt(profile.blinkingChance.get()) == 0) {
+                int blinkingChance = profile.blinkingChance.get();
+                if (blinkingTicks == 0 && blinkingChance > 0 && random.nextInt(profile.blinkingChance.get()) == 0) {
                     blink();
                 }
-
-                float yaw = Mth.wrapDegrees(entity.getYHeadRot() - living.yBodyRot);
-                float pitch = entity.getXRot();
-
-                EyeRenderLayer.EyeDirection eyeDirection = getEyeDirection(yaw, pitch, entity::hasPose);
-                if (shouldTickRightEye) rightEyeState = eyeDirection;
-                if (shouldTickLeftEye) leftEyeState = eyeDirection;
             }
         }
     }
 
-    public EyeRenderLayer.EyeDirection getEyeDirection(float yaw, float pitch, HasPose hasPose) {
+    public static EyeRenderLayer.EyeDirection getEyeDirection(float yaw, float pitch, boolean isBlinking, HasPose hasPose, boolean isIngameUI) {
         EyeRenderLayer.EyeDirection eyeDirectionState = EyeRenderLayer.EyeDirection.FRONT;
+        // For UI usage (Inventory eye more responsive)
+        float MIN_ROT = 22.5F / (isIngameUI ? 3 : 1);
 
-        if (blinkingTicks <= 0 && !hasPose.hasPose(Pose.SLEEPING)) {
-            boolean up = pitch <= -22.5F;
-            boolean down = pitch >= 22.5F;
-            boolean right = yaw >= 22.5F;
-            boolean left = yaw <= -22.5F;
+        if (!isBlinking && !hasPose.hasPose(Pose.SLEEPING)) {
+            boolean up = pitch <= -MIN_ROT;
+            boolean down = pitch >= MIN_ROT;
+            boolean right = yaw >= MIN_ROT;
+            boolean left = yaw <= -MIN_ROT;
 
             if (up && right) eyeDirectionState = EyeRenderLayer.EyeDirection.RIGHT_UP;
             else if (up && left) eyeDirectionState = EyeRenderLayer.EyeDirection.LEFT_UP;
@@ -96,16 +88,22 @@ public class ProfileRuntime {
         return eyeDirectionState;
     }
 
-    public int getEyeLayerStateOffset(EyeRenderLayer.EyePosition eyePosition, boolean emissive) {
-        return ProfileData.getEyeLayerStateEmissive(emissive) + (eyePosition == EyeRenderLayer.EyePosition.RIGHT ? rightEyeState.ordinal() : leftEyeState.ordinal());
-    }
-
     public void blink() {
         if (profile == null) return;
         blinkingTicks = profile.holdBlinkingFor.get();
     }
 
+    public static int getEyeState(float yaw, float pitch, boolean isBlinking, HasPose hasPose, boolean halved) {
+        return getEyeDirection(yaw, pitch, isBlinking, hasPose, halved).ordinal();
+    }
+
+    public static int getEyeState(AvatarRenderState state, boolean isBlinking, HasPose hasPose) {
+        // DEV NOTE: state.yRot is already a normalized (getYHeadRot() - getBodyRot())
+        return getEyeState(state.yRot, state.xRot, isBlinking, hasPose, ((UIRendered) state).skinmatics$isUiRendered());
+    }
+
     public interface HasPose {
+        HasPose EMPTY = (_) -> false;
         boolean hasPose(Pose pose);
     }
 }

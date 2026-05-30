@@ -1,0 +1,13 @@
+Future plans (not in-order):
+- Player Head block supporting Skinmatics features
+- Keybinds to toggle/switch eyes expressions
+- Custom eye expressions
+- Additional features/supports with other mods
+- Replacing elytra model to have different texture for each wings instead of one texture for both wings
+- Eye tracking
+- Addon support
+- Halo (A crown of light rays, circle or disk of light)
+- Mouth
+  - Voice chat integration
+- Ears
+- Tail

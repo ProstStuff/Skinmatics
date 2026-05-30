@@ -3,7 +3,7 @@ package dev.proststuff.skinmatics.api.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.impl.ForceRenderLayer;
-import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
+import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.player.PlayerModel;

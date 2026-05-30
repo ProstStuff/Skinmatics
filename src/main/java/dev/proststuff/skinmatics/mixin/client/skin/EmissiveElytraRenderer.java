@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
 import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -38,7 +38,7 @@ public class EmissiveElytraRenderer {
             Profile profile = holder.skinmatics$getProfile();
 
             if (profile != null) {
-                Identifier texture = profile.data.getElytra(true);
+                Identifier texture = profile.data.getWings(true);
                 if (texture != null) {
                     RenderType renderType = profile.data.getEmissiveRenderType(texture);
 

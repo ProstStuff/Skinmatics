@@ -1,10 +1,9 @@
 package dev.proststuff.skinmatics.mixin.client.ui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.client.impl.EntityPreviewer;
-import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarMinimap;
-import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
-import dev.proststuff.skinmatics.client.gui.element.avatar.BodyPart;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.BodyPart;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.ModelPartHider;
+import dev.proststuff.skinmatics.api.client.impl.mixin.EntityPreviewer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
@@ -25,8 +24,8 @@ public class PreviewElytraHider {
     @Inject(method = "renderLayers(Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/world/item/ItemStack;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;II)V", at = @At("HEAD"), cancellable = true)
     public <S> void skinmatics$hideElytra(EquipmentClientInfo.LayerType layerType, ResourceKey<EquipmentAsset> equipmentAssetId, Model<? super S> model, S state, ItemStack itemStack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, @Nullable Identifier playerTextureOverride, int outlineColor, int order, CallbackInfo ci) {
         if (state instanceof EntityPreviewer entityPreviewer && itemStack.is(Items.ELYTRA)) {
-            if (entityPreviewer.skinmatics$isPreviewing() && AvatarPreviewRenderer.PREVIEWER != null) {
-                if (!AvatarMinimap.isVisible(BodyPart.TORSO)) {
+            if (entityPreviewer.skinmatics$isPreviewing()) {
+                if (!ModelPartHider.isVisible(BodyPart.TORSO)) {
                     ci.cancel();
                 }
             }

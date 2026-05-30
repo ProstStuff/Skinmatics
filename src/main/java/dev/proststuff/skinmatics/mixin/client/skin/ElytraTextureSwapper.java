@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.mixin.client.skin;
 
-import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
 import dev.proststuff.skinmatics.api.client.Profile;
+import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import net.minecraft.client.renderer.entity.layers.WingsLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
@@ -18,7 +18,7 @@ public class ElytraTextureSwapper {
             Profile profile = holder.skinmatics$getProfile();
 
             if (profile != null) {
-                Identifier identifier = profile.data.getElytra(false);
+                Identifier identifier = profile.data.getWings(false);
                 if (identifier != null) {
                     cir.setReturnValue(identifier);
                 }

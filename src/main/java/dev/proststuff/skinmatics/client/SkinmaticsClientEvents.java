@@ -8,9 +8,12 @@ import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.ProfileRuntime;
 import dev.proststuff.skinmatics.api.client.ProfileRuntimeManager;
-import dev.proststuff.skinmatics.client.gui.element.avatar.AvatarPreviewRenderer;
-import dev.proststuff.skinmatics.client.model.EmissiveSkinRenderLayer;
-import dev.proststuff.skinmatics.client.model.EyeRenderLayer;
+import dev.proststuff.skinmatics.client.gui.PaperDollRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewPlayer;
+import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
+import dev.proststuff.skinmatics.client.render.EmissiveSkinRenderLayer;
+import dev.proststuff.skinmatics.client.render.EyeRenderLayer;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
@@ -26,8 +29,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
@@ -38,10 +41,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
-import net.minecraft.world.entity.Avatar;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.phys.EntityHitResult;
 
 import java.util.Map;
@@ -56,9 +56,9 @@ public class SkinmaticsClientEvents {
     public static void init() {
         ClientLifecycleEvents.CLIENT_STARTED.register(SkinmaticsClientEvents::clientInitialized);
         LivingEntityRenderLayerRegistrationCallback.EVENT.register(SkinmaticsClientEvents::registerPlayerFeatures);
-        ClientTickEvents.END_CLIENT_TICK.register(SkinmaticsClientEvents::tickAvatarPreviewAndClean);
-        ClientTickEvents.START_LEVEL_TICK.register(SkinmaticsClientEvents::tickRuntimes);
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(Skinmatics.of("skinmatics_textures"), SkinmaticsClientEvents::onResourceReload);
+        ClientTickEvents.END_CLIENT_TICK.register(SkinmaticsClientEvents::tickPreviewerAndClean);
+        ClientTickEvents.END_LEVEL_TICK.register(SkinmaticsClientEvents::tickRuntimes);
+        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(SkinmaticsMod.of("skinmatics_textures"), SkinmaticsClientEvents::onResourceReload);
         ClientCommandRegistrationCallback.EVENT.register(SkinmaticsClientEvents::registerCommands);
         ClientEntityEvents.ENTITY_LOAD.register(SkinmaticsClientEvents::entityLoad);
         ClientEntityEvents.ENTITY_UNLOAD.register(SkinmaticsClientEvents::entityUnload);
@@ -99,9 +99,9 @@ public class SkinmaticsClientEvents {
             UUID uuid = entry.getKey();
             Entity entity = level.getEntity(uuid);
 
-            if (entity != AvatarPreviewRenderer.PREVIEWER && entity instanceof LivingEntity living) {
+            if (entity instanceof AbstractClientPlayer player && !entity.is(AvatarGUIRenderer.getPreviewer())) {
                 Profile profile = entry.getValue();
-                BlockPos entityPosition = living.getOnPos();
+                BlockPos entityPosition = player.getOnPos();
 
                 if (profile.showEyes.get()) {
                     if (entityPosition.distSqr(clientPos) > (updateRange * updateRange)) continue;
@@ -115,11 +115,28 @@ public class SkinmaticsClientEvents {
         }
     }
 
-    private static void tickAvatarPreviewAndClean(Minecraft minecraft) {
-        RemotePlayer previewer = AvatarPreviewRenderer.PREVIEWER;
+    private static void tickPreviewerAndClean(Minecraft minecraft) {
+        PreviewPlayer previewer = AvatarGUIRenderer.getPreviewer();
         ClientLevel level = minecraft.level;
 
         if (level != null) {
+            LocalPlayer player = minecraft.player;
+            if (player != null) {
+                if (!player.hasPose(Pose.STANDING) || player.isSprinting()) {
+                    PaperDollRenderer.INSTANCE.showPaperDoll();
+                }
+
+                PaperDollRenderer.INSTANCE.tick();
+            }
+
+            if (ProfileManager.getCurrent() == null || ProfileRuntimeManager.get(ProfileManager.getLocalUUID()) == null) {
+                ProfileManager.loadCurrent();
+            }
+
+            for (Profile profile : ProfileManager.getAll().values()) {
+                profile.data.tick();
+            }
+
             if (previewer != null) {
                 RandomSource random = previewer.getRandom();
                 ProfileRuntime runtime = ProfileRuntimeManager.get(previewer);
@@ -137,15 +154,14 @@ public class SkinmaticsClientEvents {
                 ProfileManager.cleanUp(level);
                 cleanUpTime = 200;
             }
-        } else if (AvatarPreviewRenderer.PREVIEWER != null) {
-            ProfileManager.unassign(AvatarPreviewRenderer.PREVIEWER);
-            AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
-            AvatarPreviewRenderer.PREVIEWER = null;
+
+        } else if (AvatarGUIRenderer.getPreviewer() != null) {
+            AvatarGUIRenderer.removePreviewer();
         }
     }
 
     private static void entityLoad(Entity entity, ClientLevel level) {
-        if (entity instanceof Avatar && entity != Minecraft.getInstance().player) {
+        if (entity instanceof Avatar && !ProfileManager.isLocalPlayer(entity)) {
             UUID uuid = entity.getUUID();
             Map<UUID, String> autoAssigns = ProfileManager.getAutoAssigns();
 
@@ -165,22 +181,21 @@ public class SkinmaticsClientEvents {
     }
 
     private static void entityUnload(Entity entity, ClientLevel level) {
-        if (entity instanceof Avatar && entity != Minecraft.getInstance().player) {
+        if (entity instanceof Avatar && !ProfileManager.isLocalPlayer(entity)) {
             ProfileManager.unassign(entity);
         }
     }
 
     private static void joined(ClientPacketListener listener, PacketSender sender, Minecraft minecraft) {
         ProfileManager.scanAndLoad();
+        PaperDollRenderer.INSTANCE.showPaperDoll();
     }
 
     private static void left(ClientPacketListener listener, Minecraft minecraft) {
         ProfileManager.clear();
 
-        if (AvatarPreviewRenderer.PREVIEWER != null) {
-            ProfileManager.unassign(AvatarPreviewRenderer.PREVIEWER);
-            AvatarPreviewRenderer.PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
-            AvatarPreviewRenderer.PREVIEWER = null;
+        if (AvatarGUIRenderer.getPreviewer() != null) {
+            AvatarGUIRenderer.removePreviewer();
         }
     }
 

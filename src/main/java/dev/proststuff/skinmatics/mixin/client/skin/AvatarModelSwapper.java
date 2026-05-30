@@ -3,12 +3,14 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
-import dev.proststuff.skinmatics.api.client.impl.PlayerModelGetter;
-import dev.proststuff.skinmatics.api.client.impl.ProfileHolder;
+import dev.proststuff.skinmatics.api.client.impl.mixin.PlayerModelGetter;
+import dev.proststuff.skinmatics.api.client.impl.mixin.PlayerModelSetter;
+import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
+import dev.proststuff.skinmatics.api.client.impl.mixin.UUIDHolder;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
@@ -19,39 +21,52 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntityRenderer.class)
-public class AvatarModelSwapper {
+public abstract class AvatarModelSwapper implements PlayerModelSetter {
     @Shadow
     protected EntityModel<?> model;
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    public void skinmatics$changeDefaultPlayerModel(EntityRendererProvider.Context context, EntityModel model, float shadow, CallbackInfo ci) {
-        if (this instanceof ProfileHolder holder && this instanceof PlayerModelGetter modelHolder && model instanceof PlayerModel) {
+    @Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At("HEAD"))
+    public void skinmatics$changePlayerModel(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
+        if (state instanceof ProfileHolder holder && state instanceof PlayerModelGetter modelHolder && state instanceof UUIDHolder uuidHolder && model instanceof PlayerModel) {
             Profile profile = holder.skinmatics$getProfile();
 
-            if (profile == null) {
+            if (uuidHolder.skinmatics$getUUID() == ProfileManager.getLocalUUID()) {
                 profile = ProfileManager.getCurrent();
             }
 
             if (profile != null) {
-                EntityModel<?> switchModel = profile.slim.get() ? modelHolder.skinmatics$getSlim() : modelHolder.skinmatics$getWide();
-                this.model = switchModel != null ? switchModel : model;
+                skinmatics$setCurrent(modelHolder.skinmatics$getModel(profile));
             }
         }
     }
 
-    @Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At("HEAD"))
-    public void skinmatics$changePlayerModel(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-        if (state instanceof ProfileHolder holder && state instanceof PlayerModelGetter modelHolder && model instanceof PlayerModel) {
-            Profile profile = holder.skinmatics$getProfile();
+    @Override
+    public void skinmatics$setWide(PlayerModel model) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 
-            if (profile == null) {
-                profile = ProfileManager.getCurrent();
-            }
+    @Override
+    public void skinmatics$setSlim(PlayerModel model) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 
-            if (profile != null) {
-                EntityModel<?> switchModel = profile.slim.get() ? modelHolder.skinmatics$getSlim() : modelHolder.skinmatics$getWide();
-                this.model = switchModel != null ? switchModel : model;
-            }
-        }
+    @Override
+    public void skinmatics$setSlimArmor(ArmorModelSet<PlayerModel> modelSet) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+
+    @Override
+    public void skinmatics$setWideArmor(ArmorModelSet<PlayerModel> modelSet) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+
+    @Override
+    public void skinmatics$setCurrentArmor(ArmorModelSet<PlayerModel> modelSet) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+
+    @Override
+    public void skinmatics$setCurrent(PlayerModel model) {
+        this.model = model != null ? model : this.model;
     }
 }

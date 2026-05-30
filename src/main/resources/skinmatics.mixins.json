@@ -17,12 +17,15 @@
     "client.skin.ElytraTextureSwapper",
     "client.skin.EmissiveElytraRenderer",
     "client.skin.ForceRenderLayerVisibility",
+    "client.skin.HumanoidArmorModelSwapper",
+    "client.skin.InventoryAvatar",
+    "client.skin.PlayerModelSlimAccessor",
     "client.skin.PreventOnlineSkinModification",
     "client.skin.SkinmaticsAvatarRenderer",
     "client.skin.SkinmaticsAvatarRenderState",
-    "client.skin.SkinmaticsPlayerModel",
     "client.ui.AddSkinmaticsButton",
     "client.ui.PreviewArmorHider",
-    "client.ui.PreviewElytraHider"
+    "client.ui.PreviewElytraHider",
+    "client.ui.PreviewModelPartHider"
   ]
 }

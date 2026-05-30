@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.api.client.texture;
 
-import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import net.minecraft.resources.Identifier;
 
 public final class SkinmaticsAssets {
@@ -25,7 +25,7 @@ public final class SkinmaticsAssets {
     public static final Identifier XD = gui("xd");
 
     private static Identifier gui(String name) {
-        return Skinmatics.of("textures/gui/" + name + ".png");
+        return SkinmaticsMod.of("textures/gui/" + name + ".png");
     }
 
     private static Identifier sidebar(String name) {
