@@ -2,14 +2,13 @@ package dev.proststuff.skinmatics.mixin.client.skin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
-import dev.proststuff.skinmatics.api.client.impl.mixin.PlayerModelGetter;
 import dev.proststuff.skinmatics.api.client.impl.mixin.PlayerModelSetter;
-import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
 import org.spongepowered.asm.mixin.Final;
@@ -35,49 +34,24 @@ public class HumanoidArmorModelSwapper implements PlayerModelSetter {
 
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FF)V", at = @At("HEAD"))
     public void skinmatics$swapModelSubmit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, HumanoidRenderState state, float yRot, float xRot, CallbackInfo ci) {
-        if (state instanceof ProfileHolder profileHolder && state instanceof PlayerModelGetter modelGetter) {
-            Profile profile = profileHolder.skinmatics$getProfile();
+        if (state instanceof AvatarRenderState renderState) {
+            Profile profile = renderState.skinmatics$getProfile();
 
             if (profile != null) {
-                skinmatics$setCurrentArmor(modelGetter.skinmatics$getArmorModel(profile));
+                skinmatics$setCurrentArmor(renderState.skinmatics$getArmorModel(profile));
             }
         }
     }
 
     @Inject(method = "getArmorModel", at = @At("RETURN"), cancellable = true)
     public void skinmatics$swapModel(HumanoidRenderState state, EquipmentSlot slot, CallbackInfoReturnable<HumanoidModel<?>> cir) {
-        if (state instanceof ProfileHolder profileHolder && state instanceof PlayerModelGetter modelGetter) {
-            Profile profile = profileHolder.skinmatics$getProfile();
+        if (state instanceof AvatarRenderState renderState) {
+            Profile profile = renderState.skinmatics$getProfile();
 
             if (profile != null) {
-                cir.setReturnValue(modelGetter.skinmatics$getArmorModel(profile).get(slot));
+                cir.setReturnValue(renderState.skinmatics$getArmorModel(profile).get(slot));
             }
         }
-    }
-
-    @Override
-    public void skinmatics$setWide(PlayerModel model) {
-        throw new UnsupportedOperationException("Unimplemented operation");
-    }
-
-    @Override
-    public void skinmatics$setSlim(PlayerModel model) {
-        throw new UnsupportedOperationException("Unimplemented operation");
-    }
-
-    @Override
-    public void skinmatics$setCurrent(PlayerModel model) {
-        throw new UnsupportedOperationException("Unimplemented operation");
-    }
-
-    @Override
-    public void skinmatics$setWideArmor(ArmorModelSet<PlayerModel> modelSet) {
-        throw new UnsupportedOperationException("Unimplemented operation");
-    }
-
-    @Override
-    public void skinmatics$setSlimArmor(ArmorModelSet<PlayerModel> modelSet) {
-        throw new UnsupportedOperationException("Unimplemented operation");
     }
 
     @Override

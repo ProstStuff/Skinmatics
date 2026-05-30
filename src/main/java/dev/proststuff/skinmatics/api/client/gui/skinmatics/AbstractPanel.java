@@ -66,6 +66,7 @@ public class AbstractPanel extends AbstractSkinmaticsRenderable implements Mouse
         int currentY = 16 - (int) scrollingPosition;
 
         for (AbstractPanelButton button : buttons) {
+            button.setPanel(this);
             button.setPosition(getX(), currentY);
             button.init(width, height);
 

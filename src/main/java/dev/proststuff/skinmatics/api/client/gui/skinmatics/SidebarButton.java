@@ -45,6 +45,10 @@ public class SidebarButton extends AbstractSkinmaticsRenderable implements Click
         this.panel = null;
     }
 
+    public AbstractPanel getPanel() {
+        return panel;
+    }
+
     @Override
     public void init(int width, int height) {
         super.init(width, height);

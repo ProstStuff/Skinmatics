@@ -4,6 +4,7 @@ import dev.proststuff.skinmatics.api.client.gui.impl.ClickableRenderable;
 import dev.proststuff.utilitary.api.utility.GraphicsUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
@@ -16,7 +17,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class TextboxRenderable extends AbstractRenderable implements ClickableRenderable {
+public class TextboxRenderable<S extends Screen> extends AbstractRenderable<S> implements ClickableRenderable {
     protected int width;
     protected @NonNull Supplier<Component> placeholder = Component::empty;
     protected @NonNull Supplier<Component> unit = Component::empty;

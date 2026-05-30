@@ -4,12 +4,23 @@ import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 
 public interface PlayerModelSetter {
-    void skinmatics$setWide(PlayerModel model);
-    void skinmatics$setSlim(PlayerModel model);
-    void skinmatics$setCurrent(PlayerModel model);
+    default void skinmatics$setWide(PlayerModel model) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default void skinmatics$setSlim(PlayerModel model) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default void skinmatics$setCurrent(PlayerModel model) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 
-
-    void skinmatics$setWideArmor(ArmorModelSet<PlayerModel> modelSet);
-    void skinmatics$setSlimArmor(ArmorModelSet<PlayerModel> modelSet);
-    void skinmatics$setCurrentArmor(ArmorModelSet<PlayerModel> modelSet);
+    default void skinmatics$setWideArmor(ArmorModelSet<PlayerModel> modelSet) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default void skinmatics$setSlimArmor(ArmorModelSet<PlayerModel> modelSet) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default void skinmatics$setCurrentArmor(ArmorModelSet<PlayerModel> modelSet) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 }

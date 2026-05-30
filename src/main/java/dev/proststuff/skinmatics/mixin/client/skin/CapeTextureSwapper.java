@@ -34,8 +34,7 @@ public class CapeTextureSwapper implements ProfileHolder {
 
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At("HEAD"), cancellable = true)
     public void skinmatics$render(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
-        ProfileHolder holder = (ProfileHolder) state;
-        Profile profile = holder.skinmatics$getProfile();
+        Profile profile = state.skinmatics$getProfile();
 
         if (profile != null) {
             skinmatics$setProfile(profile);

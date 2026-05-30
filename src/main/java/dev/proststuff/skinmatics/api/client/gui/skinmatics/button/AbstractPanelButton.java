@@ -10,7 +10,6 @@ import net.minecraft.network.chat.MutableComponent;
 
 public abstract class AbstractPanelButton extends AbstractSkinmaticsRenderable implements ClickableRenderable {
     public static final int INDENT = 4;
-
     protected AbstractPanel panel = null;
 
     public AbstractPanelButton(SimpleIdentifier identifier) {
@@ -48,5 +47,18 @@ public abstract class AbstractPanelButton extends AbstractSkinmaticsRenderable i
     @Override
     public String getCategory() {
         return "panel";
+    }
+
+    @Override
+    public boolean in(double pointX, double pointY) {
+        boolean insidePanel;
+
+        if (panel != null) {
+            insidePanel = pointX >= panel.getX() && pointY >= panel.getY() && pointX < panel.getX() + panel.getWidth() && pointY < panel.getY() + panel.getHeight();
+        } else {
+            insidePanel = false;
+        }
+
+        return super.in(pointX, pointY) && insidePanel;
     }
 }

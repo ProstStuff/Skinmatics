@@ -25,6 +25,10 @@ repositories {
 	}
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/skinmatics.classtweaker")
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${loader_version}"

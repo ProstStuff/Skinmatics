@@ -6,6 +6,10 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface ProfileHolder {
-    void skinmatics$setProfile(Profile skinmaticsData);
-    Profile skinmatics$getProfile();
+    default void skinmatics$setProfile(Profile skinmaticsData) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default Profile skinmatics$getProfile() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 }

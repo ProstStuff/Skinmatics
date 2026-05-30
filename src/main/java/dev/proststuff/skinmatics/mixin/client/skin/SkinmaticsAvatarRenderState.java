@@ -33,7 +33,7 @@ public class SkinmaticsAvatarRenderState implements UUIDHolder, ProfileHolder, P
 
     @Override
     public void skinmatics$setWide(PlayerModel model) {
-        if (((SlimAccessor) model).skinmatics$isSlim()) {
+        if (model.slim) {
             throw new IllegalStateException("Trying to set a slim model to wide model storage");
         }
 
@@ -42,7 +42,7 @@ public class SkinmaticsAvatarRenderState implements UUIDHolder, ProfileHolder, P
 
     @Override
     public void skinmatics$setSlim(PlayerModel model) {
-        if (!((SlimAccessor) model).skinmatics$isSlim()) {
+        if (!model.slim) {
             throw new IllegalStateException("Trying to set a wide model to slim model storage");
         }
 

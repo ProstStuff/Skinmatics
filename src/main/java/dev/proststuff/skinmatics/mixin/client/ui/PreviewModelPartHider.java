@@ -2,7 +2,6 @@ package dev.proststuff.skinmatics.mixin.client.ui;
 
 import dev.proststuff.skinmatics.client.gui.customization.avatar.BodyPart;
 import dev.proststuff.skinmatics.client.gui.customization.avatar.ModelPartHider;
-import dev.proststuff.skinmatics.api.client.impl.mixin.EntityPreviewer;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,9 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PreviewModelPartHider {
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)V", at = @At(value = "TAIL"))
     public void skinmatics$setupAnim(AvatarRenderState state, CallbackInfo ci) {
-        EntityPreviewer previewState = (EntityPreviewer) state;
-
-        if (previewState.skinmatics$isPreviewing()) {
+        if (state.skinmatics$isPreviewing()) {
             PlayerModel model = (PlayerModel) (Object) this;
             model.head.visible = ModelPartHider.isVisible(BodyPart.HEAD);
             model.hat.visible = model.head.visible;

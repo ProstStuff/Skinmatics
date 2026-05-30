@@ -3,7 +3,6 @@ package dev.proststuff.skinmatics.api.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.impl.ForceRenderLayer;
-import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.player.PlayerModel;
@@ -32,8 +31,7 @@ public abstract class FaceRenderLayer extends RenderLayer<AvatarRenderState, Pla
     public abstract void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float limbAngle, float limbDistance);
 
     public Profile getProfile(AvatarRenderState state) {
-        ProfileHolder dataHolder = (ProfileHolder) state;
-        return dataHolder.skinmatics$getProfile();
+        return state.skinmatics$getProfile();
     }
 
     public void start(PoseStack poseStack, float offset) {

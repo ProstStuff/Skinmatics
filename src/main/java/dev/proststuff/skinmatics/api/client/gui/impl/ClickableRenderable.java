@@ -36,30 +36,33 @@ public interface ClickableRenderable extends MouseEventListener, KeyEventListene
     }
 
     default boolean isFocused() {
-        return FOCUSED.get(getCategory()) == this;
+        return isFocusable() && FOCUSED.get(getCategory()) == this;
     }
 
     default boolean isHovered() {
-        return HOVERED.get(getCategory()) == this;
+        return isHoverable() && HOVERED.get(getCategory()) == this;
     }
 
     @Override
     default boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
         if (isHovered()) {
-            if (isPressing(event.button(), event.x(), event.y())) {
+            if (isFocusable() && isPressing(event.button(), event.x(), event.y())) {
                 focus();
                 return true;
             } else {
                 unfocus();
             }
         }
+
         return false;
     }
 
     @Override
     default boolean mouseMoved(double x, double y) {
         if (in(x, y)) {
-            hover();
+            if (isHoverable()) {
+                hover();
+            }
             return true;
         } else {
             unhover();

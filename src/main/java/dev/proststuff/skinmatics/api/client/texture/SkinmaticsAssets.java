@@ -19,6 +19,8 @@ public final class SkinmaticsAssets {
     public static final Identifier SAVE = gui("save");
     public static final Identifier DELETE = gui("delete");
     public static final Identifier RELOAD = gui("reload");
+    public static final Identifier EXPAND = gui("expand");
+    public static final Identifier COLLAPSE = gui("collapse");
     public static final Identifier ERROR = gui("error");
     public static final Identifier NO = gui("no");
     public static final Identifier YES =  gui("yes");

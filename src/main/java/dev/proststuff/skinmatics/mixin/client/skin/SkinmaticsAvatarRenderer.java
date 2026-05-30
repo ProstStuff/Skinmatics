@@ -53,10 +53,10 @@ public class SkinmaticsAvatarRenderer implements ProfileHolder, PlayerModelGette
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"))
     public <A extends Avatar & ClientAvatarEntity> void skinmatics$extractSkinmaticsData(A entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
-        ((UUIDHolder) state).skinmatics$setUUID(entity.getUUID());
+        state.skinmatics$setUUID(entity.getUUID());
 
         if (entity instanceof EntityPreviewer previewer && previewer.skinmatics$isPreviewing()) {
-            ((EntityPreviewer) state).skinmatics$preview();
+            state.skinmatics$preview();
         }
 
         Profile profile;
@@ -66,26 +66,23 @@ public class SkinmaticsAvatarRenderer implements ProfileHolder, PlayerModelGette
             profile = ProfileManager.getAssigned(entity);
         }
 
-        PlayerModelSetter modelSetter = (PlayerModelSetter) state;
-        modelSetter.skinmatics$setWide(skinmatics$wideModel);
-        modelSetter.skinmatics$setSlim(skinmatics$slimModel);
-        modelSetter.skinmatics$setWideArmor(skinmatics$wideArmor);
-        modelSetter.skinmatics$setSlimArmor(skinmatics$slimArmor);
+        state.skinmatics$setWide(skinmatics$wideModel);
+        state.skinmatics$setSlim(skinmatics$slimModel);
+        state.skinmatics$setWideArmor(skinmatics$wideArmor);
+        state.skinmatics$setSlimArmor(skinmatics$slimArmor);
 
-        ((ProfileHolder) state).skinmatics$setProfile(profile);
+        state.skinmatics$setProfile(profile);
         skinmatics$setProfile(profile);
 
         if (profile != null) {
             PlayerModelSetter rendererModelSetter = (PlayerModelSetter) this;
-            PlayerModelGetter modelGetter = (PlayerModelGetter) state;
-            rendererModelSetter.skinmatics$setCurrent((modelGetter.skinmatics$getModel(profile)));
+            rendererModelSetter.skinmatics$setCurrent((state.skinmatics$getModel(profile)));
         }
     }
 
     @Inject(method = "getTextureLocation(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/resources/Identifier;", at = @At("RETURN"), cancellable = true)
     public void skinmatics$switchSkinTexture(AvatarRenderState state, CallbackInfoReturnable<Identifier> cir) {
-        ProfileHolder profileHolder = (ProfileHolder) state;
-        Profile profile = profileHolder.skinmatics$getProfile();
+        Profile profile = state.skinmatics$getProfile();
 
         if (profile != null) {
             Identifier texture = profile.data.getSkin(false);

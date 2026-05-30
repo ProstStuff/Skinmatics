@@ -5,11 +5,11 @@ import dev.proststuff.skinmatics.api.client.gui.impl.ClickableRenderable;
 import dev.proststuff.skinmatics.api.client.gui.impl.FileEventListener;
 import dev.proststuff.skinmatics.api.client.gui.skinmatics.AbstractPanel;
 import dev.proststuff.skinmatics.api.client.gui.skinmatics.SidebarButton;
-import dev.proststuff.skinmatics.api.client.gui.skinmatics.button.AbstractPanelButton;
-import dev.proststuff.skinmatics.api.client.gui.skinmatics.button.config.ConfigPanelButton;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsClientMod;
+import dev.proststuff.skinmatics.client.SkinmaticsClientRegistration;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
@@ -20,13 +20,10 @@ import org.jspecify.annotations.NonNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.Map;
 
 public final class SkinmaticsCustomizationScreen extends Screen implements SkinmaticsClientMod {
-    private static final List<Supplier<SidebarButton>> sidebarSuppliers = new ArrayList<>();
-
     private final Screen parent;
     private final AvatarGUIRenderer avatarRenderer = new AvatarGUIRenderer();
     private final List<SidebarButton> sidebarButtons = new ArrayList<>();
@@ -43,8 +40,13 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
 
         int bottomIndex = 0;
 
-        for (Supplier<SidebarButton> sidebarSupplier : sidebarSuppliers) {
-            SidebarButton button = sidebarSupplier.get();
+        for (Map.Entry<SimpleIdentifier, SkinmaticsClientRegistration.ButtonFactory<SidebarButton>> entry : registration().getSidebarButtons().entrySet()) {
+            SimpleIdentifier identifier  = entry.getKey();
+            SidebarButton button = entry.getValue().create(identifier);
+
+            if (identifier != button.getIdentifier()) {
+                throw new IllegalStateException("SidebarButton must have the same identifier as their registered identifer");
+            }
 
             if (button.bottom) {
                 sidebarButtons.add(bottomIndex++, button);
@@ -68,35 +70,12 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
         ProfileManager.saveAll();
     }
 
-    public boolean areValuesDirty() {
-        if (AbstractPanel.TOP_PANEL != null) {
-            for (AbstractPanelButton button : AbstractPanel.TOP_PANEL.getButtons()) {
-                if (button instanceof ConfigPanelButton<?> configPanelButton) {
-                    if (configPanelButton.isDirty()) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        if (AbstractPanel.BOTTOM_PANEL != null) {
-            for (AbstractPanelButton button : AbstractPanel.BOTTOM_PANEL.getButtons()) {
-                if (button instanceof ConfigPanelButton<?> configPanelButton) {
-                    if (configPanelButton.isDirty()) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
     @Override
     protected void init() {
         load();
 
         for (SidebarButton button : sidebarButtons) {
+            button.setScreen(this);
             button.init(width, height);
         }
 
@@ -104,6 +83,7 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
             topMostSidebarButton.focus();
         }
 
+        avatarRenderer.setScreen(this);
         avatarRenderer.init(width, height);
     }
 
@@ -199,15 +179,15 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
 
     @Override
     public boolean mouseScrolled(double x, double y, double scrollX, double scrollY) {
+        if (avatarRenderer.mouseScrolled(x, y, scrollX, scrollY)) {
+            return true;
+        }
+
         if (AbstractPanel.TOP_PANEL != null && AbstractPanel.TOP_PANEL.mouseScrolled(x, y, scrollX, scrollY)) {
             return true;
         }
 
         if (AbstractPanel.BOTTOM_PANEL != null && AbstractPanel.BOTTOM_PANEL.mouseScrolled(x, y, scrollX, scrollY)) {
-            return true;
-        }
-
-        if (avatarRenderer.mouseScrolled(x, y, scrollX, scrollY)) {
             return true;
         }
 
@@ -286,7 +266,7 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
     }
 
     @Override
-    public void onFilesDrop(List<Path> files) {
+    public void onFilesDrop(@NonNull List<Path> files) {
         if (AbstractPanel.TOP_PANEL instanceof FileEventListener fileEventListener) {
             fileEventListener.onFilesDropped(files);
         }
@@ -328,11 +308,5 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
     @Override
     public boolean isInGameUi() {
         return true;
-    }
-
-    @SafeVarargs
-    public static void supplySidebarButton(Supplier<SidebarButton> supplier, Supplier<SidebarButton>... suppliers) {
-        sidebarSuppliers.add(supplier);
-        sidebarSuppliers.addAll(Arrays.asList(suppliers));
     }
 }

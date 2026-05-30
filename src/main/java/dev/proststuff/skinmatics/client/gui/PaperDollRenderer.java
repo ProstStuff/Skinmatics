@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.jspecify.annotations.NonNull;
@@ -25,6 +26,7 @@ public final class PaperDollRenderer implements HudElement, SkinmaticsClientMod 
     public static final int MODEL_BASE_WIDTH = 2;
     public static final int MODEL_BASE_HEIGHT = 3;
 
+    private boolean forcedHidden = false;
     private float yaw = 0.0F;
     private float lastStateYaw = 0.0F;
     private int tickCount = 0;
@@ -32,6 +34,14 @@ public final class PaperDollRenderer implements HudElement, SkinmaticsClientMod 
     private boolean preview = false;
 
     public PaperDollRenderer() {}
+
+    public void hide() {
+        forcedHidden = true;
+    }
+
+    public void show() {
+        forcedHidden = false;
+    }
 
     public Minecraft getMinecraft() {
         return Minecraft.getInstance();
@@ -49,6 +59,13 @@ public final class PaperDollRenderer implements HudElement, SkinmaticsClientMod 
             AvatarRenderer<AbstractClientPlayer> renderer = dispatcher.getPlayerRenderer(player);
             AvatarRenderState state = renderer.createRenderState();
             renderer.extractRenderState(player, state, deltaPartialTick);
+
+            if (config().paperDollHideEquipments.get()) {
+                state.headEquipment = ItemStack.EMPTY;
+                state.chestEquipment = ItemStack.EMPTY;
+                state.legsEquipment = ItemStack.EMPTY;
+                state.feetEquipment = ItemStack.EMPTY;
+            }
 
             if (!preview) {
                 float deviation = config().paperDollYawDeviation.get();
@@ -126,7 +143,7 @@ public final class PaperDollRenderer implements HudElement, SkinmaticsClientMod 
         // Fix model
         boolean forceRender = preview || tickCount <= 20;
 
-        if (forceRender || config().alwaysShowPaperDoll.get() || (config().showPaperDoll.get() && tickCount <= showUntil)) {
+        if (!forcedHidden && (forceRender || config().alwaysShowPaperDoll.get() || (config().showPaperDoll.get() && tickCount <= showUntil))) {
             AvatarRenderState state = getRenderState(partialTick);
 
             if (state != null) {

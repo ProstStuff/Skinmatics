@@ -5,13 +5,11 @@ import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileData;
 import dev.proststuff.skinmatics.api.client.ProfileRuntime;
 import dev.proststuff.skinmatics.api.client.ProfileRuntimeManager;
+import dev.proststuff.skinmatics.api.client.impl.ForceRenderLayer;
 import dev.proststuff.skinmatics.api.client.render.FaceRenderLayer;
+import dev.proststuff.skinmatics.api.client.texture.LayerState;
 import dev.proststuff.skinmatics.client.gui.customization.avatar.BodyPart;
 import dev.proststuff.skinmatics.client.gui.customization.avatar.ModelPartHider;
-import dev.proststuff.skinmatics.api.client.impl.ForceRenderLayer;
-import dev.proststuff.skinmatics.api.client.impl.mixin.EntityPreviewer;
-import dev.proststuff.skinmatics.api.client.impl.mixin.UUIDHolder;
-import dev.proststuff.skinmatics.api.client.texture.LayerState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -39,7 +37,7 @@ public class EyeRenderLayer extends FaceRenderLayer {
         boolean enabled = profile.enabled.get();
         boolean shown = profile.showEyes.get();
         boolean hidden = (eyePosition == EyePosition.RIGHT ? profile.hideRightEye : profile.hideLeftEye).get();
-        boolean isPreview = ((EntityPreviewer) state).skinmatics$isPreviewing();
+        boolean isPreview = state.skinmatics$isPreviewing();
         boolean headVisible = !isPreview || ModelPartHider.isVisible(BodyPart.HEAD);
 
         return enabled && headVisible && shown && !hidden;
@@ -64,7 +62,7 @@ public class EyeRenderLayer extends FaceRenderLayer {
         ProfileRuntime.HasPose hasPose = ProfileRuntime.HasPose.EMPTY;
 
         if (level != null) {
-            Player player = minecraft.level.getPlayerByUUID(((UUIDHolder) state).skinmatics$getUUID());
+            Player player = minecraft.level.getPlayerByUUID(state.skinmatics$getUUID());
 
             if (player != null) {
                 hasPose = player::hasPose;

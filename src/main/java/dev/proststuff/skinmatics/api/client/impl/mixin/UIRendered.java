@@ -1,6 +1,10 @@
 package dev.proststuff.skinmatics.api.client.impl.mixin;
 
 public interface UIRendered {
-    boolean skinmatics$isUiRendered();
-    void skinmatics$uiRender();
+    default boolean skinmatics$isUiRendered() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default void skinmatics$uiRender() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 }

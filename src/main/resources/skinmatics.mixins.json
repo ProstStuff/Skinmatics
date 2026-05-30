@@ -19,7 +19,6 @@
     "client.skin.ForceRenderLayerVisibility",
     "client.skin.HumanoidArmorModelSwapper",
     "client.skin.InventoryAvatar",
-    "client.skin.PlayerModelSlimAccessor",
     "client.skin.PreventOnlineSkinModification",
     "client.skin.SkinmaticsAvatarRenderer",
     "client.skin.SkinmaticsAvatarRenderState",

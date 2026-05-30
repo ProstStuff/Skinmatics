@@ -1,5 +1,6 @@
 package dev.proststuff.skinmatics.api.client.impl;
 
+import dev.proststuff.skinmatics.client.SkinmaticsClientRegistration;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.SkinmaticsTextureManager;
 import net.fabricmc.api.EnvType;
@@ -13,5 +14,9 @@ public interface SkinmaticsClientMod {
 
     default SkinmaticsConfig config() {
         return SkinmaticsConfig.INSTANCE;
+    }
+
+    default SkinmaticsClientRegistration registration() {
+        return SkinmaticsClientRegistration.INSTANCE;
     }
 }

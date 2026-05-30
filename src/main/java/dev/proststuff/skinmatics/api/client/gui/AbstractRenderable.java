@@ -2,14 +2,20 @@ package dev.proststuff.skinmatics.api.client.gui;
 
 import dev.proststuff.skinmatics.api.client.gui.impl.GuiRenderable;
 import dev.proststuff.skinmatics.api.client.gui.impl.ScreenEventListener;
+import net.minecraft.client.gui.screens.Screen;
 
-public abstract class AbstractRenderable implements GuiRenderable, ScreenEventListener {
+public abstract class AbstractRenderable<S extends Screen> implements GuiRenderable, ScreenEventListener {
     protected int x = 0;
     protected int y = 0;
     protected int screenWidth = 0;
     protected int screenHeight = 0;
+    protected S screen;
 
     public AbstractRenderable() {}
+
+    public void setScreen(S screen) {
+        this.screen = screen;
+    }
 
     @Override
     public void init(int width, int height) {

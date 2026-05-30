@@ -2,6 +2,7 @@ package dev.proststuff.skinmatics.api.client.gui.skinmatics.button;
 
 import dev.proststuff.skinmatics.api.client.gui.TextboxRenderable;
 import dev.proststuff.skinmatics.api.client.gui.skinmatics.AbstractPanel;
+import dev.proststuff.skinmatics.client.gui.customization.SkinmaticsCustomizationScreen;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.CharacterEvent;
@@ -9,14 +10,14 @@ import net.minecraft.client.input.KeyEvent;
 import org.jspecify.annotations.NonNull;
 
 public class TextPanelButton extends AbstractPanelButton {
-    protected final TextboxRenderable textbox;
+    protected final TextboxRenderable<SkinmaticsCustomizationScreen> textbox;
 
     public TextPanelButton(SimpleIdentifier identifier) {
         super(identifier);
-        this.textbox = new TextboxRenderable(AbstractPanel.WIDTH - (INDENT));
+        this.textbox = new TextboxRenderable<>(AbstractPanel.WIDTH - (INDENT));
     }
 
-    public TextboxRenderable getTextbox() {
+    public TextboxRenderable<SkinmaticsCustomizationScreen> getTextbox() {
         return textbox;
     }
 

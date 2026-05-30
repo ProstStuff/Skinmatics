@@ -3,7 +3,6 @@ package dev.proststuff.skinmatics.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.impl.ForceRenderLayer;
-import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -25,8 +24,7 @@ public class EmissiveSkinRenderLayer extends RenderLayer<AvatarRenderState, Play
     }
 
     public Profile getProfile(AvatarRenderState state) {
-        ProfileHolder dataHolder = (ProfileHolder) state;
-        return dataHolder.skinmatics$getProfile();
+        return state.skinmatics$getProfile();
     }
 
     @Override

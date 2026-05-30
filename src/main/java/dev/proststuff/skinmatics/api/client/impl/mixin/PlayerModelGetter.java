@@ -8,11 +8,20 @@ import net.minecraft.client.renderer.entity.ArmorModelSet;
 
 @Environment(EnvType.CLIENT)
 public interface PlayerModelGetter {
-    PlayerModel skinmatics$getWide();
-    PlayerModel skinmatics$getSlim();
+    default PlayerModel skinmatics$getWide() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 
-    ArmorModelSet<PlayerModel> skinmatics$getWideArmor();
-    ArmorModelSet<PlayerModel> skinmatics$getSlimArmor();
+    default PlayerModel skinmatics$getSlim() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+
+    default ArmorModelSet<PlayerModel> skinmatics$getWideArmor() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+    default ArmorModelSet<PlayerModel> skinmatics$getSlimArmor() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
     
     default PlayerModel skinmatics$getModel(Profile profile) {
         return profile.slim.get() ? skinmatics$getSlim() : skinmatics$getWide();

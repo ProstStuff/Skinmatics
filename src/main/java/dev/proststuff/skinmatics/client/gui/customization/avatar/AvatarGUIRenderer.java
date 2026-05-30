@@ -277,6 +277,7 @@ public class AvatarGUIRenderer extends AbstractSkinmaticsRenderable implements C
             }
 
             scale = Mth.clamp(scale, 1.0, 256.0);
+            return true;
         }
 
         return false;

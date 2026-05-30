@@ -4,7 +4,7 @@ import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.gui.skinmatics.AbstractPanel;
 import dev.proststuff.skinmatics.api.client.gui.skinmatics.button.BooleanPanelButton;
-import dev.proststuff.skinmatics.api.client.gui.skinmatics.button.DescriptionPanelButton;
+import dev.proststuff.skinmatics.api.client.gui.skinmatics.button.GroupPanelButton;
 import dev.proststuff.skinmatics.api.client.gui.skinmatics.button.config.IntegerTextConfigPanelButton;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -18,19 +18,19 @@ public class CustomizePanel extends AbstractPanel {
     protected final IntegerTextConfigPanelButton maxTicks = new IntegerTextConfigPanelButton(SkinmaticsMod.ofSimple("max_ticks"));
     protected final BooleanPanelButton strongerEmissiveGlow = new BooleanPanelButton(SkinmaticsMod.ofSimple("stronger_emissive_glow"), false);
 
-    protected final DescriptionPanelButton skin = new DescriptionPanelButton(SkinmaticsMod.ofSimple("skin"));
+    protected final GroupPanelButton skin = new GroupPanelButton(SkinmaticsMod.ofSimple("skin"));
     protected final BooleanPanelButton slim = new BooleanPanelButton(SkinmaticsMod.ofSimple("slim"), false);
     protected final BooleanPanelButton useCustomSkin = new BooleanPanelButton(SkinmaticsMod.ofSimple("use_custom_skin"), false);
     protected final BooleanPanelButton addEmissiveSkin = new BooleanPanelButton(SkinmaticsMod.ofSimple("add_emissive_skin"), false);
 
-    protected final DescriptionPanelButton capeAndWings = new DescriptionPanelButton(SkinmaticsMod.ofSimple("cape_and_wings"));
+    protected final GroupPanelButton capeAndWings = new GroupPanelButton(SkinmaticsMod.ofSimple("cape_and_wings"));
     protected final BooleanPanelButton showCape = new BooleanPanelButton(SkinmaticsMod.ofSimple("show_cape"), false);
     protected final BooleanPanelButton useCustomCape = new BooleanPanelButton(SkinmaticsMod.ofSimple("use_custom_cape"), false);
     protected final BooleanPanelButton addEmissiveCape = new BooleanPanelButton(SkinmaticsMod.ofSimple("add_emissive_cape"), false);
     protected final BooleanPanelButton useCustomWings = new BooleanPanelButton(SkinmaticsMod.ofSimple("use_custom_wings"), false);
     protected final BooleanPanelButton addEmissiveWings = new BooleanPanelButton(SkinmaticsMod.ofSimple("add_emissive_wings"), false);
 
-    protected final DescriptionPanelButton eyes = new DescriptionPanelButton(SkinmaticsMod.ofSimple("eyes"));
+    protected final GroupPanelButton eyes = new GroupPanelButton(SkinmaticsMod.ofSimple("eyes"));
     protected final BooleanPanelButton showEyes = new BooleanPanelButton(SkinmaticsMod.ofSimple("show_eyes"), false);
     protected final BooleanPanelButton addEmissiveEyes = new BooleanPanelButton(SkinmaticsMod.ofSimple("add_emissive_eyes"), false);
     protected final BooleanPanelButton hideRightEye = new BooleanPanelButton(SkinmaticsMod.ofSimple("hide_right_eye"), false);
@@ -44,20 +44,26 @@ public class CustomizePanel extends AbstractPanel {
                 enabled,
                 maxTicks,
                 strongerEmissiveGlow,
-
                 skin,
+                capeAndWings,
+                eyes
+        );
+
+        skin.addAll(
                 slim,
                 useCustomSkin,
-                addEmissiveSkin,
+                addEmissiveSkin
+        );
 
-                capeAndWings,
+        capeAndWings.addAll(
                 showCape,
                 useCustomCape,
                 addEmissiveCape,
                 useCustomWings,
-                addEmissiveWings,
+                addEmissiveWings
+        );
 
-                eyes,
+        eyes.addAll(
                 showEyes,
                 addEmissiveEyes,
                 hideRightEye,

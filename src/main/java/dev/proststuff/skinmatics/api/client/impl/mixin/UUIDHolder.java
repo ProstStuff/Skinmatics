@@ -3,6 +3,11 @@ package dev.proststuff.skinmatics.api.client.impl.mixin;
 import java.util.UUID;
 
 public interface UUIDHolder {
-    UUID skinmatics$getUUID();
-    void skinmatics$setUUID(UUID uuid);
+    default UUID skinmatics$getUUID() {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
+
+    default void skinmatics$setUUID(UUID uuid) {
+        throw new UnsupportedOperationException("Unimplemented operation");
+    }
 }
