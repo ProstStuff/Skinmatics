@@ -7,7 +7,7 @@ Files under `.src/main/resources/assets` and `.assets/sprite` are licensed under
 
 ```
 All Rights Reserved
-Copyright (c) 2026 YouCanCallMeFreyya
+Copyright (c) 2026 CallMeFreyya
 ```
 ---
 

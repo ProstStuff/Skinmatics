@@ -5,7 +5,7 @@
 	"name": "Skinmatics",
 	"description": "A versatile yet minimal player customization mod",
 	"authors": [
-		"ProstStuff, YouCanCallMeFreyya (Artist)"
+		"ProstStuff, CallMeFreyya (Artist)"
 	],
 	"contributors": [],
 	"contact": {
@@ -13,7 +13,7 @@
 		"sources": "https://github.com/ProstStuff/Skinmatics",
 		"issues": "https://github.com/ProstStuff/Skinmatics/issues"
 	},
-	"license": "MIT, All Rights Reserved (assets)",
+	"license": "MIT",
 	"icon": "assets/skinmatics/textures/icon.png",
 	"environment": "client",
 	"entrypoints": {
@@ -46,5 +46,6 @@
 			},
 			"update_checker": true
 		}
-	}
+	},
+	"accessWidener": "skinmatics.classtweaker"
 }
