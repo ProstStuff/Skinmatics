@@ -8,7 +8,7 @@ import dev.proststuff.skinmatics.api.client.gui.skinmatics.SidebarButton;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsClientMod;
 import dev.proststuff.skinmatics.client.SkinmaticsClientRegistration;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewRenderer;
 import dev.proststuff.utilitary.api.utility.SimpleIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 public final class SkinmaticsCustomizationScreen extends Screen implements SkinmaticsClientMod {
     private final Screen parent;
-    private final AvatarGUIRenderer avatarRenderer = new AvatarGUIRenderer();
+    private final PreviewRenderer avatarRenderer = new PreviewRenderer();
     private final List<SidebarButton> sidebarButtons = new ArrayList<>();
     private SidebarButton topMostSidebarButton = null;
 
@@ -156,6 +156,10 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
 
     @Override
     public boolean mouseClicked(@NonNull MouseButtonEvent event, boolean doubleClick) {
+        if (avatarRenderer.mouseClicked(event, doubleClick)) {
+            return true;
+        }
+
         for (SidebarButton button : sidebarButtons) {
             if (button.mouseClicked(event, doubleClick)) {
                 return true;
@@ -167,10 +171,6 @@ public final class SkinmaticsCustomizationScreen extends Screen implements Skinm
         }
 
         if (AbstractPanel.BOTTOM_PANEL != null && AbstractPanel.BOTTOM_PANEL.mouseClicked(event, doubleClick)) {
-            return true;
-        }
-
-        if (avatarRenderer.mouseClicked(event, doubleClick)) {
             return true;
         }
 

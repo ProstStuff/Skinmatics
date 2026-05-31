@@ -30,7 +30,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.jspecify.annotations.NonNull;
 
-public class AvatarGUIRenderer extends AbstractSkinmaticsRenderable implements ClickableRenderable {
+public class PreviewRenderer extends AbstractSkinmaticsRenderable implements ClickableRenderable {
     public static final float ANCHOR_HEIGHT = 1.125F;
     protected static PreviewPlayer PREVIEWER = null;
     protected static TextureData IMAGE = null;
@@ -47,7 +47,7 @@ public class AvatarGUIRenderer extends AbstractSkinmaticsRenderable implements C
     protected boolean rotationDragging = false;
     protected boolean positionDragging = false;
 
-    public AvatarGUIRenderer() {
+    public PreviewRenderer() {
         super(SkinmaticsMod.ofSimple("previewer"));
     }
 
@@ -317,7 +317,7 @@ public class AvatarGUIRenderer extends AbstractSkinmaticsRenderable implements C
     }
 
     public static void removePreviewer() {
-        ProfileManager.unassign(AvatarGUIRenderer.getPreviewer());
+        ProfileManager.unassign(PreviewRenderer.getPreviewer());
         if (PREVIEWER != null) {
             PREVIEWER.remove(Entity.RemovalReason.DISCARDED);
         }

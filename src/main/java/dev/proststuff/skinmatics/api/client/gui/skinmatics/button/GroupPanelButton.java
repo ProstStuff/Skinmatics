@@ -161,7 +161,7 @@ public class GroupPanelButton extends AbstractPanelButton {
             }
         }
 
-        return !isFocused();
+        return super.mouseDragged(event, dx, dy);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class GroupPanelButton extends AbstractPanelButton {
         int startY = getY() + Math.max(super.getHeight(), font().wordWrapHeight(component, AbstractPanel.WIDTH - INDENT) + (INDENT * 2));
 
         if (showChildren) {
-            int viewportEndY = getY() + panel.getHeight();
+            int viewportEndY = panel.getY() + panel.getHeight();
 
             for (AbstractPanelButton child : children) {
                 int height = child.getHeight();

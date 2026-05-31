@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.client.gui;
 
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsClientMod;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
-import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -48,7 +48,7 @@ public final class PaperDollRenderer implements HudElement, SkinmaticsClientMod 
     }
 
     public AbstractClientPlayer getPlayer() {
-        return preview ? AvatarGUIRenderer.getPreviewer() : getMinecraft().player;
+        return preview ? PreviewRenderer.getPreviewer() : getMinecraft().player;
     }
 
     public AvatarRenderState getRenderState(float deltaPartialTick) {
@@ -151,7 +151,7 @@ public final class PaperDollRenderer implements HudElement, SkinmaticsClientMod 
                 double rot = config().paperDollMirrorHorizontally.get() ? -r : r;
 
                 Quaternionf rotation = new Quaternionf().rotateX((float) Math.PI).rotateY((float) Math.toRadians(rot));
-                Vector3f translation = new Vector3f(0, AvatarGUIRenderer.ANCHOR_HEIGHT / 2.0F, 0).rotate(rotation);
+                Vector3f translation = new Vector3f(0, PreviewRenderer.ANCHOR_HEIGHT / 2.0F, 0).rotate(rotation);
 
                 int scale = config().paperDollScale.get();
                 int x = getX();

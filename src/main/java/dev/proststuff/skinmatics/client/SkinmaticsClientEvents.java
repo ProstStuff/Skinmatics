@@ -9,7 +9,7 @@ import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.ProfileRuntime;
 import dev.proststuff.skinmatics.api.client.ProfileRuntimeManager;
 import dev.proststuff.skinmatics.client.gui.PaperDollRenderer;
-import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewRenderer;
 import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewPlayer;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import dev.proststuff.skinmatics.client.render.EmissiveSkinRenderLayer;
@@ -99,7 +99,7 @@ public class SkinmaticsClientEvents {
             UUID uuid = entry.getKey();
             Entity entity = level.getEntity(uuid);
 
-            if (entity instanceof AbstractClientPlayer player && !entity.is(AvatarGUIRenderer.getPreviewer())) {
+            if (entity instanceof AbstractClientPlayer player && !entity.is(PreviewRenderer.getPreviewer())) {
                 Profile profile = entry.getValue();
                 BlockPos entityPosition = player.getOnPos();
 
@@ -116,7 +116,7 @@ public class SkinmaticsClientEvents {
     }
 
     private static void tickPreviewerAndClean(Minecraft minecraft) {
-        PreviewPlayer previewer = AvatarGUIRenderer.getPreviewer();
+        PreviewPlayer previewer = PreviewRenderer.getPreviewer();
         ClientLevel level = minecraft.level;
 
         if (level != null) {
@@ -155,8 +155,8 @@ public class SkinmaticsClientEvents {
                 cleanUpTime = 200;
             }
 
-        } else if (AvatarGUIRenderer.getPreviewer() != null) {
-            AvatarGUIRenderer.removePreviewer();
+        } else if (PreviewRenderer.getPreviewer() != null) {
+            PreviewRenderer.removePreviewer();
         }
     }
 
@@ -194,8 +194,8 @@ public class SkinmaticsClientEvents {
     private static void left(ClientPacketListener listener, Minecraft minecraft) {
         ProfileManager.clear();
 
-        if (AvatarGUIRenderer.getPreviewer() != null) {
-            AvatarGUIRenderer.removePreviewer();
+        if (PreviewRenderer.getPreviewer() != null) {
+            PreviewRenderer.removePreviewer();
         }
     }
 

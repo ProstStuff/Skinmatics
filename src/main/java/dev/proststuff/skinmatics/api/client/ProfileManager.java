@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.api.client;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.SkinmaticsClient;
-import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewRenderer;
 import dev.proststuff.skinmatics.api.client.impl.mixin.ProfileHolder;
 import dev.proststuff.skinmatics.client.SkinmaticsConfig;
 import dev.proststuff.utilitary.api.utility.FileJsonUtils;
@@ -169,8 +169,8 @@ public final class ProfileManager {
     public static void cleanUp(ClientLevel level) {
         Set<UUID> activeUUIDs = new HashSet<>();
 
-        if (AvatarGUIRenderer.getPreviewer() != null) {
-            activeUUIDs.add(AvatarGUIRenderer.getPreviewer().getUUID());
+        if (PreviewRenderer.getPreviewer() != null) {
+            activeUUIDs.add(PreviewRenderer.getPreviewer().getUUID());
         }
 
         level.entitiesForRendering().forEach(entity -> {

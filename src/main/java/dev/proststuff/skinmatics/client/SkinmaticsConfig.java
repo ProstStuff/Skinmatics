@@ -22,7 +22,7 @@ public class SkinmaticsConfig extends ConfigFile {
 
     public final BooleanConfigField showPaperDoll = new BooleanConfigField("showPaperDoll", true);
     public final BooleanConfigField alwaysShowPaperDoll = new BooleanConfigField("alwaysShowPaperDoll", false);
-    public final BooleanConfigField paperDollHideEquipments = new BooleanConfigField("paperDollHideEquipments", true);
+    public final BooleanConfigField paperDollHideEquipments = new BooleanConfigField("paperDollHideEquipments", false);
     public final IntegerConfigField paperDollShowFor = new IntegerConfigField("paperDollShowFor", 20).clamp(0, Integer.MAX_VALUE);
     public final IntegerConfigField paperDollScale = new IntegerConfigField("paperDollScale", 24).clamp(1, Integer.MAX_VALUE);
     public final IntegerConfigField paperDollYawDeviation = new IntegerConfigField("paperDollYawDeviation", 5).clamp(0, 180);

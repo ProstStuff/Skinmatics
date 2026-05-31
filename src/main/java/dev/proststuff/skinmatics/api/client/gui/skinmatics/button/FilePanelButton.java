@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.api.client.gui.skinmatics.button;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewRenderer;
 import dev.proststuff.skinmatics.client.gui.customization.panel.TexturesPanel;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import dev.proststuff.skinmatics.api.client.texture.TextureData;
@@ -105,11 +105,11 @@ public class FilePanelButton extends TextPanelButton {
     public boolean press(int button, double mouseX, double mouseY) {
         if (button == 0 && in(mouseX, mouseY)) {
             if (isFocused()) {
-                AvatarGUIRenderer.setImage(null);
+                PreviewRenderer.setImage(null);
                 return false;
             }
 
-            AvatarGUIRenderer.setImage(textureData);
+            PreviewRenderer.setImage(textureData);
 
             if (!isFile()) {
                 if (isReturn()) {

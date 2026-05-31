@@ -4,7 +4,7 @@ import dev.proststuff.skinmatics.api.client.Profile;
 import dev.proststuff.skinmatics.api.client.ProfileManager;
 import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
 import dev.proststuff.skinmatics.api.client.utility.SkinmaticsGraphicsUtils;
-import dev.proststuff.skinmatics.client.gui.customization.avatar.AvatarGUIRenderer;
+import dev.proststuff.skinmatics.client.gui.customization.avatar.PreviewRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +36,7 @@ public class ProfilePanelButton extends TextPanelButton {
     @Override
     public boolean press(int button, double mouseX, double mouseY) {
         if (button == 0 && in(mouseX, mouseY)) {
-            AvatarGUIRenderer.setProfile(profile);
+            PreviewRenderer.setProfile(profile);
 
             if (isFocused()) {
                 config().profile.set(profile.getProfileName());
