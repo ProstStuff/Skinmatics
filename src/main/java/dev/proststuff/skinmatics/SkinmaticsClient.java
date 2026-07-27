@@ -1,36 +1,42 @@
 package dev.proststuff.skinmatics;
 
-import dev.proststuff.skinmatics.api.client.gui.skinmatics.SidebarButton;
-import dev.proststuff.skinmatics.api.client.impl.SkinmaticsMod;
-import dev.proststuff.skinmatics.api.client.texture.SkinmaticsAssets;
 import dev.proststuff.skinmatics.client.SkinmaticsClientEvents;
-import dev.proststuff.skinmatics.client.SkinmaticsClientRegistration;
-import dev.proststuff.skinmatics.client.gui.PaperDollRenderer;
-import dev.proststuff.skinmatics.client.gui.customization.SkinmaticsCustomizationScreen;
-import dev.proststuff.skinmatics.client.gui.customization.panel.*;
-import dev.proststuff.utilitary.api.utility.FileJsonUtils;
+import dev.proststuff.skinmatics.client.renderer.PaperDollRenderer;
+import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.skinmatics.profile.ProfilePresets;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-import net.minecraft.client.gui.screens.Screen;
+import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
+import net.fabricmc.fabric.impl.client.rendering.hud.HudLayer;
+import net.minecraft.util.RandomSource;
 
-public class SkinmaticsClient implements ClientModInitializer, SkinmaticsMod {
+public final class SkinmaticsClient implements ClientModInitializer {
+    public static final RandomSource RANDOM = RandomSource.create();
+
     @Override
     public void onInitializeClient() {
+        SkinmaticsConfig.load();
+
         SkinmaticsClientEvents.init();
 
-        SkinmaticsClientRegistration registration = SkinmaticsClientRegistration.INSTANCE;
-        registration.addSidebarButton(SkinmaticsMod.ofSimple("home"), (id) -> new SidebarButton(id, SkinmaticsAssets.SKINMATICS, false, new HomePanel()));
-        registration.addSidebarButton(SkinmaticsMod.ofSimple("profiles"), (id) -> new SidebarButton(id, SkinmaticsAssets.PROFILES, false, new ProfilesPanel()));
-        registration.addSidebarButton(SkinmaticsMod.ofSimple("customize"), (id) -> new SidebarButton(id, SkinmaticsAssets.CUSTOMIZE, false, new CustomizePanel()));
-        registration.addSidebarButton(SkinmaticsMod.ofSimple("timeline"), (id) -> new SidebarButton(id, SkinmaticsAssets.TIMELINE, false, new TimelinePanel()));
-        registration.addSidebarButton(SkinmaticsMod.ofSimple("textures"), (id) -> new SidebarButton(id, SkinmaticsAssets.TEXTURES, true, new TexturesPanel()));
-        registration.addSidebarButton(SkinmaticsMod.ofSimple("directory"), (id) -> new SidebarButton(id, SkinmaticsAssets.DIRECTORY, true, () -> FileJsonUtils.getConfigPath().resolve(SkinmaticsMod.ID)));
-
-        HudElementRegistry.attachElementAfter(VanillaHudElements.HOTBAR, PaperDollRenderer.IDENTIFIER, PaperDollRenderer.INSTANCE);
+        ClientLifecycleEvents.CLIENT_STARTED.register((_) -> {
+            SkinmaticsConfig.save();
+            ProfilePresets.savePresets();
+        });
+        tryAttachingPaperDoll();
     }
 
-    public static Screen openCustomizationScreen(Screen parent) {
-        return new SkinmaticsCustomizationScreen(parent);
+    @SuppressWarnings("UnstableApiUsage")
+    private void tryAttachingPaperDoll() {
+        for (HudElementRegistryImpl.RootLayer layer : HudElementRegistryImpl.ROOT_ELEMENTS.values()) {
+            for (HudLayer hudLayer : layer.layers()) {
+                if (hudLayer.id().equals(PaperDollRenderer.ID)) {
+                    return;
+                }
+            }
+        }
+
+        HudElementRegistry.addLast(SkinmaticsMod.of("paper_doll"), PaperDollRenderer.INSTANCE);
     }
 }

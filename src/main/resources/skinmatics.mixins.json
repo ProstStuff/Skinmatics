@@ -1,9 +1,8 @@
 {
   "required": true,
   "package": "dev.proststuff.skinmatics.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-  ],
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   },
@@ -11,20 +10,13 @@
     "requireAnnotations": true
   },
   "client": [
-    "client.RemotePlayerPreviewer",
-    "client.skin.AvatarModelSwapper",
-    "client.skin.CapeTextureSwapper",
-    "client.skin.ElytraTextureSwapper",
-    "client.skin.EmissiveElytraRenderer",
-    "client.skin.ForceRenderLayerVisibility",
-    "client.skin.HumanoidArmorModelSwapper",
-    "client.skin.InventoryAvatar",
-    "client.skin.PreventOnlineSkinModification",
-    "client.skin.SkinmaticsAvatarRenderer",
+    "client.skin.AllowSkinTransparency",
+    "client.skin.SkinmaticsModelSwapper",
+    "client.skin.SkinmaticsWings",
+    "client.skin.ForceRenderLayers",
+    "client.skin.SkinmaticsAvatar",
     "client.skin.SkinmaticsAvatarRenderState",
-    "client.ui.AddSkinmaticsButton",
-    "client.ui.PreviewArmorHider",
-    "client.ui.PreviewElytraHider",
-    "client.ui.PreviewModelPartHider"
+    "client.skin.SkinmaticsCape",
+    "client.ui.AddSkinmaticsButton"
   ]
 }

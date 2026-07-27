@@ -1,20 +1,11 @@
 classTweaker  v1  official
 
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/UUIDHolder
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/ProfileHolder
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/UUIDHolder
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/PlayerModelGetter
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/PlayerModelSetter
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/EntityPreviewer
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/client/impl/mixin/UIRendered
+accessible method net/minecraft/client/gui/screens/Screen init ()V
+accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer solveBodyRot (Lnet/minecraft/world/entity/LivingEntity;FF)F
 
-inject-interface net/minecraft/client/renderer/entity/LivingEntityRenderer dev/proststuff/skinmatics/api/client/impl/mixin/PlayerModelSetter
-inject-interface net/minecraft/client/renderer/entity/player/AvatarRenderer dev/proststuff/skinmatics/api/client/impl/mixin/ProfileHolder
-inject-interface net/minecraft/client/renderer/entity/player/AvatarRenderer dev/proststuff/skinmatics/api/client/impl/mixin/PlayerModelGetter
+# Flip texture
+accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V
 
-inject-interface net/minecraft/client/renderer/entity/layers/CapeLayer dev/proststuff/skinmatics/api/client/impl/mixin/ProfileHolder
-inject-interface  net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer dev/proststuff/skinmatics/api/client/impl/mixin/PlayerModelSetter
+inject-interface net/minecraft/client/renderer/entity/state/EntityRenderState dev/proststuff/utilitary/api/v1/client/entity/UUIDRenderStateHolder
 
-inject-interface  net/minecraft/client/player/RemotePlayer dev/proststuff/skinmatics/api/client/impl/mixin/EntityPreviewer
-
-accessible field net/minecraft/client/model/player/PlayerModel slim Z
+inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/v1/client/TrackProfileEntity

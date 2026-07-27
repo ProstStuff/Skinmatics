@@ -1,29 +1,63 @@
 package dev.proststuff.skinmatics.mixin.client.ui;
 
-import dev.proststuff.skinmatics.SkinmaticsClient;
+import dev.proststuff.skinmatics.client.gui.screen.ProfileScreen;
+import dev.proststuff.skinmatics.client.gui.widget.button.IconButton;
+import dev.proststuff.skinmatics.client.skinmatics.ProfileManager;
+import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.skinmatics.profile.Profile;
+import dev.proststuff.skinmatics.client.skinmatics.profile.ProfileUtils;
+import dev.proststuff.skinmatics.client.skinmatics.texture.SkinmaticsAssets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.client.gui.screens.options.SkinCustomizationScreen;
 import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+@Mixin(OptionsSubScreen.class)
+public class AddSkinmaticsButton {
+    @Shadow
+    @Final
+    public HeaderAndFooterLayout layout;
 
-@Mixin(SkinCustomizationScreen.class)
-public abstract class AddSkinmaticsButton extends OptionsSubScreen {
-    public AddSkinmaticsButton(Screen parent, Options gameOptions, Component title) {
-        super(parent, gameOptions, title);
+    @Unique private AbstractButton skinmatics$skinmaticsButton;
+
+    @Inject(method = "addFooter", at = @At("TAIL"))
+    public void skinmatics$addSkinmatics(CallbackInfo ci) {
+        OptionsSubScreen screen = (OptionsSubScreen) (Object)this;
+
+        if (screen instanceof SkinCustomizationScreen) {
+            Minecraft minecraft = Minecraft.getInstance();
+            String profileName = SkinmaticsConfig.getInstance().getProfile();
+            Profile profile = ProfileManager.getLoaded(profileName);
+
+            if (profile != null) {
+                profileName = profile.name();
+            } else {
+                profileName = ProfileUtils.toProfilePath(profileName, true);
+            }
+
+            IconButton button = new IconButton(0, 0, 20, 20, SkinmaticsAssets.SKINMATICS_NO_BACKGROUND, 16, 16, (_, _) -> minecraft.setScreen(new ProfileScreen(screen)));
+            button.setTooltip(Tooltip.create(Component.translatable("skinmatics.selected_profile", profileName)));
+            button.setOverrideFocus(true, false);
+
+            layout.addToFooter(button);
+            skinmatics$skinmaticsButton = button;
+        }
     }
 
-    @Inject(method = "addOptions", at = @At("TAIL"))
-    public void skinmatics$addOptions(CallbackInfo ci) {
-        assert list != null;
-        list.addSmall(List.of(Button.builder(Component.translatable("skinmatics.options.skinmatics"), (_ -> Minecraft.getInstance().setScreen(SkinmaticsClient.openCustomizationScreen(this)))).build()));
+    @Inject(method = "repositionElements", at = @At("TAIL"))
+    public void skinmatics$repositionSkinmatics(CallbackInfo ci) {
+        if (skinmatics$skinmaticsButton != null) {
+            skinmatics$skinmaticsButton.setPosition(skinmatics$skinmaticsButton.getX() + 116, skinmatics$skinmaticsButton.getY());
+        }
     }
 }

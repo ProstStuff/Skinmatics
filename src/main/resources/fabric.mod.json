@@ -3,28 +3,28 @@
 	"id": "skinmatics",
 	"version": "${version}",
 	"name": "Skinmatics",
-	"description": "A versatile yet minimal player customization mod",
+	"description": "An extensive yet simple avatar customization mod",
 	"authors": [
-		"ProstStuff, CallMeFreyya (Artist)"
+		"ProstStuff, CallMeFreyya"
 	],
 	"contributors": [],
 	"contact": {
-		"homepage": "https://modrinth/Skinmatics",
+		"homepage": "https://modrinth/skinmatics",
 		"sources": "https://github.com/ProstStuff/Skinmatics",
 		"issues": "https://github.com/ProstStuff/Skinmatics/issues"
 	},
-	"license": "MIT",
+	"license": "All Rights Reserved",
 	"icon": "assets/skinmatics/textures/icon.png",
 	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"dev.proststuff.skinmatics.Skinmatics"
-		],
 		"client": [
 			"dev.proststuff.skinmatics.SkinmaticsClient"
 		],
 		"modmenu": [
 			"dev.proststuff.skinmatics.client.compat.SkinmaticsModMenu"
+		],
+		"lambdynlights:initializer": [
+			"dev.proststuff.skinmatics.client.compat.SkinmaticsDynamicLights"
 		]
 	},
 	"mixins": [
@@ -35,17 +35,19 @@
 		"minecraft": "~26.1",
 		"java": ">=25",
 		"fabric-api": "*",
-		"utilitary": "~0.4.0-beta.2"
+		"utilitary": ">=1.0.0-alpha"
 	},
+
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.discord": "https://discord.gg/u6ENkVyyd4",
+				"modmenu.discord": "https://discord.gg/C82atdWT2w",
 				"modmenu.modrinth": "https://modrinth.com/mod/skinmatics",
-				"modmenu.youtube": "https://www.youtube.com/@ProstStuff"
+				"modmenu.kofi": "https://ko-fi.com/proststuff"
 			},
 			"update_checker": true
 		}
 	},
+
 	"accessWidener": "skinmatics.classtweaker"
 }
