@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.texture.TextureData;
+import dev.proststuff.skinmatics.client.skinmatics.avatar.texture.AvatarTextureData;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -50,7 +50,7 @@ public abstract class FaceLayer extends SkinmaticsRenderLayer {
         }));
     }
 
-    public void renderTexture(PoseStack matrices, int order, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, TextureData textureData, Function<Identifier, RenderType> renderTypeFactory) {
+    public void renderTexture(PoseStack matrices, int order, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, AvatarTextureData textureData, Function<Identifier, RenderType> renderTypeFactory) {
         if (textureData.isEmpty()) return;
         renderTexture(matrices, order, submitNodeCollector, lightCoords, state, renderTypeFactory.apply(textureData.id()));
     }

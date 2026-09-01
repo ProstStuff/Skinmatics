@@ -1,14 +1,14 @@
 package dev.proststuff.skinmatics.mixin.client.ui;
 
-import dev.proststuff.skinmatics.client.gui.screen.ProfileScreen;
-import dev.proststuff.skinmatics.client.gui.widget.button.IconButton;
-import dev.proststuff.skinmatics.client.skinmatics.ProfileManager;
+import dev.proststuff.skinmatics.client.gui.SkinmaticsGui;
+import dev.proststuff.skinmatics.client.gui.widget.IconButton;
+import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarData;
 import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.skinmatics.profile.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.profile.ProfileUtils;
-import dev.proststuff.skinmatics.client.skinmatics.texture.SkinmaticsAssets;
+import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarUtils;
+import dev.proststuff.skinmatics.client.gui.SkinmaticsGuiAssets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.options.OptionsSubScreen;
@@ -27,27 +27,24 @@ public class AddSkinmaticsButton {
     @Shadow
     @Final
     public HeaderAndFooterLayout layout;
-
-    @Unique private AbstractButton skinmatics$skinmaticsButton;
+    @Unique private AbstractWidget skinmatics$skinmaticsButton;
 
     @Inject(method = "addFooter", at = @At("TAIL"))
     public void skinmatics$addSkinmatics(CallbackInfo ci) {
         OptionsSubScreen screen = (OptionsSubScreen) (Object)this;
 
         if (screen instanceof SkinCustomizationScreen) {
-            Minecraft minecraft = Minecraft.getInstance();
-            String profileName = SkinmaticsConfig.getInstance().getProfile();
-            Profile profile = ProfileManager.getLoaded(profileName);
+            String profileName = SkinmaticsConfig.getInstance().getAvatar();
+            AvatarData avatarData = AvatarDataManager.INSTANCE.get(profileName);
 
-            if (profile != null) {
-                profileName = profile.name();
+            if (avatarData != null) {
+                profileName = "[" + avatarData.name() + "]";
             } else {
-                profileName = ProfileUtils.toProfilePath(profileName, true);
+                profileName = AvatarUtils.toAvatarPath(profileName, true);
             }
 
-            IconButton button = new IconButton(0, 0, 20, 20, SkinmaticsAssets.SKINMATICS_NO_BACKGROUND, 16, 16, (_, _) -> minecraft.setScreen(new ProfileScreen(screen)));
+            IconButton button = new IconButton(0, 0, 20, 20, SkinmaticsGuiAssets.SKINMATICS_NO_BACKGROUND, 20, 20, (_) -> Minecraft.getInstance().setScreen(SkinmaticsGui.openScreen(Minecraft.getInstance().screen)));
             button.setTooltip(Tooltip.create(Component.translatable("skinmatics.selected_profile", profileName)));
-            button.setOverrideFocus(true, false);
 
             layout.addToFooter(button);
             skinmatics$skinmaticsButton = button;

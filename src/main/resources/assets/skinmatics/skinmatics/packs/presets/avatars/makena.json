@@ -1,0 +1,103 @@
+{
+  "config": 1,
+  "data": {
+    "name": "Makena",
+    "maxTicks": 0,
+    "strongerEmissiveGlow": false,
+    "skin": {
+      "slim": true,
+      "custom": true,
+      "emissive": false,
+      "textures": {
+        "presets/makena": [0]
+      },
+      "emissiveTextures": {}
+    },
+    "cape": {
+      "visible": true,
+      "custom": false,
+      "emissive": false,
+      "textures": {},
+      "emissiveTextures": {}
+    },
+    "wings": {
+      "custom": false,
+      "emissive": false,
+      "textures": {},
+      "emissiveTextures": {}
+    },
+    "eyes": {
+      "visible": true,
+      "hidden": [],
+      "emissive": [],
+      "blinkingChance": 100,
+      "blinkingTicks": 5,
+      "textures": {
+        "left": {
+          "front": {
+            "presets/eyes/makena_left_eye_r": [0]
+          },
+          "up": {
+            "presets/eyes/makena_left_eye_r": [0]
+          },
+          "down": {
+            "presets/eyes/makena_left_eye_r": [0]
+          },
+          "left": {
+            "presets/eyes/makena_left_eye_l": [0]
+          },
+          "leftUp": {
+            "presets/eyes/makena_left_eye_l": [0]
+          },
+          "leftDown": {
+            "presets/eyes/makena_left_eye_l": [0]
+          },
+          "right": {
+            "presets/eyes/makena_left_eye_r": [0]
+          },
+          "rightUp": {
+            "presets/eyes/makena_left_eye_r": [0]
+          },
+          "rightDown": {
+            "presets/eyes/makena_left_eye_r": [0]
+          }
+        },
+
+        "right": {
+          "front": {
+            "presets/eyes/makena_right_eye_l": [0]
+          },
+          "up": {
+            "presets/eyes/makena_right_eye_l": [0]
+          },
+          "down": {
+            "presets/eyes/makena_right_eye_l": [0]
+          },
+          "left": {
+            "presets/eyes/makena_right_eye_l": [0]
+          },
+          "leftUp": {
+            "presets/eyes/makena_right_eye_l": [0]
+          },
+          "leftDown": {
+            "presets/eyes/makena_right_eye_l": [0]
+          },
+          "right": {
+            "presets/eyes/makena_right_eye_r": [0]
+          },
+          "rightUp": {
+            "presets/eyes/makena_right_eye_r": [0]
+          },
+          "rightDown": {
+            "presets/eyes/makena_right_eye_r": [0]
+          }
+        }
+      },
+      "emissiveTextures": {}
+    },
+    "emissiveTextures": {},
+    "lights": {
+      "strength": 0
+    }
+  }
+}

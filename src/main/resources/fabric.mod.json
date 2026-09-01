@@ -3,7 +3,7 @@
 	"id": "skinmatics",
 	"version": "${version}",
 	"name": "Skinmatics",
-	"description": "An extensive yet simple avatar customization mod",
+	"description": "An overly extensive vanilla avatar customization mod",
 	"authors": [
 		"ProstStuff, CallMeFreyya"
 	],
@@ -21,10 +21,10 @@
 			"dev.proststuff.skinmatics.SkinmaticsClient"
 		],
 		"modmenu": [
-			"dev.proststuff.skinmatics.client.compat.SkinmaticsModMenu"
+			"dev.proststuff.skinmatics.compat.SkinmaticsModMenu"
 		],
 		"lambdynlights:initializer": [
-			"dev.proststuff.skinmatics.client.compat.SkinmaticsDynamicLights"
+			"dev.proststuff.skinmatics.compat.SkinmaticsDynamicLights"
 		]
 	},
 	"mixins": [
@@ -42,8 +42,7 @@
 		"modmenu": {
 			"links": {
 				"modmenu.discord": "https://discord.gg/C82atdWT2w",
-				"modmenu.modrinth": "https://modrinth.com/mod/skinmatics",
-				"modmenu.kofi": "https://ko-fi.com/proststuff"
+				"modmenu.modrinth": "https://modrinth.com/mod/skinmatics"
 			},
 			"update_checker": true
 		}

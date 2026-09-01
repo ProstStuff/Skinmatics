@@ -1,0 +1,11 @@
+{
+  "id": "presets",
+  "name": "Minecraft Default Skins",
+  "description": "Default Minecraft skins pack complete with their own eye sets.",
+  "license": "MIT",
+  "authors": [
+    "CallMeFreyya",
+    "Minecraft"
+  ],
+  "version": "1.0.0"
+}

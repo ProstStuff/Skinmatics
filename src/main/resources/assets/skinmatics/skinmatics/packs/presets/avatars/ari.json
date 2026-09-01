@@ -1,0 +1,103 @@
+{
+  "config": 1,
+  "data": {
+    "name": "Ari",
+    "maxTicks": 0,
+    "strongerEmissiveGlow": false,
+    "skin": {
+      "slim": false,
+      "custom": true,
+      "emissive": false,
+      "textures": {
+        "presets/ari": [0]
+      },
+      "emissiveTextures": {}
+    },
+    "cape": {
+      "visible": true,
+      "custom": false,
+      "emissive": false,
+      "textures": {},
+      "emissiveTextures": {}
+    },
+    "wings": {
+      "custom": false,
+      "emissive": false,
+      "textures": {},
+      "emissiveTextures": {}
+    },
+    "eyes": {
+      "visible": true,
+      "hidden": [],
+      "emissive": [],
+      "blinkingChance": 100,
+      "blinkingTicks": 5,
+      "textures": {
+        "left": {
+          "front": {
+            "presets/eyes/ari_left_eye_r": [0]
+          },
+          "up": {
+            "presets/eyes/ari_left_eye_r": [0]
+          },
+          "down": {
+            "presets/eyes/ari_left_eye_r": [0]
+          },
+          "left": {
+            "presets/eyes/ari_left_eye_l": [0]
+          },
+          "leftUp": {
+            "presets/eyes/ari_left_eye_l": [0]
+          },
+          "leftDown": {
+            "presets/eyes/ari_left_eye_l": [0]
+          },
+          "right": {
+            "presets/eyes/ari_left_eye_r": [0]
+          },
+          "rightUp": {
+            "presets/eyes/ari_left_eye_r": [0]
+          },
+          "rightDown": {
+            "presets/eyes/ari_left_eye_r": [0]
+          }
+        },
+
+        "right": {
+          "front": {
+            "presets/eyes/ari_right_eye_l": [0]
+          },
+          "up": {
+            "presets/eyes/ari_right_eye_l": [0]
+          },
+          "down": {
+            "presets/eyes/ari_right_eye_l": [0]
+          },
+          "left": {
+            "presets/eyes/ari_right_eye_l": [0]
+          },
+          "leftUp": {
+            "presets/eyes/ari_right_eye_l": [0]
+          },
+          "leftDown": {
+            "presets/eyes/ari_right_eye_l": [0]
+          },
+          "right": {
+            "presets/eyes/ari_right_eye_r": [0]
+          },
+          "rightUp": {
+            "presets/eyes/ari_right_eye_r": [0]
+          },
+          "rightDown": {
+            "presets/eyes/ari_right_eye_r": [0]
+          }
+        }
+      },
+      "emissiveTextures": {}
+    },
+    "emissiveTextures": {},
+    "lights": {
+      "strength": 0
+    }
+  }
+}

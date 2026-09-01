@@ -53,6 +53,30 @@ public final class GUI {
         return accentColor;
     }
 
+    public int getBackground(float alpha) {
+        return getBackgroundColor().get(alpha);
+    }
+
+    public int getBackground() {
+        return getBackground(0.5F);
+    }
+
+    public int getForeground(float alpha) {
+        return getForegroundColor().get(alpha);
+    }
+
+    public int getForeground() {
+        return getForeground(1.0F);
+    }
+
+    public int getAccent(float alpha) {
+        return getAccentColor().get(alpha);
+    }
+
+    public int getAccent() {
+        return getAccent(1.0F);
+    }
+
     public int getHorizontalProfiles() {
         return Math.max(horizontalProfiles, 0);
     }

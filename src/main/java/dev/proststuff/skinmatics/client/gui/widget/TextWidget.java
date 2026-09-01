@@ -1,42 +1,54 @@
 package dev.proststuff.skinmatics.client.gui.widget;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.TextAlignment;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.FormattedCharSequence;
 import org.jspecify.annotations.NonNull;
 
-public class TextWidget extends ScrollableWidget<TextWidget> {
-    protected final TextAlignment horizontalAlignment;
-    protected final TextAlignment verticalAlignment;
+import java.util.List;
 
-    public TextWidget(int x, int y, int width, int height, Component message, TextAlignment horizontalAlignment, TextAlignment verticalAlignment) {
+public class TextWidget extends SimpleWidget {
+    protected int textInset = 4;
+    protected int textColor = foregroundColor();
+
+    public boolean visualizeActivity = true;
+
+    public TextWidget(int x, int y, int width, int height, Component message) {
         super(x, y, width, height, message);
-        this.horizontalAlignment = horizontalAlignment;
-        this.verticalAlignment = verticalAlignment;
+        updateHeight(Minecraft.getInstance().font);
+    }
+
+    public void setTextInset(int textInset) {
+        this.textInset = textInset;
+        updateHeight(Minecraft.getInstance().font);
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public void updateHeight(Font font) {
+        int textWidth = getWidth() - textInset * 2;
+        List<FormattedCharSequence> lines = font.split(getMessage(), textWidth);
+        int lineHeight = font.lineHeight;
+        int newHeight = lines.size() * lineHeight + textInset * 2;
+        setHeight(newHeight);
     }
 
     @Override
-    public int getHeight() {
-        return Math.max(super.getHeight(), font().wordWrapHeight(message, width));
-    }
+    protected void extractContent(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        Font font = Minecraft.getInstance().font;
+        int textWidth = getWidth() - textInset * 2;
+        List<FormattedCharSequence> lines = font.split(getMessage(), textWidth);
+        int y = getY() + textInset;
+        int color = visualizeActivity ? ARGB.color(active ? 1.0F : 0.5F, textColor) : textColor;
 
-    @Override
-    protected void extractWidgetRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        Font font = font();
-        Component message = getMessage();
-        int width = getWidth() - SPACING * 2;
-
-        graphics.textWithWordWrap(font(), message,
-                SPACING + horizontalAlignment.calculateLeft(getX(), font, message.getVisualOrderText()),
-                verticalAlignment.calculateLeft(getY() + getHeight() / 2, font.wordWrapHeight(message, width)),
-                width, foregroundColor()
-        );
-    }
-
-    @Override
-    protected void updateWidgetNarration(@NonNull NarrationElementOutput output) {
-
+        for (FormattedCharSequence line : lines) {
+            graphics.text(font, line, getX() + textInset, y, color);
+            y += font.lineHeight;
+        }
     }
 }

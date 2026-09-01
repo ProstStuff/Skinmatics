@@ -2,8 +2,8 @@ package dev.proststuff.skinmatics.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.v1.client.renderer.ForceRenderLayer;
-import dev.proststuff.skinmatics.client.skinmatics.profile.Profile;
-import dev.proststuff.skinmatics.client.skinmatics.texture.TextureData;
+import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.skinmatics.avatar.texture.AvatarTextureData;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -24,14 +24,17 @@ public class EmissiveSkinLayer extends SkinmaticsRenderLayer {
 
     @Override
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float limbAngle, float limbDistance) {
-        if (getTracker(state) == null) return;
         if (ForceRenderLayer.isTrulyInvisible(state)) return;
-        int color = state.isSpectator ? ARGB.multiply(0x26FFFFFF, 0xFFFFFFFF) : 0xFFFFFFFF;
+        AvatarTracker tracker = state.skinmatics$getTracker();
+        if (tracker != null && tracker.getAvatar().skin().isEmissive()) {
+            AvatarTextureData textureData = tracker.getAvatar().skin().getEmissiveTextures().get(tracker);
 
-        PlayerModel playerEntityModel = getParentModel();
-        Profile profile = getProfile(state);
-        TextureData textureData = profile != null ? profile.skin().getEmissiveTextures().get(profile, state) : TextureData.EMPTY;
+            if (!textureData.isEmpty()) {
+                PlayerModel playerEntityModel = getParentModel();
+                int color = state.isSpectator ? ARGB.multiply(0x26FFFFFF, 0xFFFFFFFF) : 0xFFFFFFFF;
 
-        if (profile != null && !textureData.isEmpty()) submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, profile.getEmissiveRenderType(textureData.id()), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), color, null, state.outlineColor, null);
+                submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, tracker.getAvatar().getEmissiveRenderType(textureData.id()), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), color, null, state.outlineColor, null);
+            }
+        }
     }
 }

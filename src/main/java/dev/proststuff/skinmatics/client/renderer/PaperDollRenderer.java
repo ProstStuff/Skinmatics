@@ -1,11 +1,11 @@
 package dev.proststuff.skinmatics.client.renderer;
 
 import dev.proststuff.skinmatics.SkinmaticsMod;
-import dev.proststuff.skinmatics.client.gui.SkinmaticsUIElement;
 import dev.proststuff.skinmatics.client.skinmatics.config.PaperDoll;
 import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -21,7 +21,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.jspecify.annotations.NonNull;
 
-public class PaperDollRenderer implements HudElement, SkinmaticsUIElement {
+public class PaperDollRenderer implements HudElement {
     public static final PaperDollRenderer INSTANCE = new PaperDollRenderer();
 
     public static final int PLAYER_HEIGHT = 2;
@@ -37,20 +37,12 @@ public class PaperDollRenderer implements HudElement, SkinmaticsUIElement {
         return SkinmaticsConfig.getInstance().getPaperDoll();
     }
 
-    public boolean alwaysVisible() {
-        return paperDoll().isAlwaysVisible();
-    }
-
-    public boolean isEnabled() {
-        return forceEnabled || paperDoll().isAlwaysVisible();
-    }
-
     public boolean isVisible() {
-        return isEnabled() && (visibleTicks > 0 || alwaysVisible());
+        return (forceEnabled || paperDoll().isAlwaysVisible() || (paperDoll().isVisible()) && visibleTicks > 0);
     }
 
     public Entity getEntity() {
-        return minecraft().getCameraEntity();
+        return Minecraft.getInstance().getCameraEntity();
     }
 
     public void visibleFor(int ticks) {
@@ -62,7 +54,7 @@ public class PaperDollRenderer implements HudElement, SkinmaticsUIElement {
             visibleTicks = Math.max(0, visibleTicks - 1);
         }
 
-        if (!alwaysVisible()) {
+        if (!paperDoll().isAlwaysVisible()) {
             Entity entity = getEntity();
 
             if (entity != null && (!entity.hasPose(Pose.STANDING) || entity.isSprinting())) {
@@ -95,7 +87,7 @@ public class PaperDollRenderer implements HudElement, SkinmaticsUIElement {
 
     public void render(@NonNull Entity entity, @NonNull GuiGraphicsExtractor graphics, float tickDelta) {
         if (!isVisible()) return;
-        EntityRenderState state = minecraft().getEntityRenderDispatcher().extractEntity(entity, tickDelta);
+        EntityRenderState state = Minecraft.getInstance().getEntityRenderDispatcher().extractEntity(entity, tickDelta);
 
         float entityScale = state instanceof LivingEntityRenderState living ? living.scale : 1.0F;
         float scale = paperDoll().getScale() * entityScale;
@@ -119,19 +111,16 @@ public class PaperDollRenderer implements HudElement, SkinmaticsUIElement {
         modifyRenderState(state, entity, tickDelta);
         Vector3f position = new Vector3f();
         Quaternionf rotation = new Quaternionf().rotateX((float) Math.PI).rotateY((float) (Math.PI / 8.0) * (1.0F - screenAlignment.x * 2.0F));
-        position.add(0, PLAYER_HEIGHT * entityScale / 2.0F, 0)
-                .add(offsetX, offsetY, 0)
-        ;
-
+        position.add(0, PLAYER_HEIGHT * entityScale / 2.0F, 0).add(offsetX, offsetY, 0);
         graphics.entity(state, scale, position, rotation, null, 0, 0, graphics.guiWidth(), graphics.guiHeight());
     }
 
     @Override
     public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, @NonNull DeltaTracker deltaTracker) {
         Entity entity = getEntity();
-        if (entity == null) return;
+        if (entity == null || entity.isRemoved()) return;
 
-        if (!entity.hasPose(Pose.STANDING) || entity.isSprinting()) visibleFor(paperDoll().getVisibleTicks());
+        if (!entity.hasPose(Pose.STANDING) || entity.isSprinting() || !entity.isAlive()) visibleFor(paperDoll().getVisibleTicks());
         render(entity, graphics, deltaTracker.getGameTimeDeltaPartialTick(false));
     }
 }

@@ -1,0 +1,103 @@
+{
+  "config": 1,
+  "data": {
+    "name": "Kai",
+    "maxTicks": 0,
+    "strongerEmissiveGlow": false,
+    "skin": {
+      "slim": true,
+      "custom": true,
+      "emissive": false,
+      "textures": {
+        "presets/kai": [0]
+      },
+      "emissiveTextures": {}
+    },
+    "cape": {
+      "visible": true,
+      "custom": false,
+      "emissive": false,
+      "textures": {},
+      "emissiveTextures": {}
+    },
+    "wings": {
+      "custom": false,
+      "emissive": false,
+      "textures": {},
+      "emissiveTextures": {}
+    },
+    "eyes": {
+      "visible": true,
+      "hidden": [],
+      "emissive": [],
+      "blinkingChance": 100,
+      "blinkingTicks": 5,
+      "textures": {
+        "left": {
+          "front": {
+            "presets/eyes/kai_left_eye_r": [0]
+          },
+          "up": {
+            "presets/eyes/kai_left_eye_r": [0]
+          },
+          "down": {
+            "presets/eyes/kai_left_eye_r": [0]
+          },
+          "left": {
+            "presets/eyes/kai_left_eye_l": [0]
+          },
+          "leftUp": {
+            "presets/eyes/kai_left_eye_l": [0]
+          },
+          "leftDown": {
+            "presets/eyes/kai_left_eye_l": [0]
+          },
+          "right": {
+            "presets/eyes/kai_left_eye_r": [0]
+          },
+          "rightUp": {
+            "presets/eyes/kai_left_eye_r": [0]
+          },
+          "rightDown": {
+            "presets/eyes/kai_left_eye_r": [0]
+          }
+        },
+
+        "right": {
+          "front": {
+            "presets/eyes/kai_right_eye_l": [0]
+          },
+          "up": {
+            "presets/eyes/kai_right_eye_l": [0]
+          },
+          "down": {
+            "presets/eyes/kai_right_eye_l": [0]
+          },
+          "left": {
+            "presets/eyes/kai_right_eye_l": [0]
+          },
+          "leftUp": {
+            "presets/eyes/kai_right_eye_l": [0]
+          },
+          "leftDown": {
+            "presets/eyes/kai_right_eye_l": [0]
+          },
+          "right": {
+            "presets/eyes/kai_right_eye_r": [0]
+          },
+          "rightUp": {
+            "presets/eyes/kai_right_eye_r": [0]
+          },
+          "rightDown": {
+            "presets/eyes/kai_right_eye_r": [0]
+          }
+        }
+      },
+      "emissiveTextures": {}
+    },
+    "emissiveTextures": {},
+    "lights": {
+      "strength": 0
+    }
+  }
+}

@@ -2,6 +2,7 @@ package dev.proststuff.skinmatics;
 
 import dev.proststuff.utilitary.api.v1.util.SimpleIdentifier;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -19,6 +20,10 @@ public interface SkinmaticsMod {
 
     static SimpleIdentifier ofSimple(String path) {
         return SimpleIdentifier.of(ID, path);
+    }
+
+    static ModContainer getModContainer() {
+        return FabricLoader.getInstance().getModContainer(ID).orElseThrow();
     }
 
     static Version getVersion(String modId) {
