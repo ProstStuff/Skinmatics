@@ -1,9 +1,9 @@
 package dev.proststuff.skinmatics.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarData;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
+import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.WingsLayer;
@@ -30,19 +30,19 @@ public class SkinmaticsWings {
     private ElytraModel elytraModel;
 
     @Inject(method = "getPlayerElytraTexture", at = @At("HEAD"), cancellable = true)
-    private static void skinmatics$modifyDefaultElytraTexture(HumanoidRenderState state, CallbackInfoReturnable<Identifier> cir) {
+    private static void skinmatics$switchTexture(HumanoidRenderState state, CallbackInfoReturnable<Identifier> cir) {
         if (state instanceof AvatarRenderState renderState) {
             AvatarTracker tracker = renderState.skinmatics$getTracker();
 
             if (tracker != null) {
-                AvatarTextureData textureData = tracker.getAvatar().wings().getTextures().get(tracker);
+                AvatarTextureData textureData = tracker.getAvatar().wings().getBaseTextures().get(tracker);
                 if (!textureData.isEmpty()) cir.setReturnValue(textureData.id());
             }
         }
     }
 
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer;renderLayers(Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lnet/minecraft/world/item/ItemStack;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;II)V"))
-    public void skinmatics$renderEmissiveLayer(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, HumanoidRenderState state, float yRot, float xRot, CallbackInfo ci) {
+    public void skinmatics$renderEmissive(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, HumanoidRenderState state, float yRot, float xRot, CallbackInfo ci) {
         if (state instanceof AvatarRenderState avatarRenderState && avatarRenderState.skinmatics$getTracker() != null) {
             AvatarTracker tracker = avatarRenderState.skinmatics$getTracker();
             if (!tracker.getAvatar().wings().isEmissive()) return;

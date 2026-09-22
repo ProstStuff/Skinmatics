@@ -1,10 +1,10 @@
 package dev.proststuff.skinmatics.client.gui;
 
 import dev.proststuff.skinmatics.client.gui.widget.TextButton;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsGraphicsUtils;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarData;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarUtils;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.client.util.SkinmaticsGraphicsUtils;
+import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
+import dev.proststuff.skinmatics.client.util.AvatarUtils;
+import dev.proststuff.skinmatics.client.manager.AvatarDataManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;

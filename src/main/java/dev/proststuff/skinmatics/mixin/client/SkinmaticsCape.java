@@ -4,8 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
 import dev.proststuff.utilitary.api.v1.client.texture.DummyTextureAsset;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
@@ -45,17 +45,17 @@ public class SkinmaticsCape {
     }
 
     @ModifyExpressionValue(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/PlayerSkin;cape()Lnet/minecraft/core/ClientAsset$Texture;"))
-    public ClientAsset.Texture skinmatics$dummyCape(ClientAsset.Texture original, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot) {
+    public ClientAsset.Texture skinmatics$fakeDummyCape(ClientAsset.Texture original, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot) {
         AvatarTracker tracker = state.skinmatics$getTracker();
-        return original == null && tracker != null && !tracker.getAvatar().cape().getTextures().isEmpty() ? DummyTextureAsset.INSTANCE : original;
+        return original == null && tracker != null && !tracker.getAvatar().cape().getBaseTextures().isEmpty() ? DummyTextureAsset.INSTANCE : original;
     }
 
     @WrapOperation(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IIILnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V"))
-    private void skinmatics$wrapSubmitModel(SubmitNodeCollector collector, Model model, Object stateObj, PoseStack _poseStack, RenderType renderType, int light, int overlay, int color, ModelFeatureRenderer.CrumblingOverlay overlayData, Operation<Void> original, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot) {
+    private void skinmatics$renderCustom(SubmitNodeCollector collector, Model model, Object stateObj, PoseStack _poseStack, RenderType renderType, int light, int overlay, int color, ModelFeatureRenderer.CrumblingOverlay overlayData, Operation<Void> original, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot) {
         AvatarTracker tracker = state.skinmatics$getTracker();
 
         if (tracker != null) {
-            AvatarTextureData textureData = tracker.getAvatar().cape().getTextures().get(tracker);
+            AvatarTextureData textureData = tracker.getAvatar().cape().getBaseTextures().get(tracker);
 
             if (!textureData.isEmpty()) renderType = RenderTypes.entityTranslucent(textureData.id());
             original.call(collector, model, stateObj, poseStack, renderType, light, overlay, color, overlayData);
@@ -63,7 +63,7 @@ public class SkinmaticsCape {
     }
 
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IIILnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V"))
-    public void skinmatics$renderEmissiveCape(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
+    public void skinmatics$renderEmissive(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
         AvatarTracker tracker = state.skinmatics$getTracker();
 
         if (tracker != null && tracker.getAvatar().cape().isEmissive()) {

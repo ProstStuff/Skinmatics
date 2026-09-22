@@ -60,7 +60,11 @@ public abstract class ClickableButton extends SimpleWidget {
     @Override
     public void tick() {
         if (held) {
-            if (tickCount < triggerTickCount && tickCount++ > triggerTickCount) onClick.onClick(this);
+            if (tickCount++ == triggerTickCount) {
+                held = false;
+                tickCount = 0;
+                onClick.onClick(this);
+            }
         } else {
             tickCount = Math.max(tickCount - 2, 0);
         }

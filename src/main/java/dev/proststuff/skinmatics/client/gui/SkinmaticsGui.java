@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.client.gui;
 
-import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 

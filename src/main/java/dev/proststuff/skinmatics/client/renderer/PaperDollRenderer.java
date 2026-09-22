@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.client.renderer;
 
 import dev.proststuff.skinmatics.SkinmaticsMod;
-import dev.proststuff.skinmatics.client.skinmatics.config.PaperDoll;
-import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.client.config.PaperDoll;
+import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

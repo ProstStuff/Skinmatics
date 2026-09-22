@@ -3,9 +3,9 @@
 	"id": "skinmatics",
 	"version": "${version}",
 	"name": "Skinmatics",
-	"description": "An overly extensive vanilla avatar customization mod",
+	"description": "An avatar customization mod aims around the vanilla player model themselves.",
 	"authors": [
-		"ProstStuff, CallMeFreyya"
+		"Fraynn (ProstStuff, CallMeFreyya)"
 	],
 	"contributors": [],
 	"contact": {
@@ -37,16 +37,15 @@
 		"fabric-api": "*",
 		"utilitary": ">=1.0.0-alpha"
 	},
-
 	"custom": {
 		"modmenu": {
 			"links": {
+				"modmenu.patreon": "https://www.patreon.com/cw/Fraynn",
 				"modmenu.discord": "https://discord.gg/C82atdWT2w",
 				"modmenu.modrinth": "https://modrinth.com/mod/skinmatics"
 			},
 			"update_checker": true
 		}
 	},
-
 	"accessWidener": "skinmatics.classtweaker"
 }

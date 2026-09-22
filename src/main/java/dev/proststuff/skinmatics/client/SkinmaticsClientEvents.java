@@ -1,15 +1,15 @@
 package dev.proststuff.skinmatics.client;
 
+import dev.proststuff.skinmatics.client.avatar.AvatarPackLoader;
+import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.SkinmaticsGui;
+import dev.proststuff.skinmatics.client.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.client.renderer.PaperDollRenderer;
 import dev.proststuff.skinmatics.client.renderer.layer.EmissiveSkinLayer;
 import dev.proststuff.skinmatics.client.renderer.layer.EyesLayer;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarPackLoader;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarUtils;
-import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarDataManager;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.client.util.AvatarUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -30,8 +30,8 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Iterator;
 
-public class SkinmaticsClientEvents {
-    public static void init() {
+public interface SkinmaticsClientEvents {
+    static void init() {
         ClientTickEvents.END_CLIENT_TICK.register(SkinmaticsClientEvents::tickClient);
 
         ClientPlayConnectionEvents.JOIN.register(SkinmaticsClientEvents::connected);
@@ -61,7 +61,7 @@ public class SkinmaticsClientEvents {
 
         while (iterator.hasNext()) {
             AvatarTracker tracker = iterator.next();
-            LivingEntity entity = tracker.getEntity(level);
+            LivingEntity entity = tracker.getEntity();
 
             if (entity instanceof AvatarPlayer) continue;
             if (entity == null || entity.isDeadOrDying()) {

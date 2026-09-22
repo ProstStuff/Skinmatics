@@ -2,10 +2,10 @@ package dev.proststuff.skinmatics.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.proststuff.skinmatics.api.v1.client.renderer.ForceRenderLayer;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarData;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.data.Eyes;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
+import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.avatar.data.Eyes;
+import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -34,7 +34,7 @@ public class EyesLayer extends FaceLayer {
         start(poseStack);
         translate(poseStack, 0.001F);
 
-        for (String group : eyes.textures().keySet()) {
+        for (String group : eyes.baseTextures().keySet()) {
             if (eyes.isHidden(group)) continue;
             String eyeState = tracker.getEyeState(group, state);
             AvatarTextureData textureData = eyes.get(group, eyeState, false).get(tracker);

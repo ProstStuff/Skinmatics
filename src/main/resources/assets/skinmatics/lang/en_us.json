@@ -2,23 +2,27 @@
   "skinmatics.options.skinmatics": "Skinmatics...",
   "skinmatics.pack": "Skinmatics Minecraft Defaults",
 
-  "key.skinmatics.open_avatars": "Open Avatar Editor Screen",
-  "key.skinmatics.set_avatar": "Apply Own Profile To Targeted Entity",
-  "key.skinmatics.unset_avatar": "Remove Targeted Entity's Profile",
+  "key.category.skinmatics.main": "Skinmatics",
+  "key.skinmatics.open_avatars": "Open Wardrobe",
+  "key.skinmatics.set_avatar": "Apply Own Avatar To Targeted Player",
+  "key.skinmatics.unset_avatar": "Remove Targeted Player's Avatar",
 
   "skinmatics.set_avatar": "Applied %2$s avatar to [%1$s]",
   "skinmatics.unset_avatar": "Cleared %2$s avatar from [%1$s]",
-  "skinmatics.avatar": "Avatar",
+  "skinmatics.avatar": "Wardrobe",
   "skinmatics.avatar.edit": "Edit",
 
-  "skinmatics.avatar.no_avatar": "No existing avatar has been selected, double click an avatar card to equip it!",
-  "skinmatics.avatar.error": "An error have occurred and need a manual fix:\n%s\n§eNote: Please make a new one if this profile is from version <2.0.0",
+  "skinmatics.avatar.no_avatar": "No avatar has been selected, double click an avatar card to equip it!",
+  "skinmatics.avatar.error": "An error have occurred and need a manual fix\n(Check log for error)",
   "skinmatics.avatar.new": "New Avatar",
   "skinmatics.new_avatar": "Create New Avatar",
   "skinmatics.new_avatar.create": "Create",
-  "skinmatics.new_avatar.path_existed": "An existing avatar is found at %s, creating a new one will overwrite the current one (does not remove avatars loaded from resource packs)",
+  "skinmatics.new_avatar.path_existed": "An existing avatar is found at %s, creating a new one will overwrite the current one (does not remove avatar loaded from resource pack)",
   "skinmatics.new_avatar.path_available": "A new avatar will be created at %s",
-  "skinmatics.new_avatar.path": "Avatar Path",
+  "skinmatics.new_avatar.path": "Avatar Path*",
   "skinmatics.new_avatar.display_name": "Display Name",
-  "skinmatics.new_avatar.path_empty": "Avatar path cannot be empty"
+  "skinmatics.new_avatar.path_empty": "Avatar path cannot be empty",
+  "skinmatics.avatar.edit_wip": "Coming soon...ish.\n(use 3rd party text-editor, click to open documentation)",
+
+  "skinmatics.selected_profile": "Selected Avatar %s"
 }

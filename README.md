@@ -1,83 +1,47 @@
-# Skinmatics
 
-## About
-An avatar customization mod focusing in improving Minecraft's own player model than changing it for a new one.
-Features include:
+# About
 
-### Skin, Cape, And Elytra Texture Switching
-Allow the change of the player's skin, cape, and elytra texture without relying on
-Mojang's own avatar authentication.
+Skinmatics is a Minecraft avatar customization mod aims around the vanilla player model themselves.
+We do not aim to change the vanilla player model entirely like [Yes Steve Model](https://modrinth.com/mod/yes-steve-model) or [Figura](https://modrinth.com/mod/figura),
+but rather be extensions to the vanilla model. We try to keep things as vanilla-looking as possible.
 
-Note: Skinmatics is a client-only mod. Your Skinmatics avatar won't be synced to others and vice versa.
+## Features
 
-### Time-Frame-Like Animated Textures
+> [!INFO]
+> Skinmatics is a client-side mod. These customization is only visible to you, yourself and not others.
 
-### Emissive Textures
-Easily add custom glowing textures to your skin, cape, and elytra!
 
-### Dynamic Eyes
-Immerse your characters with dynamic eyes.
-The eyes follow where you look,
-and reacts different when using an item.
-Animated and emissive textures are supported to!
+1. Custom Texture To Your Skin, Cape, And Elytra!<br/>
+   We provide feature to change your skin, cape, and elytra texture.
 
-### Paper Doll
-Bedrock-like paper doll with extra configurations,
-view your character without going to third-person-view!
+2. [Animated Texture](./animatable#adding-texture)<br/>
+   You can have animated texture by defining the ticks and their texture location. Instead of using a long-strip image file, you define it to make it easier.
 
-### Dynamic Light Support **[EXPERIMENTAL]**
-Want your character to emit light?</br>
-Well Skinmatics provide just that!
+3. Emissive Texture<br/>
+   Let there be light! Your skin, cape, and elytra can now be glowing in the dark.
 
-LambDynamicLight is required to use this feature.
-Otherwise, it remains unfunctional.
+4. [Dynamic Eyes](./eyes)<br/>
+   Our signature feature! Your player now looks based on what you're looking, and reacts based on what you're doing!
 
-### PBR Support **[EXPERIMENTAL]**
-Emissive texture too strong?</br>
-Want to see how rough and metallic your character is?</br>
-Well Skinmatics also provide that.
+5. Dynamics Light [Experimental]<br/>
+   Your player can now have dynamic lightning. You need [LambDynamicLights](https://modrinth.com/mod/lambdynamiclights) for this to work.
 
-Iris Shaders with a PBR-supported shader is required to use this feature.
-Otherwise, it remains unfunctional.
+6. [PBR Support [Experimental]](./animatable#pbr-texture)<br/>
+   Control your depths, emissiveness, metalness, and roughness through the power of PBR! You need [Iris Shaders](https://modrinth.com/mod/iris) and an active shader with supported PBR to work.
 
-## Information
-
-### Dependency
-Fabric API and Utilitary 1.0.0 or above is required for Skinmatics to run.
-
-### Those Before Skinmatics 2.0.0
-A lot of change has been made, in-fact it's an almost full-blown rework on almost every aspect. Please note that:
-- Texture remain the same as 1.0.0
-- 'profile' is **deprecated**, replaced by '**avatar**'
-- The profile directory at `minecraft/config/skinmatics/profiles` is deprecated, all files under it remain untouched
-  - The avatar directory at `minecraft/config/skinmatics/avatars`
-- The structure of the **config and avatar files** have severely been changed with Utilitary 1.0.0 config system
-  - Your profile is **deprecated** and **will not be loaded** even if you moved them to the avatar directory
-  - Config file is now `.json5` instead of `json`, meaning Skinmatics **won't read the old file and create a new one**
+7. Paper Doll<br/>
+   Skinmatics add miniaturized player model (aka. paper doll) to your HUD (displayed at the top-left of your screen by default) that behave similary to Minecraft: Bedrock paper doll.
 
 ## FAQ
 
-1. Can I use Skinmatics on a server?</br>
-Yes, Skinmatics is a client-side mod,
-you should still be able to connect to any servers even with/without Skinmatics.
-Please note that Skinmatics is a **client-only mod, do not put this in a server**.
+1. Any plans to backport Skinmatics?<br/>
+   Due to how the code is written (especially with features that are only possible in newer Java/Minecraft), we do not have a plan to backport Skinmatics below **26.1**.
 
+2. Any plans to port Skinmatics to other mod loader?<br/>
+   "Personally, I hate managing NeoForge and Forge code, their system is _too strict or choking_ to me, so probably not. It frightens me..." <br/>-ProstStuff, Skinmatics Founder.
 
-2. Will Skinmatics be backported to [Minecraft version]?</br>
-We don't have plan for backports. However, we're open for a community-managed
-version of Skinmatics, and is looking for a maintainer.
+3. Will Skinmatics be updated to later Minecraft version?<br/>
+   Yes, we will update Skinmatics to support later Minecraft version once Skinmatics and [Utilitary](../utilitary/about) is stable enough. The mod should be able to run in later Minecraft version (if api changes didn't break any)
 
-
-3. Will Skinmatics be available on Forge/NeoForge?</br>
-We don't have plan to port to NeoForge or Forge (for older versions),
-as it would be a hassle rewriting and maintaining everything in one go.
-As we said in question 2,
-we're open for a community-managed version of Skinmatics,
-and looking for a maintainer for it.</br></br>
-If you're interested in maintaining other Minecraft versions or mod loader,
-or anything related with Skinmatics development,
-please DM me in Discord -ProstStuff
-
-
-4. Can I include Skinmatics in a modpack?</br>
-Yes, you can include it in a modpack. Provide credit and project link (e.g. Modrinth) as needed.
+4. Can I contribute to Skinmatics?<br/>
+   ~~Yes, you can!~~ Due to the current state of Skinmatics development being in a very experimental stages, and many breaking changes, we do not accept any PR (pull-request) (GitHub) contribution.
