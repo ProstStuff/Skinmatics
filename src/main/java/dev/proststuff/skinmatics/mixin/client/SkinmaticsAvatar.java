@@ -1,11 +1,14 @@
 package dev.proststuff.skinmatics.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarData;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarUtils;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.client.AvatarPlayer;
+import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
+import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.client.util.AvatarUtils;
+import dev.proststuff.skinmatics.client.util.SkinmaticsGraphicsUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -26,9 +29,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AvatarRenderer.class)
 public class SkinmaticsAvatar {
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"))
-    public <A extends net.minecraft.world.entity.Avatar & ClientAvatarEntity> void skinmatics$extractSkinmatics(A entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
+    public <A extends net.minecraft.world.entity.Avatar & ClientAvatarEntity> void skinmatics$extract(A entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
         AvatarTracker tracker = AvatarTrackerManager.INSTANCE.get(entity);
-        state.skinmatics$apply(tracker, entity.isDeadOrDying(), tracker != null && tracker.isBlinking());
+        state.skinmatics$apply(tracker, entity.isDeadOrDying() || (tracker != null && tracker.isBlinking()));
     }
 
     @Inject(method = "getTextureLocation(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/resources/Identifier;", at = @At("HEAD"), cancellable = true)
@@ -36,8 +39,18 @@ public class SkinmaticsAvatar {
         AvatarTracker tracker = state.skinmatics$getTracker();
 
         if (tracker != null) {
-            AvatarTextureData textureData = tracker.getAvatar().skin().getTextures().get(tracker);
-            if (!textureData.isEmpty()) cir.setReturnValue(textureData.id());
+            AvatarTextureData textureData = tracker.getAvatar().skin().getBaseTextures().get(tracker);
+
+            if (!textureData.isEmpty()) {
+                cir.setReturnValue(textureData.id());
+                return;
+            }
+
+            if (tracker.getEntity() instanceof AvatarPlayer) {
+                Identifier texture = SkinmaticsGraphicsUtils.getPlayerSkin(Minecraft.getInstance().getGameProfile());
+                if (texture == null) return;
+                cir.setReturnValue(texture);
+            }
         }
     }
 
@@ -53,14 +66,14 @@ public class SkinmaticsAvatar {
 
         if (tracker != null) {
             AvatarData avatarData = tracker.getAvatar();
-            AvatarTextureData textureData = avatarData.skin().getTextures().get(tracker);
+            AvatarTextureData textureData = avatarData.skin().getBaseTextures().get(tracker);
             if (!textureData.isEmpty()) return RenderTypes.entityTranslucent(textureData.id());
         }
 
         return defaultRenderType;
     }
 
-    @Inject(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModelPart(Lnet/minecraft/client/model/geom/ModelPart;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))
+    @Inject(method = "renderHand", at = @At("TAIL"))
     public void skinmatics$renderEmissiveHand(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, Identifier skinTexture, ModelPart arm, boolean hasSleeve, CallbackInfo ci) {
         AvatarTracker tracker = AvatarTrackerManager.INSTANCE.get(AvatarUtils.getClientUUID());
 

@@ -3,16 +3,19 @@ package dev.proststuff.skinmatics.client.gui.widget;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.SkinmaticsMod;
 import dev.proststuff.skinmatics.client.AvatarPlayer;
+import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
+import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.client.gui.SkinmaticsGuiAssets;
-import dev.proststuff.skinmatics.client.skinmatics.SkinmaticsGraphicsUtils;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarData;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.eyes.EyeStates;
-import dev.proststuff.skinmatics.client.skinmatics.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarDataManager;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.client.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.client.util.EyeUtils;
+import dev.proststuff.skinmatics.client.util.SkinmaticsGraphicsUtils;
+import dev.proststuff.utilitary.api.v1.util.SimpleIdentifier;
 import dev.proststuff.utilitary.config.v1.ConfigManager;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
@@ -29,24 +32,25 @@ public class AvatarButton extends ClickableButton {
 
     public final IconButton customize;
     public final IconButton delete;
-    public final IconButton open;
 
     public AvatarButton(int x, int y, int width, int height, AvatarData avatarData, @NonNull String avatarKey) {
         super(x, y, width, height, Component.literal(avatarData.name), AvatarButton::onClick);
         this.avatarData = avatarData;
         this.blinkTick = -avatarData.eyes().blinkingTicks();
         this.avatarKey = avatarKey;
+
         this.customize = new IconButton(x + width - 16, y + height - 16, SkinmaticsGuiAssets.CUSTOMIZE, 16, 16, (_) -> {});
+        this.customize.active = false;
+        this.customize.setTooltip(Tooltip.create(Component.translatable("skinmatics.avatar.edit_wip").withStyle(ChatFormatting.ITALIC)));
+
         this.delete = new IconButton(x + width - 16, y + height - 32, SkinmaticsGuiAssets.DELETE, 16, 16, (_) -> {
-            boolean success = ConfigManager.delete(avatarData.toPath(), AvatarData.TYPE);
+            SimpleIdentifier path = avatarData.toPath();
+            boolean success = ConfigManager.delete(path, AvatarData.TYPE);
 
             if (success) {
                 AvatarDataManager.INSTANCE.unregister(avatarKey);
                 minecraft().setScreen(parent);
             }
-        });
-        this.open = new IconButton(x + + width - 16, y + height - 48, SkinmaticsGuiAssets.FOLDER, 16, 16, (_) -> {
-
         });
 
         customize.setGroup(AVATAR_GROUP);
@@ -55,9 +59,6 @@ public class AvatarButton extends ClickableButton {
         delete.showBackground = false;
         delete.setHolding(60);
         delete.setDirection(3);
-
-        open.setGroup(AVATAR_GROUP);
-        open.showBackground = false;
     }
 
     @Override
@@ -107,7 +108,7 @@ public class AvatarButton extends ClickableButton {
         }
 
         Font font = minecraft().font;
-        SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, avatarData, tickCount, isBlinking() ? EyeStates.CLOSED : EyeStates.IDLE);
+        SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, avatarData, tickCount, isBlinking() ? EyeUtils.STATE_CLOSED : EyeUtils.STATE_IDLE);
 
         graphics.centeredText(font, getMessage(), getX() + getWidth() / 2, getY() + 8, foregroundColor());
 

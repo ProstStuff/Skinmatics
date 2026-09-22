@@ -19,7 +19,7 @@ public class FailedAvatarButton extends ClickableButton {
         this.focusable = false;
         this.error = error;
 
-        setTooltip(Tooltip.create(Component.translatable("skinmatics.avatar.error",error)));
+        setTooltip(Tooltip.create(Component.translatable("skinmatics.avatar.error", error)));
         setTooltipDelay(Duration.ZERO);
     }
 

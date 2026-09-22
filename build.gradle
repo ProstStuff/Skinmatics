@@ -28,6 +28,11 @@ repositories {
 	maven {
 		url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
 	}
+
+	maven {
+		name = "JitPack"
+		url = uri('https://jitpack.io')
+	}
 }
 
 loom {
@@ -39,9 +44,6 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:${loader_version}"
 
 	implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
-	//implementation "com.github.ProstStuff:Utilitary:${utilitary_version}"
-	implementation files("lib/utilitary-${utilitary_version}.jar")
-
 	implementation "com.terraformersmc:modmenu:${modmenu_version}"
 	implementation "dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${dynamiclights_version}"
 	implementation "maven.modrinth:iris:${iris_version}"
@@ -50,6 +52,10 @@ dependencies {
 	runtimeOnly "maven.modrinth:immediatelyfast:${immediately_fast_version}"
 	runtimeOnly "dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${dynamiclights_version}"
 	runtimeOnly "me.djtheredstoner:DevAuth-fabric:${devauth_version}"
+
+	//implementation "com.github.ProstStuff:Utilitary:${utilitary_version}"
+	// Just get local jar file bro. Utilitary JitPack is FUCKED (for me)
+	implementation files("lib/utilitary-${utilitary_version}.jar")
 }
 
 processResources {

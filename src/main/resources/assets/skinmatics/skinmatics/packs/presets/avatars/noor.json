@@ -3,27 +3,27 @@
   "data": {
     "name": "Noor",
     "maxTicks": 0,
-    "strongerEmissiveGlow": false,
+    "strongerEmissive": false,
     "skin": {
       "slim": true,
-      "custom": true,
+      "customBaseTexture": true,
       "emissive": false,
-      "textures": {
+      "baseTextures": {
         "presets/noor": [0]
       },
       "emissiveTextures": {}
     },
     "cape": {
       "visible": true,
-      "custom": false,
+      "customBaseTexture": false,
       "emissive": false,
-      "textures": {},
+      "baseTextures": {},
       "emissiveTextures": {}
     },
     "wings": {
-      "custom": false,
+      "customBaseTexture": false,
       "emissive": false,
-      "textures": {},
+      "baseTextures": {},
       "emissiveTextures": {}
     },
     "eyes": {
@@ -32,7 +32,7 @@
       "emissive": [],
       "blinkingChance": 100,
       "blinkingTicks": 5,
-      "textures": {
+      "baseTextures": {
         "left": {
           "closed": {
             "presets/eyes/noor_left_eye_c": [0]

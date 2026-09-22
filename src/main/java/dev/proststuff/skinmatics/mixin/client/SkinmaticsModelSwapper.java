@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import dev.proststuff.skinmatics.client.skinmatics.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.client.skinmatics.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
