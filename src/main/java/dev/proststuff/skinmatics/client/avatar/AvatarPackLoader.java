@@ -69,7 +69,7 @@ public interface AvatarPackLoader {
             Identifier id = entry.getKey();
             String[] split = id.getPath().split("/");
             String packName = split[split.length - 2];
-            String packPath = "skinmatics/packs/" + packName;
+            String packPath = "skinmatics/" + packName;
             Resource pack = entry.getValue();
 
             try {
