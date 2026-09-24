@@ -25,7 +25,7 @@ public final class AvatarData {
                     Codec.STRING.fieldOf("name").forGetter(AvatarData::name),
                     Codec.INT.fieldOf("maxTicks").forGetter(AvatarData::maxTicks),
                     Codec.BOOL.fieldOf("strongerEmissive").forGetter(AvatarData::strongerEmissiveGlow),
-                    Skin.CODEC.fieldOf("skin").forGetter(AvatarData::skin),
+                    Body.CODEC.fieldOf("body").forGetter(AvatarData::body),
                     Cape.CODEC.fieldOf("cape").forGetter(AvatarData::cape),
                     Wings.CODEC.fieldOf("wings").forGetter(AvatarData::wings),
                     Eyes.CODEC.fieldOf("eyes").forGetter(AvatarData::eyes),
@@ -45,17 +45,17 @@ public final class AvatarData {
     public String name;
     public int maxTicks;
     public boolean strongerEmissiveGlow;
-    private final Skin skin;
+    private final Body body;
     private final Cape cape;
     private final Wings wings;
     private final Eyes eyes;
     private final Lights lights;
 
-    public AvatarData(String name, int maxTicks, boolean strongerEmissiveGlow, Skin skin, Cape cape, Wings wings, Eyes eyes, Lights lights) {
+    public AvatarData(String name, int maxTicks, boolean strongerEmissiveGlow, Body body, Cape cape, Wings wings, Eyes eyes, Lights lights) {
         this.name = name;
         this.maxTicks = maxTicks;
         this.strongerEmissiveGlow = strongerEmissiveGlow;
-        this.skin = skin;
+        this.body = body;
         this.cape = cape;
         this.wings = wings;
         this.eyes = eyes;
@@ -63,7 +63,7 @@ public final class AvatarData {
     }
 
     public AvatarData(String name) {
-        this(name, 0, false, new Skin(), new Cape(), new Wings(), new Eyes(), new Lights());
+        this(name, 0, false, new Body(), new Cape(), new Wings(), new Eyes(), new Lights());
     }
 
     public RenderType getEmissiveRenderType(Identifier texture) {
@@ -82,8 +82,8 @@ public final class AvatarData {
         return strongerEmissiveGlow;
     }
 
-    public Skin skin() {
-        return skin;
+    public Body body() {
+        return body;
     }
 
     public Cape cape() {
@@ -124,7 +124,7 @@ public final class AvatarData {
         return Objects.equals(this.name, that.name) &&
                 this.maxTicks == that.maxTicks &&
                 this.strongerEmissiveGlow == that.strongerEmissiveGlow &&
-                Objects.equals(this.skin, that.skin) &&
+                Objects.equals(this.body, that.body) &&
                 Objects.equals(this.cape, that.cape) &&
                 Objects.equals(this.wings, that.wings) &&
                 Objects.equals(this.eyes, that.eyes) &&
@@ -133,7 +133,7 @@ public final class AvatarData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, maxTicks, strongerEmissiveGlow, skin, cape, wings, eyes, lights);
+        return Objects.hash(name, maxTicks, strongerEmissiveGlow, body, cape, wings, eyes, lights);
     }
 
     @Override
@@ -142,7 +142,7 @@ public final class AvatarData {
                 "name=" + name + ", " +
                 "maxTicks=" + maxTicks + ", " +
                 "strongerEmissiveGlow=" + strongerEmissiveGlow + ", " +
-                "skin=" + skin + ", " +
+                "body=" + body + ", " +
                 "cape=" + cape + ", " +
                 "wings=" + wings + ", " +
                 "eyes=" + eyes + ", " +

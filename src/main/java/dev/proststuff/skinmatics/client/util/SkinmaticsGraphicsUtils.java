@@ -51,7 +51,7 @@ public interface SkinmaticsGraphicsUtils {
                 fallbackSkin = AvatarTextureManager.INSTANCE.asReference(skin.toString());
             }
         } catch (Exception e) {
-            SkinmaticsMod.LOGGER.warn("Unable to get local player skin texture", e);
+            SkinmaticsMod.LOGGER.warn("Unable to get local player body texture", e);
         }
 
         if (avatarData == null) {
@@ -64,8 +64,8 @@ public interface SkinmaticsGraphicsUtils {
             return;
         }
 
-        AvatarTextureData skin = avatarData.skin().getBaseTextures().get(tickCount, avatarData.maxTicks());
-        AvatarTextureData emissiveSkin = avatarData.skin().getEmissiveTextures().get(tickCount, avatarData.maxTicks());
+        AvatarTextureData skin = avatarData.body().getBaseTextures().get(tickCount, avatarData.maxTicks());
+        AvatarTextureData emissiveSkin = avatarData.body().getEmissiveTextures().get(tickCount, avatarData.maxTicks());
 
         if (skin.isEmpty()) skin = fallbackSkin;
 

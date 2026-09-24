@@ -4,7 +4,7 @@
     "name": "Kai",
     "maxTicks": 0,
     "strongerEmissive": false,
-    "skin": {
+    "body": {
       "slim": true,
       "customBaseTexture": true,
       "emissive": false,

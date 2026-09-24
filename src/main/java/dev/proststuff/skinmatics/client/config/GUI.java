@@ -17,7 +17,7 @@ public final class GUI {
     );
 
     private ColorRGB backgroundColor = new ColorRGB(0x000000);
-    private ColorRGB foregroundColor = new ColorRGB(0xffffff);
+    private ColorRGB foregroundColor = new ColorRGB(0xFFFFFF);
     private ColorRGB accentColor = new ColorRGB(0xE88A36);
     private int horizontalProfiles = 5;
     private int verticalProfiles = 3;

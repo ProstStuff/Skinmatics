@@ -4,7 +4,7 @@
     "name": "Steve",
     "maxTicks": 0,
     "strongerEmissive": false,
-    "skin": {
+    "body": {
       "slim": false,
       "customBaseTexture": true,
       "emissive": false,

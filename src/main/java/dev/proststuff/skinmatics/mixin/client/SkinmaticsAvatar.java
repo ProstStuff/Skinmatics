@@ -35,22 +35,22 @@ public class SkinmaticsAvatar {
     }
 
     @Inject(method = "getTextureLocation(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/resources/Identifier;", at = @At("HEAD"), cancellable = true)
-    public void skinmatics$switchSkinTexture(AvatarRenderState state, CallbackInfoReturnable<Identifier> cir) {
+    public void skinmatics$switchBodyTexture(AvatarRenderState state, CallbackInfoReturnable<Identifier> cir) {
         AvatarTracker tracker = state.skinmatics$getTracker();
 
         if (tracker != null) {
-            AvatarTextureData textureData = tracker.getAvatar().skin().getBaseTextures().get(tracker);
+            AvatarTextureData textureData = tracker.getAvatar().body().getBaseTextures().get(tracker);
 
             if (!textureData.isEmpty()) {
                 cir.setReturnValue(textureData.id());
                 return;
             }
+        }
 
-            if (tracker.getEntity() instanceof AvatarPlayer) {
-                Identifier texture = SkinmaticsGraphicsUtils.getPlayerSkin(Minecraft.getInstance().getGameProfile());
-                if (texture == null) return;
-                cir.setReturnValue(texture);
-            }
+        if (AvatarTracker.getEntityStatic(state.utilitary$getUUID()) instanceof AvatarPlayer) {
+            Identifier texture = SkinmaticsGraphicsUtils.getPlayerSkin(Minecraft.getInstance().getGameProfile());
+            if (texture == null) return;
+            cir.setReturnValue(texture);
         }
     }
 
@@ -66,7 +66,7 @@ public class SkinmaticsAvatar {
 
         if (tracker != null) {
             AvatarData avatarData = tracker.getAvatar();
-            AvatarTextureData textureData = avatarData.skin().getBaseTextures().get(tracker);
+            AvatarTextureData textureData = avatarData.body().getBaseTextures().get(tracker);
             if (!textureData.isEmpty()) return RenderTypes.entityTranslucent(textureData.id());
         }
 
@@ -79,7 +79,7 @@ public class SkinmaticsAvatar {
 
         if (tracker != null) {
             AvatarData avatarData = tracker.getAvatar();
-            AvatarTextureData textureData = avatarData.skin().getEmissiveTextures().get(tracker);
+            AvatarTextureData textureData = avatarData.body().getEmissiveTextures().get(tracker);
 
             if (!textureData.isEmpty()) {
                 submitNodeCollector.order(1).submitModelPart(arm, poseStack, avatarData.getEmissiveRenderType(textureData.id()), lightCoords, OverlayTexture.NO_OVERLAY, null);

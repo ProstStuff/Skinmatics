@@ -26,8 +26,8 @@ public class EmissiveSkinLayer extends SkinmaticsRenderLayer {
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float limbAngle, float limbDistance) {
         if (ForceRenderLayer.isTrulyInvisible(state)) return;
         AvatarTracker tracker = state.skinmatics$getTracker();
-        if (tracker != null && tracker.getAvatar().skin().isEmissive()) {
-            AvatarTextureData textureData = tracker.getAvatar().skin().getEmissiveTextures().get(tracker);
+        if (tracker != null && tracker.getAvatar().body().isEmissive()) {
+            AvatarTextureData textureData = tracker.getAvatar().body().getEmissiveTextures().get(tracker);
 
             if (!textureData.isEmpty()) {
                 PlayerModel playerEntityModel = getParentModel();

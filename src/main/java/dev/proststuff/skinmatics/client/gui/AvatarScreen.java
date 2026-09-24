@@ -2,11 +2,8 @@ package dev.proststuff.skinmatics.client.gui;
 
 import dev.proststuff.skinmatics.SkinmaticsMod;
 import dev.proststuff.skinmatics.client.AvatarPlayer;
-import dev.proststuff.skinmatics.client.gui.widget.AvatarButton;
-import dev.proststuff.skinmatics.client.gui.widget.ClickableButton;
-import dev.proststuff.skinmatics.client.gui.widget.FailedAvatarButton;
-import dev.proststuff.skinmatics.client.gui.widget.NewAvatarButton;
 import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
+import dev.proststuff.skinmatics.client.gui.widget.*;
 import dev.proststuff.skinmatics.client.manager.AvatarDataManager;
 import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -14,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Util;
 import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
@@ -135,6 +133,10 @@ public class AvatarScreen extends SkinmaticsScreen {
         }
 
         this.maxAvatarListYOffset = Math.max(j - avatarYIndex + 1, 0) * avatarHeight;
+
+        addRenderableWidget(
+                new TextButton(width - 32, 0, 16, 16, Component.literal("?"), (_) -> Util.getPlatform().openUri("https://fraynn.pages.dev/docs/category/skinmatics"))
+        ).focusable = false;
     }
 
     public void extractAvatars(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {

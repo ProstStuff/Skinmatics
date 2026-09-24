@@ -59,17 +59,7 @@ public final class AvatarTracker {
     }
 
     public @Nullable LivingEntity getEntity() {
-        ClientLevel level = Minecraft.getInstance().level;
-        Objects.requireNonNull(level);
-        Entity entity = level.getEntity(uuid);
-
-        if (uuid.equals(AvatarPlayer.DEFAULT_AVATAR_PROFILE.id())) return AvatarPlayer.getInstance();
-        if (entity == null) return null;
-        if (!(entity instanceof LivingEntity)) {
-            throw new IllegalStateException("AvatarTracker shouldn't track a non-living entity!");
-        }
-
-        return (LivingEntity) entity;
+        return getEntityStatic(uuid);
     }
 
     public void setAvatar(@NonNull AvatarData avatarData) {
@@ -87,5 +77,19 @@ public final class AvatarTracker {
 
     public boolean isBlinking() {
         return tickCount < blinkTicks + avatarData.eyes().blinkingTicks();
+    }
+
+    public static @Nullable LivingEntity getEntityStatic(UUID uuid) {
+        ClientLevel level = Minecraft.getInstance().level;
+        Objects.requireNonNull(level);
+        Entity entity = level.getEntity(uuid);
+
+        if (uuid.equals(AvatarPlayer.DEFAULT_AVATAR_PROFILE.id())) return AvatarPlayer.getInstance();
+        if (entity == null) return null;
+        if (!(entity instanceof LivingEntity)) {
+            throw new IllegalStateException("AvatarTracker shouldn't track a non-living entity!");
+        }
+
+        return (LivingEntity) entity;
     }
 }

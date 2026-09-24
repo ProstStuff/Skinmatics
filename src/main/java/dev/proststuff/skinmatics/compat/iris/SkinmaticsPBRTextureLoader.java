@@ -10,8 +10,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jspecify.annotations.NonNull;
 
-public class DynamicPBRLoader implements PBRTextureLoader<SkinmaticsDynamicTexture> {
-    protected DynamicPBRLoader() {}
+public class SkinmaticsPBRTextureLoader implements PBRTextureLoader<SkinmaticsDynamicTexture> {
+    protected SkinmaticsPBRTextureLoader() {}
 
     @Override
     public void load(SkinmaticsDynamicTexture texture, ResourceManager resourceManager, PBRTextureConsumer pbrTextureConsumer) {

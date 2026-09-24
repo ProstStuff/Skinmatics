@@ -22,14 +22,14 @@ public class SkinmaticsModelSwapper {
     public <T extends Avatar & ClientAvatarEntity> PlayerModelType skinmatics$interceptPlayerModel(PlayerModelType original, final Map<PlayerModelType, AvatarRenderer<@NonNull T>> renderers, final T entity) {
         AvatarTracker entityTracker = AvatarTrackerManager.INSTANCE.get(entity);
 
-        if (entityTracker != null) return entityTracker.getAvatar().skin().slim() ? PlayerModelType.SLIM : PlayerModelType.WIDE;
+        if (entityTracker != null) return entityTracker.getAvatar().body().slim() ? PlayerModelType.SLIM : PlayerModelType.WIDE;
         return original;
     }
 
     @ModifyExpressionValue(method = "getRenderer(Lnet/minecraft/client/renderer/entity/state/EntityRenderState;)Lnet/minecraft/client/renderer/entity/EntityRenderer;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/PlayerSkin;model()Lnet/minecraft/world/entity/player/PlayerModelType;"))
     public PlayerModelType skinmatics$interceptPlayerModelFromRenderState(PlayerModelType original, EntityRenderState entityRenderState) {
         if (entityRenderState instanceof AvatarRenderState state && state.skinmatics$getTracker() != null) {
-            return state.skinmatics$getTracker().getAvatar().skin().slim() ? PlayerModelType.SLIM : PlayerModelType.WIDE;
+            return state.skinmatics$getTracker().getAvatar().body().slim() ? PlayerModelType.SLIM : PlayerModelType.WIDE;
         }
 
         return original;

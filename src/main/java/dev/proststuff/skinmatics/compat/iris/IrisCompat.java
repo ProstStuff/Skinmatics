@@ -15,7 +15,7 @@ public class IrisCompat {
     public static void init() {
         PBRTextureLoaderRegistry.INSTANCE.register(
                 SkinmaticsDynamicTexture.class,
-                new DynamicPBRLoader()
+                new SkinmaticsPBRTextureLoader()
         );
     }
 
