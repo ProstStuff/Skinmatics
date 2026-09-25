@@ -4,9 +4,9 @@ import dev.lambdaurora.lambdynlights.api.DynamicLightsContext;
 import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.lambdaurora.lambdynlights.api.entity.luminance.EntityLuminance;
 import dev.lambdaurora.lambdynlights.api.item.ItemLightSourceManager;
-import dev.proststuff.skinmatics.SkinmaticsMod;
-import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Range;
@@ -14,7 +14,7 @@ import org.jspecify.annotations.NonNull;
 
 public class SkinmaticsDynamicLights implements DynamicLightsInitializer {
     public static final EntityLuminance.Type PROFILED_ENTITY = EntityLuminance.Type.registerSimple(
-            SkinmaticsMod.of("profiled_entity"),
+            Skinmatics.of("profiled_entity"),
             ProfileEntityLuminance.INSTANCE
     );
 

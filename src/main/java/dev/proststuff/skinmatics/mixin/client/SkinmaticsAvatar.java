@@ -1,13 +1,13 @@
 package dev.proststuff.skinmatics.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.AvatarPlayer;
-import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
-import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
-import dev.proststuff.skinmatics.client.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.client.util.AvatarUtils;
-import dev.proststuff.skinmatics.client.util.SkinmaticsGraphicsUtils;
+import dev.proststuff.skinmatics.entity.AvatarPlayer;
+import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
+import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
+import dev.proststuff.skinmatics.avatar.v1.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.util.AvatarUtils;
+import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.model.geom.ModelPart;

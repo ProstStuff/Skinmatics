@@ -22,7 +22,7 @@
   "skinmatics.new_avatar.path": "Avatar Path*",
   "skinmatics.new_avatar.display_name": "Display Name",
   "skinmatics.new_avatar.path_empty": "Avatar path cannot be empty",
-  "skinmatics.avatar.edit_wip": "Coming soon...ish",
+  "skinmatics.avatar.edit_wip": "Coming soon...ish\nSee documentation (click '?' located at the topbar)",
 
   "skinmatics.selected_profile": "Selected Avatar %s"
 }

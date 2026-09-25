@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.mixin.client;
 
-import dev.proststuff.skinmatics.api.v1.client.AvatarTrackedEntity;
-import dev.proststuff.skinmatics.api.v1.client.SkinmaticsAvatarRenderState;
-import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.entity.AvatarTrackedEntity;
+import dev.proststuff.skinmatics.entity.SkinmaticsAvatarRenderState;
+import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

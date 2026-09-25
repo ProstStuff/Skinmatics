@@ -1,7 +1,7 @@
 package dev.proststuff.skinmatics.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.api.v1.client.renderer.ForceRenderLayer;
+import dev.proststuff.skinmatics.entity.renderer.ForceRenderLayer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;

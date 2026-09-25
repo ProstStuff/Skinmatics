@@ -1,8 +1,7 @@
 package dev.proststuff.skinmatics;
 
-import dev.proststuff.skinmatics.client.SkinmaticsClientEvents;
-import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.renderer.PaperDollRenderer;
+import dev.proststuff.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.entity.renderer.PaperDollRenderer;
 import dev.proststuff.skinmatics.compat.iris.IrisCompat;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -33,6 +32,6 @@ public final class SkinmaticsClient implements ClientModInitializer {
             }
         }
 
-        HudElementRegistry.attachElementAfter(VanillaHudElements.DEMO_TIMER, SkinmaticsMod.of("paper_doll"), PaperDollRenderer.INSTANCE);
+        HudElementRegistry.attachElementAfter(VanillaHudElements.DEMO_TIMER, Skinmatics.of("paper_doll"), PaperDollRenderer.INSTANCE);
     }
 }

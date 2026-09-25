@@ -1,9 +1,9 @@
 package dev.proststuff.skinmatics.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
-import dev.proststuff.skinmatics.client.avatar.AvatarTracker;
-import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
+import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
+import dev.proststuff.skinmatics.avatar.v1.texture.AvatarTextureData;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.WingsLayer;

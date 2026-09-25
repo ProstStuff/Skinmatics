@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.compat.iris;
 
-import dev.proststuff.skinmatics.client.avatar.texture.SkinmaticsDynamicTexture;
+import dev.proststuff.skinmatics.avatar.v1.texture.SkinmaticsDynamicTexture;
 import net.irisshaders.iris.pbr.TextureTracker;
 import net.irisshaders.iris.pbr.loader.PBRTextureLoaderRegistry;
 import net.minecraft.client.renderer.texture.AbstractTexture;

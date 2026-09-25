@@ -1,11 +1,11 @@
 package dev.proststuff.skinmatics.mixin.client.ui;
 
-import dev.proststuff.skinmatics.client.avatar.data.AvatarData;
-import dev.proststuff.skinmatics.client.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.client.gui.SkinmaticsGui;
-import dev.proststuff.skinmatics.client.gui.SkinmaticsGuiAssets;
-import dev.proststuff.skinmatics.client.gui.widget.IconButton;
-import dev.proststuff.skinmatics.client.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
+import dev.proststuff.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.gui.SkinmaticsGui;
+import dev.proststuff.skinmatics.gui.SkinmaticsGuiAssets;
+import dev.proststuff.skinmatics.gui.widget.IconButton;
+import dev.proststuff.skinmatics.manager.AvatarDataManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;

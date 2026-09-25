@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.compat.iris;
 
-import dev.proststuff.skinmatics.client.manager.AvatarTextureManager;
-import dev.proststuff.skinmatics.client.avatar.texture.AvatarTextureData;
-import dev.proststuff.skinmatics.client.avatar.texture.SkinmaticsDynamicTexture;
+import dev.proststuff.skinmatics.manager.AvatarTextureManager;
+import dev.proststuff.skinmatics.avatar.v1.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.avatar.v1.texture.SkinmaticsDynamicTexture;
 import net.irisshaders.iris.pbr.loader.PBRTextureLoader;
 import net.irisshaders.iris.pbr.texture.PBRType;
 import net.irisshaders.iris.vertices.ImmediateState;

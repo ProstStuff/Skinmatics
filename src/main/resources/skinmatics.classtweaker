@@ -11,4 +11,4 @@ accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer solveBodyRot (Lnet/minecraft/world/entity/LivingEntity;FF)F
 
 inject-interface net/minecraft/client/renderer/entity/state/EntityRenderState dev/proststuff/utilitary/api/v1/client/entity/UUIDRenderStateHolder
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/api/v1/client/SkinmaticsAvatarRenderState
+inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/entity/SkinmaticsAvatarRenderState
