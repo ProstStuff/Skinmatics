@@ -1,11 +1,11 @@
 package dev.proststuff.skinmatics.mixin.client.ui;
 
-import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
+import dev.proststuff.skinmatics.avatar.AvatarProfile;
 import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.gui.SkinmaticsGui;
 import dev.proststuff.skinmatics.gui.SkinmaticsGuiAssets;
 import dev.proststuff.skinmatics.gui.widget.IconButton;
-import dev.proststuff.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.manager.AvatarProfileManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
@@ -34,10 +34,10 @@ public class AddSkinmaticsButton {
 
         if (screen instanceof SkinCustomizationScreen) {
             String avatarName = SkinmaticsConfig.getInstance().getAvatar();
-            AvatarData avatarData = AvatarDataManager.INSTANCE.get(avatarName);
+            AvatarProfile avatarData = AvatarProfileManager.INSTANCE.get(avatarName);
 
             if (avatarData != null) {
-                avatarName = avatarData.getDisplayName();
+                avatarName = avatarData.name();
             } else {
                 avatarName = "";
             }

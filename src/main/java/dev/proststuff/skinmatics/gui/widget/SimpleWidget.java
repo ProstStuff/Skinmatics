@@ -1,8 +1,8 @@
 package dev.proststuff.skinmatics.gui.widget;
 
 import dev.proststuff.skinmatics.gui.SkinmaticsGui;
-import dev.proststuff.utilitary.api.v1.client.Tickable;
-import dev.proststuff.utilitary.api.v1.client.gui.*;
+import dev.proststuff.utilitary.util.Tickable;
+import dev.proststuff.utilitary.client.gui.*;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;

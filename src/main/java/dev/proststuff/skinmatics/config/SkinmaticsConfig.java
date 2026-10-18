@@ -3,13 +3,16 @@ package dev.proststuff.skinmatics.config;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
-import dev.proststuff.utilitary.api.v1.util.SimpleIdentifier;
-import dev.proststuff.utilitary.config.v1.*;
-import dev.proststuff.utilitary.config.v1.serialization.Comment;
-import dev.proststuff.utilitary.config.v1.serialization.format.Json5ConfigFormat;
-import dev.proststuff.utilitary.config.v1.serialization.metadata.SimpleMetadataType;
+import dev.proststuff.utilitary.config.ConfigType;
+import dev.proststuff.utilitary.config.serialization.ConfigParser;
+import dev.proststuff.utilitary.config.serialization.ConfigSerializationResult;
+import dev.proststuff.utilitary.config.serialization.ConfigSerializationStatus;
+import dev.proststuff.utilitary.config.serialization.format.Json5ConfigFormat;
+import dev.proststuff.utilitary.config.serialization.metadata.SimpleMetadataType;
+import dev.proststuff.utilitary.config.serialization.Comment;
+import dev.proststuff.utilitary.util.SimpleIdentifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import org.jspecify.annotations.NonNull;
@@ -28,10 +31,10 @@ public final class SkinmaticsConfig {
             ).apply(inst, SkinmaticsConfig::apply)
     );
 
-    private static final ConfigType<SkinmaticsConfig, SimpleMetadataType.Metadata, Json5ConfigFormat.FormatSettings> TYPE = new ConfigType<>(
+    private static final ConfigType<SkinmaticsConfig, SimpleMetadataType.Metadata> TYPE = new ConfigType<>(
             ID.asNormalizedIdentifier(),
             0,
-            ConfigCodec.of(CODEC),
+            ConfigType.fileCodec(SimpleMetadataType.CODEC, CODEC),
             (_) -> INSTANCE,
             SimpleMetadataType.INSTANCE,
             Json5ConfigFormat.INSTANCE,
@@ -78,7 +81,7 @@ public final class SkinmaticsConfig {
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            AvatarTrackerManager.INSTANCE.register(player, AvatarDataManager.INSTANCE.get(avatar));
+            AvatarTrackerManager.INSTANCE.register(player, AvatarProfileManager.INSTANCE.get(avatar));
         }
     }
 
@@ -124,11 +127,11 @@ public final class SkinmaticsConfig {
         return INSTANCE;
     }
 
-    public static ConfigResult<SkinmaticsConfig, SimpleMetadataType.Metadata> load() {
-        return ConfigManager.load(ID, TYPE);
+    public static ConfigSerializationResult<SkinmaticsConfig, SimpleMetadataType.Metadata> load() {
+        return ConfigParser.read(TYPE, ID);
     }
 
-    public static ConfigStatus save() {
-        return ConfigManager.save(ID, TYPE, INSTANCE);
+    public static ConfigSerializationStatus save() {
+        return ConfigParser.write(TYPE, ID, SkinmaticsConfig.INSTANCE);
     }
 }

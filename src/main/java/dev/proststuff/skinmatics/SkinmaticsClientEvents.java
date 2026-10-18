@@ -1,16 +1,16 @@
 package dev.proststuff.skinmatics;
 
-import dev.proststuff.skinmatics.avatar.v1.AvatarPackLoader;
-import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
+import dev.proststuff.skinmatics.avatar.AvatarPackLoader;
+import dev.proststuff.skinmatics.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.avatar.AvatarUtils;
+import dev.proststuff.skinmatics.avatar.renderer.PaperDollRenderer;
+import dev.proststuff.skinmatics.avatar.renderer.layer.EmissiveSkinRenderLayer;
+import dev.proststuff.skinmatics.avatar.renderer.layer.EyesRenderLayer;
 import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
 import dev.proststuff.skinmatics.gui.SkinmaticsGui;
-import dev.proststuff.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.entity.renderer.PaperDollRenderer;
-import dev.proststuff.skinmatics.entity.renderer.layer.EmissiveSkinLayer;
-import dev.proststuff.skinmatics.entity.renderer.layer.EyesLayer;
-import dev.proststuff.skinmatics.util.AvatarUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -29,7 +29,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.Iterator;
+import java.util.List;
 
 public interface SkinmaticsClientEvents {
     static void init() {
@@ -47,8 +47,8 @@ public interface SkinmaticsClientEvents {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void registerPlayerFeatures(EntityType<? extends LivingEntity> entityType, LivingEntityRenderer<?, ?, ?> livingEntityRenderer, LivingEntityRenderLayerRegistrationCallback.RegistrationHelper registrationHelper, EntityRendererProvider.Context context) {
         if (livingEntityRenderer instanceof AvatarRenderer avatarRenderer) {
-            registrationHelper.register(new EyesLayer(avatarRenderer));
-            registrationHelper.register(new EmissiveSkinLayer(avatarRenderer));
+            registrationHelper.register(new EyesRenderLayer(avatarRenderer));
+            registrationHelper.register(new EmissiveSkinRenderLayer(avatarRenderer));
         }
     }
 
@@ -58,15 +58,12 @@ public interface SkinmaticsClientEvents {
 
         BlockPos pos0 = origin.getOnPos();
         int updateRange = SkinmaticsConfig.getInstance().getUpdateRange();
-        Iterator<AvatarTracker> iterator = AvatarTrackerManager.INSTANCE.getAll().values().iterator();
-
-        while (iterator.hasNext()) {
-            AvatarTracker tracker = iterator.next();
+        for (AvatarTracker tracker : List.copyOf(AvatarTrackerManager.INSTANCE.values())) {
             LivingEntity entity = tracker.getEntity();
 
             if (entity instanceof AvatarPlayer) continue;
             if (entity == null || entity.isDeadOrDying()) {
-                iterator.remove();
+                AvatarTrackerManager.INSTANCE.unregisterValue(tracker);
                 continue;
             }
 
@@ -91,14 +88,14 @@ public interface SkinmaticsClientEvents {
 
                     if (tracker != null) {
                         AvatarTrackerManager.INSTANCE.register(minecraft.crosshairPickEntity, tracker.getAvatar());
-                        minecraft.player.sendOverlayMessage(Component.translatable("skinmatics.set_avatar", tracker.getAvatar().name, minecraft.crosshairPickEntity.getDisplayName()));
+                        minecraft.player.sendOverlayMessage(Component.translatable("skinmatics.set_avatar", tracker.getAvatar().name(), minecraft.crosshairPickEntity.getDisplayName()));
                     }
                 }
 
                 if (SkinmaticsKeyMappings.UNSET_PROFILE_ENTITY.consumeClick()) {
                     AvatarTracker tracker = AvatarTrackerManager.INSTANCE.unregister(minecraft.crosshairPickEntity.getUUID());
                     if (tracker != null)
-                        minecraft.player.sendOverlayMessage(Component.translatable("skinmatics.unset_avatar", tracker.getAvatar().name, minecraft.crosshairPickEntity.getDisplayName()));
+                        minecraft.player.sendOverlayMessage(Component.translatable("skinmatics.unset_avatar", tracker.getAvatar().name(), minecraft.crosshairPickEntity.getDisplayName()));
                 }
             }
         }
@@ -118,14 +115,14 @@ public interface SkinmaticsClientEvents {
     }
 
     private static void entityLoad(Entity entity, ClientLevel level) {
-        if (AvatarUtils.isClientEntity(entity)) AvatarTrackerManager.INSTANCE.register(entity, AvatarDataManager.INSTANCE.get(SkinmaticsConfig.getInstance().getAvatar()));
+        if (AvatarUtils.isClientEntity(entity)) AvatarTrackerManager.INSTANCE.register(entity, AvatarProfileManager.INSTANCE.get(SkinmaticsConfig.getInstance().getAvatar()));
     }
 
     private static void connected(ClientPacketListener listener, PacketSender sender, Minecraft minecraft) {
         SkinmaticsConfig.load();
 
         if (minecraft.player != null) {
-            AvatarTrackerManager.INSTANCE.register(minecraft.player, AvatarDataManager.INSTANCE.get(SkinmaticsConfig.getInstance().getAvatar()));
+            AvatarTrackerManager.INSTANCE.register(minecraft.player, AvatarProfileManager.INSTANCE.get(SkinmaticsConfig.getInstance().getAvatar()));
         }
     }
 

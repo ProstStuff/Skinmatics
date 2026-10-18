@@ -11,13 +11,14 @@
   },
   "client": [
     "client.AllowSkinTransparency",
-    "client.ForceRenderLayers",
     "client.EyesNoCuller",
+    "client.ForceRenderLayers",
     "client.SkinmaticsAvatar",
-    "client.SkinmaticsAvatarRenderStateImpl",
-    "client.SkinmaticsCape",
-    "client.SkinmaticsModelSwapper",
-    "client.SkinmaticsWings",
+    "client.SkinmaticsAvatarRenderState",
+    "client.feature.CapeAvatarFeature",
+    "client.feature.BodyModelSwapperAvatarFeature",
+    "client.feature.WingsAvatarFeature",
+    "client.feature.BodyAvatarFeature",
     "client.ui.AddSkinmaticsButton"
   ]
 }

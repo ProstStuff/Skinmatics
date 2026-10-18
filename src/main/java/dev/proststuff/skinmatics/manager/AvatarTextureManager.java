@@ -1,8 +1,9 @@
 package dev.proststuff.skinmatics.manager;
 
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.avatar.v1.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
 import dev.proststuff.skinmatics.compat.iris.IrisCompat;
+import dev.proststuff.utilitary.registry.RemovableSimpleRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -14,12 +15,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class AvatarTextureManager implements Manageable<Identifier, AvatarTextureData> {
+public class AvatarTextureManager extends RemovableSimpleRegistry<Identifier, AvatarTextureData> {
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve(Skinmatics.ID).resolve("baseTextures");
     public static final AvatarTextureManager INSTANCE = new AvatarTextureManager();
 
-    private final Map<Identifier, AvatarTextureData> textures = new HashMap<>();
-    private final Map<AvatarTextureData, Identifier> inverseTextures = new HashMap<>();
     private final Map<Identifier, AvatarTextureData> references = new HashMap<>();
 
     private AvatarTextureManager() {}
@@ -29,18 +28,9 @@ public final class AvatarTextureManager implements Manageable<Identifier, Avatar
     }
 
     @Override
-    public Map<Identifier, AvatarTextureData> getAll() {
-        return textures;
-    }
-
-    @Override
-    public Map<AvatarTextureData, Identifier> getInverse() {
-        return inverseTextures;
-    }
-
-    @Override
     public @NonNull AvatarTextureData get(Identifier id) {
-        return textures.computeIfAbsent(id, AvatarTextureData.Empty::new);
+        AvatarTextureData textureData = super.get(id);
+        return textureData != null ? textureData : AvatarTextureData.EMPTY;
     }
 
     public @NonNull AvatarTextureData get(String name) {
@@ -56,7 +46,7 @@ public final class AvatarTextureManager implements Manageable<Identifier, Avatar
         AbstractTexture texture = data.texture();
         getTextureManager().register(id, texture);
         if (FabricLoader.getInstance().isModLoaded("iris")) IrisCompat.trackTexture(id, texture);
-        return Manageable.super.register(id, data);
+        return super.register(id, data);
     }
 
     public AvatarTextureData register(AvatarTextureData data) {
@@ -65,7 +55,7 @@ public final class AvatarTextureManager implements Manageable<Identifier, Avatar
 
     public AvatarTextureData unregister(Identifier id, boolean closeTexture) {
         if (closeTexture) getTextureManager().release(id);
-        return textures.remove(id);
+        return unregister(id);
     }
 
     public AvatarTextureData unregister(AvatarTextureData data, boolean closeTexture) {
@@ -79,14 +69,13 @@ public final class AvatarTextureManager implements Manageable<Identifier, Avatar
 
     @Override
     public void unregisterAll() {
-        Manageable.super.unregisterAll();
         references.clear();
+        super.unregisterAll();
     }
 
     public @NonNull AvatarTextureData asReference(String path) {
         if (path.contains(":")) {
             Identifier id = Identifier.tryParse(path);
-
             if (id != null) return new AvatarTextureData.Reference(id, path);
         }
 

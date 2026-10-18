@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.config;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.proststuff.utilitary.api.v1.util.ColorRGB;
+import dev.proststuff.utilitary.color.ColorRGB;
 
 public final class GUI {
     static final GUI INSTANCE = new GUI();

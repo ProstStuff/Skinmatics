@@ -1,104 +1,108 @@
 {
-  "config": 1,
+  "config": 2,
   "data": {
     "name": "Alex",
     "maxTicks": 0,
-    "strongerEmissive": false,
-    "body": {
-      "slim": true,
-      "customBaseTexture": true,
-      "emissive": false,
-      "baseTextures": {
-        "presets/alex": [0]
+    "features": {
+      "skinmatics:body": {
+        "slim": true,
+        "customBaseTexture": true,
+        "emissive": false,
+        "strongerEmissive": false,
+        "baseTextures": {
+          "presets/alex": [0]
+        },
+        "emissiveTextures": {}
       },
-      "emissiveTextures": {}
-    },
-    "cape": {
-      "visible": true,
-      "customBaseTexture": false,
-      "emissive": false,
-      "baseTextures": {},
-      "emissiveTextures": {}
-    },
-    "wings": {
-      "customBaseTexture": false,
-      "emissive": false,
-      "baseTextures": {},
-      "emissiveTextures": {}
-    },
-    "eyes": {
-      "visible": true,
-      "hidden": [],
-      "emissive": [],
-      "blinkingChance": 100,
-      "blinkingTicks": 5,
-      "baseTextures": {
-
-        "left": {
-          "front": {
-            "presets/eyes/alex_left_eye_r": [0]
-          },
-          "up": {
-            "presets/eyes/alex_left_eye_r": [0]
-          },
-          "down": {
-            "presets/eyes/alex_left_eye_r": [0]
-          },
+      "skinmatics:cape": {
+        "visible": true,
+        "customBaseTexture": false,
+        "emissive": false,
+        "strongerEmissive": false,
+        "baseTextures": {},
+        "emissiveTextures": {}
+      },
+      "skinmatics:wings": {
+        "customBaseTexture": false,
+        "emissive": false,
+        "strongerEmissive": false,
+        "baseTextures": {},
+        "emissiveTextures": {}
+      },
+      "skinmatics:eyes": {
+        "visible": true,
+        "hidden": [],
+        "emissive": [],
+        "strongerEmissive": [],
+        "blinkingChance": 100,
+        "blinkingTicks": 5,
+        "baseTextures": {
           "left": {
-            "presets/eyes/alex_left_eye_l": [0]
+            "front": {
+              "presets/eyes/alex_left_eye_r": [0]
+            },
+            "up": {
+              "presets/eyes/alex_left_eye_r": [0]
+            },
+            "down": {
+              "presets/eyes/alex_left_eye_r": [0]
+            },
+            "left": {
+              "presets/eyes/alex_left_eye_l": [0]
+            },
+            "leftUp": {
+              "presets/eyes/alex_left_eye_l": [0]
+            },
+            "leftDown": {
+              "presets/eyes/alex_left_eye_l": [0]
+            },
+            "right": {
+              "presets/eyes/alex_left_eye_r": [0]
+            },
+            "rightUp": {
+              "presets/eyes/alex_left_eye_r": [0]
+            },
+            "rightDown": {
+              "presets/eyes/alex_left_eye_r": [0]
+            }
           },
-          "leftUp": {
-            "presets/eyes/alex_left_eye_l": [0]
-          },
-          "leftDown": {
-            "presets/eyes/alex_left_eye_l": [0]
-          },
+
           "right": {
-            "presets/eyes/alex_left_eye_r": [0]
-          },
-          "rightUp": {
-            "presets/eyes/alex_left_eye_r": [0]
-          },
-          "rightDown": {
-            "presets/eyes/alex_left_eye_r": [0]
+            "front": {
+              "presets/eyes/alex_right_eye_l": [0]
+            },
+            "up": {
+              "presets/eyes/alex_right_eye_l": [0]
+            },
+            "down": {
+              "presets/eyes/alex_right_eye_l": [0]
+            },
+            "left": {
+              "presets/eyes/alex_right_eye_l": [0]
+            },
+            "leftUp": {
+              "presets/eyes/alex_right_eye_l": [0]
+            },
+            "leftDown": {
+              "presets/eyes/alex_right_eye_l": [0]
+            },
+            "right": {
+              "presets/eyes/alex_right_eye_r": [0]
+            },
+            "rightUp": {
+              "presets/eyes/alex_right_eye_r": [0]
+            },
+            "rightDown": {
+              "presets/eyes/alex_right_eye_r": [0]
+            }
           }
         },
-
-        "right": {
-          "front": {
-            "presets/eyes/alex_right_eye_l": [0]
-          },
-          "up": {
-            "presets/eyes/alex_right_eye_l": [0]
-          },
-          "down": {
-            "presets/eyes/alex_right_eye_l": [0]
-          },
-          "left": {
-            "presets/eyes/alex_right_eye_l": [0]
-          },
-          "leftUp": {
-            "presets/eyes/alex_right_eye_l": [0]
-          },
-          "leftDown": {
-            "presets/eyes/alex_right_eye_l": [0]
-          },
-          "right": {
-            "presets/eyes/alex_right_eye_r": [0]
-          },
-          "rightUp": {
-            "presets/eyes/alex_right_eye_r": [0]
-          },
-          "rightDown": {
-            "presets/eyes/alex_right_eye_r": [0]
-          }
-        }
+        "emissiveTextures": {}
       },
-      "emissiveTextures": {}
+      "skinmatics:lights": {
+        "strength": 0
+      }
     },
-    "emissiveTextures": {},
-    "lights": {
-      "strength": 0
-    }
+    "hiddenFeatures": []
   }
 }

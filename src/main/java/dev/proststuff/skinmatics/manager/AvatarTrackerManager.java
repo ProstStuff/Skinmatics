@@ -1,19 +1,15 @@
 package dev.proststuff.skinmatics.manager;
 
-import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
-import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
+import dev.proststuff.skinmatics.avatar.AvatarProfile;
+import dev.proststuff.skinmatics.avatar.AvatarTracker;
+import dev.proststuff.utilitary.registry.RemovableSimpleRegistry;
 import net.minecraft.world.entity.Entity;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-public final class AvatarTrackerManager implements Manageable<UUID, AvatarTracker> {
+public class AvatarTrackerManager extends RemovableSimpleRegistry<UUID, AvatarTracker> {
     public static final AvatarTrackerManager INSTANCE = new AvatarTrackerManager();
-
-    private final Map<UUID, AvatarTracker> trackers = new HashMap<>();
-    private final Map<AvatarTracker, UUID> inverseTrackers = new HashMap<>();
 
     private AvatarTrackerManager() {}
 
@@ -21,29 +17,19 @@ public final class AvatarTrackerManager implements Manageable<UUID, AvatarTracke
         return get(entity.getUUID());
     }
 
-    @Override
-    public Map<UUID, AvatarTracker> getAll() {
-        return trackers;
-    }
-
-    @Override
-    public Map<AvatarTracker, UUID> getInverse() {
-        return inverseTrackers;
-    }
-
-    public AvatarTracker register(UUID uuid, AvatarData avatarData) {
-        if (avatarData == null) return null;
+    public AvatarTracker register(UUID uuid, AvatarProfile avatarProfile) {
+        if (avatarProfile == null) return null;
         AvatarTracker tracker = get(uuid);
 
         if (tracker != null) {
-            tracker.setAvatar(avatarData);
+            tracker.setAvatar(avatarProfile);
             return tracker;
         }
 
-        return register(uuid, new AvatarTracker(uuid, avatarData));
+        return register(uuid, new AvatarTracker(uuid, avatarProfile));
     }
 
-    public AvatarTracker register(Entity entity, AvatarData avatarData) {
-        return register(entity.getUUID(), avatarData);
+    public AvatarTracker register(Entity entity, AvatarProfile avatarProfile) {
+        return register(entity.getUUID(), avatarProfile);
     }
 }

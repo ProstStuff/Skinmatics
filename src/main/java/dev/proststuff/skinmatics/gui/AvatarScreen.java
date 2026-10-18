@@ -1,11 +1,12 @@
 package dev.proststuff.skinmatics.gui;
 
 import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.avatar.AvatarProfile;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
-import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
 import dev.proststuff.skinmatics.gui.widget.*;
-import dev.proststuff.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.utilitary.registry.SimpleRegistry;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -67,7 +68,7 @@ public class AvatarScreen extends SkinmaticsScreen {
         int i = 0;
         int j = 0;
 
-        for (Map.Entry<String, String> entry : AvatarDataManager.INSTANCE.getFailures().entrySet()) {
+        for (Map.Entry<String, String> entry : AvatarProfileManager.INSTANCE.getFailures().entrySet()) {
             FailedAvatarButton button = new FailedAvatarButton(
                     contentRect.x0() + (i * avatarWidth),
                     contentRect.y0() + (j * avatarHeight),
@@ -89,13 +90,13 @@ public class AvatarScreen extends SkinmaticsScreen {
 
         AvatarButton selectedAvatar = null;
 
-        for (Map.Entry<String, AvatarData> entry : AvatarDataManager.INSTANCE.getAll().entrySet()) {
+        for (SimpleRegistry.Entry<String, AvatarProfile> entry : AvatarProfileManager.INSTANCE.entries()) {
             AvatarButton button = new AvatarButton(
                     contentRect.x0() + (i * avatarWidth),
                     contentRect.y0() + (j * avatarHeight),
                     avatarWidth, avatarHeight,
-                    entry.getValue(),
-                    entry.getKey()
+                    entry.value(),
+                    entry.key()
             );
 
             addWidget(button.customize);
@@ -117,7 +118,7 @@ public class AvatarScreen extends SkinmaticsScreen {
 
         if (selectedAvatar != null) {
             setFocused(selectedAvatar);
-            if (avatarAvailable) AvatarTrackerManager.INSTANCE.register(AvatarPlayer.getInstance(), selectedAvatar.getProfile());
+            if (avatarAvailable) AvatarTrackerManager.INSTANCE.register(AvatarPlayer.getInstance(), selectedAvatar.getAvatar());
         }
 
         NewAvatarButton button = new NewAvatarButton(
@@ -166,7 +167,7 @@ public class AvatarScreen extends SkinmaticsScreen {
     public void extractBottomBar(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBottomBar(graphics, mouseX, mouseY, a);
         int y = height - BAR_HEIGHT + font.lineHeight / 2;
-        if (AvatarDataManager.INSTANCE.get(config().getAvatar()) == null) {
+        if (AvatarProfileManager.INSTANCE.get(config().getAvatar()) == null) {
             graphics.text(font, Component.translatable("skinmatics.avatar.no_avatar"), BAR_X_INSET, y, foregroundColor());
         } else {
             graphics.text(font, Component.literal("Skinmatics " + Skinmatics.getVersionString()), BAR_X_INSET, y, foregroundColor(BACKGROUND_ALPHA));

@@ -1,8 +1,10 @@
 package dev.proststuff.skinmatics;
 
-import dev.proststuff.skinmatics.config.SkinmaticsConfig;
-import dev.proststuff.skinmatics.entity.renderer.PaperDollRenderer;
+import dev.proststuff.skinmatics.avatar.feature.runtime.AvatarRuntimeTypes;
+import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
+import dev.proststuff.skinmatics.avatar.renderer.PaperDollRenderer;
 import dev.proststuff.skinmatics.compat.iris.IrisCompat;
+import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
@@ -17,6 +19,9 @@ public final class SkinmaticsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        AvatarFeatureTypes.init();
+        AvatarRuntimeTypes.init();
+
         SkinmaticsConfig.load();
         SkinmaticsClientEvents.init();
         ClientLifecycleEvents.CLIENT_STARTED.register(_ -> SkinmaticsConfig.save());

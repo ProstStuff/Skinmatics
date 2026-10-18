@@ -3,9 +3,12 @@ package dev.proststuff.skinmatics.util;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
-import dev.proststuff.skinmatics.avatar.v1.data.Eyes;
-import dev.proststuff.skinmatics.avatar.v1.texture.AvatarTextureData;
+import dev.proststuff.skinmatics.avatar.AvatarProfile;
+import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
+import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
+import dev.proststuff.skinmatics.avatar.feature.type.Body;
+import dev.proststuff.skinmatics.avatar.feature.type.eye.Eyes;
+import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
 import dev.proststuff.skinmatics.manager.AvatarTextureManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -42,7 +45,8 @@ public interface SkinmaticsGraphicsUtils {
         return playerSkin != null ? playerSkin.body().texturePath() : null;
     }
 
-    static void head(GuiGraphicsExtractor graphics, int x, int y, float scale, AvatarData avatarData, int tickCount, String eyeState) {
+
+    static void head(GuiGraphicsExtractor graphics, int x, int y, float scale, AvatarProfile avatarProfile, int tickCount, String eyeState) {
         AvatarTextureData fallbackSkin = AvatarTextureData.EMPTY;
 
         try {
@@ -54,7 +58,7 @@ public interface SkinmaticsGraphicsUtils {
             Skinmatics.LOGGER.warn("Unable to get local player body texture", e);
         }
 
-        if (avatarData == null) {
+        if (avatarProfile == null) {
             if (!fallbackSkin.isEmpty()) {
                 extractFace(graphics, x, y, HAT_BACK_X_POSITION, HAT_BACK_Y_POSITION, scale, HAT_SCALE, fallbackSkin, AvatarTextureData.EMPTY, true, false);
                 extractFace(graphics, x, y, HEAD_X_POSITION, HEAD_Y_POSITION, scale, HEAD_SCALE, fallbackSkin, AvatarTextureData.EMPTY, false, false);
@@ -64,14 +68,26 @@ public interface SkinmaticsGraphicsUtils {
             return;
         }
 
-        AvatarTextureData skin = avatarData.body().getBaseTextures().get(tickCount, avatarData.maxTicks());
-        AvatarTextureData emissiveSkin = avatarData.body().getEmissiveTextures().get(tickCount, avatarData.maxTicks());
+        int maxTicks = avatarProfile.maxTicks();
+        AvatarFeatureData<Body> featureData = avatarProfile.getFeature(AvatarFeatureTypes.BODY);
+        AvatarTextureData skin, emissiveSkin;
 
-        if (skin.isEmpty()) skin = fallbackSkin;
+        if (featureData != null) {
+            skin = featureData.settings().baseTextures().get(tickCount, maxTicks);
+            emissiveSkin = featureData.settings().emissiveTextures().get(tickCount, maxTicks);
+        } else {
+            skin = AvatarTextureData.EMPTY;
+            emissiveSkin = AvatarTextureData.EMPTY;
+        }
+
+        if (skin.isEmpty()) {
+            skin = fallbackSkin;
+        }
 
         extractFace(graphics, x, y, HAT_BACK_X_POSITION, HAT_BACK_Y_POSITION, scale, HAT_SCALE, skin, emissiveSkin, true, false);
         extractFace(graphics, x, y, HEAD_X_POSITION, HEAD_Y_POSITION, scale, HEAD_SCALE, skin, emissiveSkin, false, false);
-        extractEyes(graphics, x, y, scale, avatarData, tickCount, eyeState);
+        AvatarFeatureData<Eyes> eyes = avatarProfile.getFeature(AvatarFeatureTypes.EYES);
+        if (eyes != null) extractEyes(graphics, x, y, scale, maxTicks, eyes.settings(), tickCount, eyeState);
         extractFace(graphics, x, y, HAT_FRONT_X_POSITION, HAT_FRONT_Y_POSITION, scale, HAT_SCALE, skin, emissiveSkin, false, false);
     }
 
@@ -94,20 +110,20 @@ public interface SkinmaticsGraphicsUtils {
         }
     }
 
-    static void extractEyes(GuiGraphicsExtractor graphics, int x, int y, float scale, AvatarData avatarData, int tickCount, String eyeState) {
+    static void extractEyes(GuiGraphicsExtractor graphics, int x, int y, float scale, int maxTicks, Eyes eyes, int tickCount, String eyeState) {
         int size = Math.round(FACE_SIZE * scale);
 
-        for (Map.Entry<String, Eyes.EyeTextureSet> entry : avatarData.eyes().baseTextures().entrySet()) {
+        for (Map.Entry<String, Eyes.EyeTextureSet> entry : eyes.baseTextures().entrySet()) {
             String group = entry.getKey();
             Eyes.EyeTextureSet textureSet = entry.getValue();
 
-            AvatarTextureData texture = textureSet.get(eyeState).get(tickCount, avatarData.maxTicks());
+            AvatarTextureData texture = textureSet.get(eyeState).get(tickCount, maxTicks);
 
             if (!texture.isEmpty()) {
                 graphics.blit(RenderPipelines.GUI_TEXTURED, texture.id(), x, y, 0, 0, size, size, size, size, size, size);
             }
 
-            AvatarTextureData emissiveTexture = avatarData.eyes().emissiveTextures().getOrDefault(group, Eyes.EyeTextureSet.EMPTY).get(eyeState).get(tickCount, avatarData.maxTicks());
+            AvatarTextureData emissiveTexture = eyes.emissiveTextures().getOrDefault(group, Eyes.EyeTextureSet.EMPTY).get(eyeState).get(tickCount, maxTicks);
             if (!emissiveTexture.isEmpty()) {
                 graphics.blit(RenderPipelines.GUI_TEXTURED, emissiveTexture.id(), x, y, 0, 0, size, size, size, size, size, size);
             }

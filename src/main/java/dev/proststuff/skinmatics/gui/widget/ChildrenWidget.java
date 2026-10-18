@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics.gui.widget;
 
-import dev.proststuff.utilitary.api.v1.client.gui.Scrollable;
+import dev.proststuff.utilitary.client.gui.Scrollable;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;

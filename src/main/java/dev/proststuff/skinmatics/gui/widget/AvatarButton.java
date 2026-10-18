@@ -1,17 +1,16 @@
 package dev.proststuff.skinmatics.gui.widget;
 
-import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.Skinmatics;
-import dev.proststuff.skinmatics.entity.AvatarPlayer;
-import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
+import dev.proststuff.skinmatics.avatar.AvatarProfile;
 import dev.proststuff.skinmatics.config.SkinmaticsConfig;
+import dev.proststuff.skinmatics.entity.AvatarPlayer;
 import dev.proststuff.skinmatics.gui.SkinmaticsGuiAssets;
-import dev.proststuff.skinmatics.manager.AvatarDataManager;
+import dev.proststuff.skinmatics.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.util.EyeUtils;
 import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
-import dev.proststuff.utilitary.api.v1.util.SimpleIdentifier;
-import dev.proststuff.utilitary.config.v1.ConfigManager;
+import dev.proststuff.utilitary.config.serialization.ConfigParser;
+import dev.proststuff.utilitary.config.serialization.ConfigSerializationStatus;
+import dev.proststuff.utilitary.util.SimpleIdentifier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -25,18 +24,17 @@ public class AvatarButton extends ClickableButton {
     public static final int HEAD_OFFSET = Math.round(SkinmaticsGraphicsUtils.FACE_SIZE * HEAD_SCALE) / 2;
     public static final Identifier AVATAR_GROUP = Skinmatics.of("avatar");
 
-    protected final @NonNull AvatarData avatarData;
+    protected final @NonNull AvatarProfile avatarProfile;
     protected final @NonNull String avatarKey;
     protected int tickCount = 0;
-    protected int blinkTick;
 
     public final IconButton customize;
     public final IconButton delete;
 
-    public AvatarButton(int x, int y, int width, int height, AvatarData avatarData, @NonNull String avatarKey) {
-        super(x, y, width, height, Component.literal(avatarData.name), AvatarButton::onClick);
-        this.avatarData = avatarData;
-        this.blinkTick = -avatarData.eyes().blinkingTicks();
+    public AvatarButton(int x, int y, int width, int height, AvatarProfile avatarProfile, @NonNull String avatarKey) {
+        super(x, y, width, height, Component.literal(avatarProfile.name()), AvatarButton::onClick);
+        Skinmatics.LOGGER.info("{} {}", avatarProfile.name(), avatarKey);
+        this.avatarProfile = avatarProfile;
         this.avatarKey = avatarKey;
 
         this.customize = new IconButton(x + width - 16, y + height - 16, SkinmaticsGuiAssets.CUSTOMIZE, 16, 16, (_) -> {});
@@ -44,11 +42,11 @@ public class AvatarButton extends ClickableButton {
         this.customize.setTooltip(Tooltip.create(Component.translatable("skinmatics.avatar.edit_wip").withStyle(ChatFormatting.ITALIC)));
 
         this.delete = new IconButton(x + width - 16, y + height - 32, SkinmaticsGuiAssets.DELETE, 16, 16, (_) -> {
-            SimpleIdentifier path = avatarData.toPath();
-            boolean success = ConfigManager.delete(path, AvatarData.TYPE);
+            SimpleIdentifier path = avatarProfile.toPath();
+            ConfigSerializationStatus status = ConfigParser.erase(AvatarProfile.TYPE, path);
 
-            if (success) {
-                AvatarDataManager.INSTANCE.unregister(avatarKey);
+            if (status.isSuccessful()) {
+                AvatarProfileManager.INSTANCE.unregister(avatarKey);
                 minecraft().setScreen(parent);
             }
         });
@@ -66,13 +64,8 @@ public class AvatarButton extends ClickableButton {
         super.setFocused(focused);
 
         if (AvatarPlayer.hasInstance()) {
-            AvatarTrackerManager.INSTANCE.register(AvatarPlayer.getInstance(), avatarData);
+            AvatarTrackerManager.INSTANCE.register(AvatarPlayer.getInstance(), avatarProfile);
         }
-    }
-
-    public boolean isBlinking() {
-        if (!isHoveredOrFocused()) return false;
-        return blinkTick + avatarData.eyes().blinkingTicks() > tickCount;
     }
 
     @Override
@@ -83,13 +76,10 @@ public class AvatarButton extends ClickableButton {
     @Override
     public void tick() {
         tickCount ++;
-
-        if (avatarData.eyes().blinkingChance() <= 0 || isBlinking()) return;
-        if (SkinmaticsClient.RANDOM.nextInt(avatarData.eyes().blinkingChance()) == 0) blinkTick = tickCount;
     }
 
-    public @NonNull AvatarData getProfile() {
-        return avatarData;
+    public @NonNull AvatarProfile getAvatar() {
+        return avatarProfile;
     }
 
     public @NonNull String getAvatarKey() {
@@ -108,7 +98,7 @@ public class AvatarButton extends ClickableButton {
         }
 
         Font font = minecraft().font;
-        SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, avatarData, tickCount, isBlinking() ? EyeUtils.STATE_CLOSED : EyeUtils.STATE_IDLE);
+        //SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, avatarProfile, tickCount, isBlinking() ? EyeUtils.STATE_CLOSED : EyeUtils.STATE_IDLE);
 
         graphics.centeredText(font, getMessage(), getX() + getWidth() / 2, getY() + 8, foregroundColor());
 

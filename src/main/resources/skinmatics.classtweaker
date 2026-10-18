@@ -10,5 +10,5 @@ accessible method net/minecraft/client/gui/screens/Screen clearWidgets ()V
 accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer solveBodyRot (Lnet/minecraft/world/entity/LivingEntity;FF)F
 
-inject-interface net/minecraft/client/renderer/entity/state/EntityRenderState dev/proststuff/utilitary/api/v1/client/entity/UUIDRenderStateHolder
-inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/entity/SkinmaticsAvatarRenderState
+inject-interface net/minecraft/client/renderer/entity/state/EntityRenderState dev/proststuff/utilitary/client/entity/UUIDRenderStateHolder
+inject-interface net/minecraft/client/renderer/entity/state/AvatarRenderState dev/proststuff/skinmatics/avatar/AvatarTrackedEntity

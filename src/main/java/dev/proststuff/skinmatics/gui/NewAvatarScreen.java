@@ -1,10 +1,10 @@
 package dev.proststuff.skinmatics.gui;
 
+import dev.proststuff.skinmatics.avatar.AvatarProfile;
+import dev.proststuff.skinmatics.avatar.AvatarUtils;
 import dev.proststuff.skinmatics.gui.widget.TextButton;
+import dev.proststuff.skinmatics.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
-import dev.proststuff.skinmatics.avatar.v1.data.AvatarData;
-import dev.proststuff.skinmatics.util.AvatarUtils;
-import dev.proststuff.skinmatics.manager.AvatarDataManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -42,7 +42,7 @@ public class NewAvatarScreen extends SkinmaticsScreen {
             return;
         }
         create.active = true;
-        boolean found = AvatarDataManager.INSTANCE.getAll().containsKey(path);
+        boolean found = AvatarProfileManager.INSTANCE.keys().contains(path);
         path = AvatarUtils.toAvatarPath(path, true);
 
         if (found) {
@@ -84,7 +84,7 @@ public class NewAvatarScreen extends SkinmaticsScreen {
                             String last = List.of(path.split("/")).getLast();
                             String name = displayName.getValue();
                             name = name.isBlank() ? last : name;
-                            AvatarDataManager.INSTANCE.register(path, new AvatarData(name)).save();
+                            AvatarProfileManager.INSTANCE.register(path, new AvatarProfile(name)).save();
                             onClose();
                         }
                 )

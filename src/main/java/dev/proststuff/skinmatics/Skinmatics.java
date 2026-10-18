@@ -1,6 +1,6 @@
 package dev.proststuff.skinmatics;
 
-import dev.proststuff.utilitary.api.v1.util.SimpleIdentifier;
+import dev.proststuff.utilitary.util.SimpleIdentifier;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;

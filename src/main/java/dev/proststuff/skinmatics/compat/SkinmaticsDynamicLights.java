@@ -5,8 +5,11 @@ import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.lambdaurora.lambdynlights.api.entity.luminance.EntityLuminance;
 import dev.lambdaurora.lambdynlights.api.item.ItemLightSourceManager;
 import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.avatar.AvatarTracker;
+import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
+import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
+import dev.proststuff.skinmatics.avatar.feature.type.Light;
 import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
-import dev.proststuff.skinmatics.avatar.v1.AvatarTracker;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Range;
@@ -39,7 +42,10 @@ public class SkinmaticsDynamicLights implements DynamicLightsInitializer {
         @Override
         public @Range(from = 0L, to = 15L) int getLuminance(@NonNull ItemLightSourceManager itemLightSourceManager, @NonNull Entity entity) {
             AvatarTracker tracker = AvatarTrackerManager.INSTANCE.get(entity);
-            return tracker != null ? tracker.getAvatar().lights().get() : 0;
+            if (tracker == null) return 0;
+            AvatarFeatureData<Light> featureData = tracker.getFeature(AvatarFeatureTypes.LIGHT);
+            if (featureData == null) return 0;
+            return featureData.settings().strength();
         }
     }
 }

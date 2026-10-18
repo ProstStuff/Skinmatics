@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.gui;
 
 import dev.proststuff.skinmatics.gui.widget.CloseScreenButton;
 import dev.proststuff.skinmatics.config.SkinmaticsConfig;
-import dev.proststuff.utilitary.api.v1.client.gui.MultiFocusScreen;
+import dev.proststuff.utilitary.client.gui.MultiFocusScreen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
