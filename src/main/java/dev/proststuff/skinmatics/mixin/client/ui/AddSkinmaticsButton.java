@@ -5,7 +5,7 @@ import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.gui.SkinmaticsGui;
 import dev.proststuff.skinmatics.gui.SkinmaticsGuiAssets;
 import dev.proststuff.skinmatics.gui.widget.IconButton;
-import dev.proststuff.skinmatics.manager.AvatarProfileManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;

@@ -9,7 +9,7 @@ import dev.proststuff.skinmatics.avatar.AvatarTracker;
 import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
 import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import dev.proststuff.skinmatics.avatar.feature.type.Light;
-import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Range;

@@ -1,4 +1,4 @@
-package dev.proststuff.skinmatics.manager;
+package dev.proststuff.skinmatics.avatar.manager;
 
 import dev.proststuff.skinmatics.avatar.AvatarProfile;
 import dev.proststuff.skinmatics.avatar.AvatarTracker;

@@ -5,7 +5,7 @@ import dev.proststuff.skinmatics.avatar.AvatarTracker;
 import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
 import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import dev.proststuff.skinmatics.avatar.feature.type.Body;
-import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;

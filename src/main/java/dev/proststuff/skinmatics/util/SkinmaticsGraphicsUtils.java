@@ -9,7 +9,7 @@ import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import dev.proststuff.skinmatics.avatar.feature.type.Body;
 import dev.proststuff.skinmatics.avatar.feature.type.eye.Eyes;
 import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
-import dev.proststuff.skinmatics.manager.AvatarTextureManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTextureManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

@@ -3,14 +3,15 @@ package dev.proststuff.skinmatics;
 import dev.proststuff.skinmatics.avatar.AvatarPackLoader;
 import dev.proststuff.skinmatics.avatar.AvatarTracker;
 import dev.proststuff.skinmatics.avatar.AvatarUtils;
+import dev.proststuff.skinmatics.avatar.event.AvatarTrackerTickEvents;
 import dev.proststuff.skinmatics.avatar.renderer.PaperDollRenderer;
 import dev.proststuff.skinmatics.avatar.renderer.layer.EmissiveSkinRenderLayer;
 import dev.proststuff.skinmatics.avatar.renderer.layer.EyesRenderLayer;
 import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
 import dev.proststuff.skinmatics.gui.SkinmaticsGui;
-import dev.proststuff.skinmatics.manager.AvatarProfileManager;
-import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -68,7 +69,9 @@ public interface SkinmaticsClientEvents {
             }
 
             if (entity.getOnPos().distSqr(pos0) <= (updateRange * updateRange)) {
+                AvatarTrackerTickEvents.PRE.invoker().tick(entity, tracker, false);
                 tracker.tick();
+                AvatarTrackerTickEvents.POST.invoker().tick(entity, tracker, false);
                 tracker.tickCount ++;
             }
         }
@@ -108,7 +111,9 @@ public interface SkinmaticsClientEvents {
             avatarPlayer.tickCount ++;
 
             if (tracker != null) {
+                AvatarTrackerTickEvents.PRE.invoker().tick(avatarPlayer, tracker, true);
                 tracker.tick();
+                AvatarTrackerTickEvents.POST.invoker().tick(avatarPlayer, tracker, true);
                 tracker.tickCount ++;
             }
         }

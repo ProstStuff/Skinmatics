@@ -8,7 +8,7 @@ import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import dev.proststuff.skinmatics.avatar.feature.type.Body;
 import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
-import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;

@@ -14,7 +14,7 @@ import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
 import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureType;
 import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypeRegistry;
 import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
-import dev.proststuff.skinmatics.manager.AvatarProfileManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
 import dev.proststuff.utilitary.config.ConfigConstants;
 import dev.proststuff.utilitary.config.ConfigType;
 import dev.proststuff.utilitary.config.serialization.Comment;

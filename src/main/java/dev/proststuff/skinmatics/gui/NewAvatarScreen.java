@@ -3,7 +3,7 @@ package dev.proststuff.skinmatics.gui;
 import dev.proststuff.skinmatics.avatar.AvatarProfile;
 import dev.proststuff.skinmatics.avatar.AvatarUtils;
 import dev.proststuff.skinmatics.gui.widget.TextButton;
-import dev.proststuff.skinmatics.manager.AvatarProfileManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;

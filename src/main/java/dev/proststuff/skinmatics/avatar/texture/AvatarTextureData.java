@@ -2,7 +2,7 @@ package dev.proststuff.skinmatics.avatar.texture;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.serialization.Codec;
-import dev.proststuff.skinmatics.manager.AvatarTextureManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTextureManager;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.resources.Identifier;

@@ -81,11 +81,11 @@ public final class AvatarTracker implements AvatarIdentity {
 
         if (uuid.equals(AvatarPlayer.DEFAULT_AVATAR_PROFILE.id())) return AvatarPlayer.getInstance();
         if (entity == null) return null;
-        if (!(entity instanceof LivingEntity)) {
-            throw new IllegalStateException("AvatarTracker shouldn't track a non-living entity!");
+        if (!(entity instanceof LivingEntity living)) {
+            throw new IllegalStateException("AvatarTracker is tracking a non-living entity!");
         }
 
-        return (LivingEntity) entity;
+        return living;
     }
 
     @Override

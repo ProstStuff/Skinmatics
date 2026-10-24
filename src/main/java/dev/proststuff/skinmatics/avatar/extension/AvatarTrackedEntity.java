@@ -1,4 +1,6 @@
-package dev.proststuff.skinmatics.avatar;
+package dev.proststuff.skinmatics.avatar.extension;
+
+import dev.proststuff.skinmatics.avatar.AvatarTracker;
 
 public interface AvatarTrackedEntity {
     default AvatarTracker skinmatics$getTracker() {

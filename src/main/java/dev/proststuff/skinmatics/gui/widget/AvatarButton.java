@@ -2,11 +2,12 @@ package dev.proststuff.skinmatics.gui.widget;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.avatar.AvatarProfile;
+import dev.proststuff.skinmatics.avatar.feature.type.eye.EyeUtils;
+import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
 import dev.proststuff.skinmatics.gui.SkinmaticsGuiAssets;
-import dev.proststuff.skinmatics.manager.AvatarProfileManager;
-import dev.proststuff.skinmatics.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
 import dev.proststuff.utilitary.config.serialization.ConfigParser;
 import dev.proststuff.utilitary.config.serialization.ConfigSerializationStatus;
@@ -33,7 +34,6 @@ public class AvatarButton extends ClickableButton {
 
     public AvatarButton(int x, int y, int width, int height, AvatarProfile avatarProfile, @NonNull String avatarKey) {
         super(x, y, width, height, Component.literal(avatarProfile.name()), AvatarButton::onClick);
-        Skinmatics.LOGGER.info("{} {}", avatarProfile.name(), avatarKey);
         this.avatarProfile = avatarProfile;
         this.avatarKey = avatarKey;
 
@@ -98,7 +98,7 @@ public class AvatarButton extends ClickableButton {
         }
 
         Font font = minecraft().font;
-        //SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, avatarProfile, tickCount, isBlinking() ? EyeUtils.STATE_CLOSED : EyeUtils.STATE_IDLE);
+        SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, avatarProfile, tickCount, EyeUtils.STATE_IDLE);
 
         graphics.centeredText(font, getMessage(), getX() + getWidth() / 2, getY() + 8, foregroundColor());
 
