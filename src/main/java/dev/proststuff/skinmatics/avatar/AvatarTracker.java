@@ -21,6 +21,8 @@ import java.util.UUID;
 
 public final class AvatarTracker implements AvatarIdentity {
     private final UUID uuid;
+    public boolean entityUnloaded = false;
+    public int unloadedTickCount = 0;
 
     private @NonNull AvatarProfile avatarProfile;
     private final Map<AvatarRuntimeType<?, ?>, AvatarRuntime<?>> runtimes = new HashMap<>();
@@ -91,5 +93,15 @@ public final class AvatarTracker implements AvatarIdentity {
     @Override
     public @Nullable <S> AvatarFeatureData<S> getFeature(AvatarFeatureType<S> avatarFeature) {
         return avatarProfile.getFeature(avatarFeature);
+    }
+
+    @Override
+    public boolean isHidden(AvatarFeatureType<?> avatarFeature) {
+        return avatarProfile.isHidden(avatarFeature);
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
     }
 }

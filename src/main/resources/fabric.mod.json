@@ -1,51 +1,43 @@
 {
-	"schemaVersion": 1,
-	"id": "skinmatics",
-	"version": "${version}",
-	"name": "Skinmatics",
-	"description": "An avatar customization mod aims around the vanilla player model themselves.",
-	"authors": [
-		"Fraynn (ProstStuff, CallMeFreyya)"
-	],
-	"contributors": [],
-	"contact": {
-		"homepage": "https://modrinth/skinmatics",
-		"sources": "https://github.com/ProstStuff/Skinmatics",
-		"issues": "https://github.com/ProstStuff/Skinmatics/issues"
-	},
-	"license": "All Rights Reserved",
-	"icon": "assets/skinmatics/textures/icon.png",
-	"environment": "client",
-	"entrypoints": {
-		"client": [
-			"dev.proststuff.skinmatics.SkinmaticsClient"
-		],
-		"modmenu": [
-			"dev.proststuff.skinmatics.compat.SkinmaticsModMenu"
-		],
-		"lambdynlights:initializer": [
-			"dev.proststuff.skinmatics.compat.SkinmaticsDynamicLights"
-		]
-	},
-	"mixins": [
-		"skinmatics.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.19.5",
-		"minecraft": "~26.1",
-		"java": ">=25",
-		"fabric-api": "*",
-		"utilitary": "~1.1.0-beta"
-	},
-	"custom": {
-		"modmenu": {
-			"links": {
-				"modmenu.patreon": "https://www.patreon.com/cw/Fraynn",
-				"modmenu.discord": "https://discord.gg/C82atdWT2w",
-				"modmenu.modrinth": "https://modrinth.com/mod/skinmatics"
-			},
-			"update_checker": true
-		}
-	},
-	"accessWidener": "skinmatics.classtweaker"
+  "schemaVersion": 1,
+  "id": "skinmatics",
+  "version": "${version}",
+  "name": "Skinmatics",
+  "description": "An avatar customization mod aims around the vanilla player model themselves.",
+  "authors": ["Fraynn"],
+  "contributors": [],
+  "contact": {
+    "homepage": "https://modrinth/skinmatics",
+    "sources": "https://github.com/ProstStuff/Skinmatics",
+    "issues": "https://github.com/ProstStuff/Skinmatics/issues"
+  },
+  "license": "The Skinmatics License",
+  "icon": "assets/skinmatics/textures/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["dev.proststuff.skinmatics.SkinmaticsClient"],
+    "modmenu": ["dev.proststuff.skinmatics.compat.SkinmaticsModMenu"],
+    "lambdynlights:initializer": [
+      "dev.proststuff.skinmatics.compat.SkinmaticsDynamicLights"
+    ]
+  },
+  "mixins": ["skinmatics.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.1",
+    "java": ">=25",
+    "fabric-api": "*",
+    "utilitary": "~1.1.0"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.patreon": "https://www.patreon.com/cw/Fraynn",
+        "modmenu.discord": "https://discord.gg/C82atdWT2w",
+        "modmenu.modrinth": "https://modrinth.com/mod/skinmatics"
+      },
+      "update_checker": true
+    }
+  },
+  "accessWidener": "skinmatics.classtweaker"
 }

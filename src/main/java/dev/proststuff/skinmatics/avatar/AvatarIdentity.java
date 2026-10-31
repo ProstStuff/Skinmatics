@@ -6,4 +6,5 @@ import org.jspecify.annotations.Nullable;
 
 public interface AvatarIdentity {
     <S> @Nullable AvatarFeatureData<S> getFeature(AvatarFeatureType<S> avatarFeature);
+    boolean isHidden(AvatarFeatureType<?> avatarFeature);
 }

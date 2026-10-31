@@ -7,8 +7,8 @@
   "key.skinmatics.set_avatar": "Apply Own Avatar To Targeted Player",
   "key.skinmatics.unset_avatar": "Remove Targeted Player's Avatar",
 
-  "skinmatics.set_avatar": "Applied %2$s avatar to [%1$s]",
-  "skinmatics.unset_avatar": "Cleared %2$s avatar from [%1$s]",
+  "skinmatics.set_avatar": "Applied [%1$s] to %2$s",
+  "skinmatics.unset_avatar": "Removed [%1$s] from %2$s",
   "skinmatics.avatar": "Wardrobe",
   "skinmatics.avatar.edit": "Edit",
 
@@ -24,5 +24,14 @@
   "skinmatics.new_avatar.path_empty": "Avatar path cannot be empty",
   "skinmatics.avatar.edit_wip": "Coming soon...ish\nSee documentation (click '?' located at the topbar)",
 
-  "skinmatics.selected_profile": "Selected Avatar %s"
+  "skinmatics.selected_profile": "Selected Avatar %s",
+  "skinmatics.customize": "Customize (Beta) | %s",
+  "skinmatics.avatar.no_delete": "This avatar is loaded from a resource pack.",
+  "skinmatics.customize.save": "Save & Close",
+
+  "skinmatics.avatar_feature.body": "Body",
+  "skinmatics.avatar_feature.cape": "Cape",
+  "skinmatics.avatar_feature.wings": "Wings",
+  "skinmatics.avatar_feature.eyes": "Eyes",
+  "skinmatics.avatar_feature.lights": "Lights"
 }

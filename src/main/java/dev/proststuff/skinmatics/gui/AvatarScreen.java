@@ -2,19 +2,32 @@ package dev.proststuff.skinmatics.gui;
 
 import dev.proststuff.skinmatics.Skinmatics;
 import dev.proststuff.skinmatics.avatar.AvatarProfile;
+import dev.proststuff.skinmatics.avatar.feature.type.eye.EyeUtils;
+import dev.proststuff.skinmatics.config.SkinmaticsConfig;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
 import dev.proststuff.skinmatics.gui.widget.*;
 import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
 import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
+import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
+import dev.proststuff.utilitary.config.serialization.ConfigParser;
+import dev.proststuff.utilitary.config.serialization.ConfigSerializationStatus;
 import dev.proststuff.utilitary.registry.SimpleRegistry;
+import dev.proststuff.utilitary.util.SimpleIdentifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 import org.jspecify.annotations.NonNull;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +66,12 @@ public class AvatarScreen extends SkinmaticsScreen {
     public void init() {
         avatarListButtons.clear();
         AvatarPlayer.discardInstance();
+
+        for (ClickableButton button : avatarListButtons) {
+            removeWidget(button);
+        }
+
+        avatarListButtons.clear();
         super.init();
 
         this.avatarAvailable = minecraft.level != null;
@@ -136,7 +155,7 @@ public class AvatarScreen extends SkinmaticsScreen {
         this.maxAvatarListYOffset = Math.max(j - avatarYIndex + 1, 0) * avatarHeight;
 
         addRenderableWidget(
-                new TextButton(width - 32, 0, 16, 16, Component.literal("?"), (_) -> Util.getPlatform().openUri("https://fraynn.pages.dev/docs/category/skinmatics"))
+                new TextButton(width - 32, 0, 16, 16, Component.literal("?"), (_) -> Util.getPlatform().openUri("https://fraynn.pages.dev/skinmatics/intro"))
         ).focusable = false;
     }
 
@@ -155,11 +174,7 @@ public class AvatarScreen extends SkinmaticsScreen {
         if (!avatarAvailable) return;
         extractPanelBackground(graphics, preview.x0(), preview.y0(), preview.x1(), preview.y1());
         graphics.enableScissor(preview.x0(), preview.y0() + 1, preview.x1(), preview.y1() - 1);
-
-        if (minecraft.player != null) {
-            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, preview.x0(), preview.y0(), preview.x1(), preview.y1(), previewScale, 0.5F, mouseX, mouseY, AvatarPlayer.getInstance());
-        }
-
+        InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, preview.x0(), preview.y0(), preview.x1(), preview.y1(), previewScale, 0.5F, mouseX, mouseY, AvatarPlayer.getInstance());
         graphics.disableScissor();
     }
 
@@ -204,5 +219,175 @@ public class AvatarScreen extends SkinmaticsScreen {
         }
 
         return super.mouseScrolled(x, y, scrollX, scrollY);
+    }
+
+    public static class AvatarButton extends ClickableButton {
+        public static final float HEAD_SCALE = 4.0F;
+        public static final int HEAD_OFFSET = Math.round(SkinmaticsGraphicsUtils.FACE_SIZE * HEAD_SCALE) / 2;
+        public static final Identifier AVATAR_GROUP = Skinmatics.of("avatar");
+
+        protected final @NonNull AvatarProfile profile;
+        protected final @NonNull String avatarId;
+        protected int tickCount = 0;
+
+        public final IconButton customize;
+        public final IconButton delete;
+
+        public AvatarButton(int x, int y, int width, int height, AvatarProfile profile, @NonNull String avatarId) {
+            super(x, y, width, height, Component.literal(profile.name()), AvatarButton::onClick);
+            this.profile = profile;
+            this.avatarId = avatarId;
+
+            this.customize = new IconButton(x + width - 16, y + height - 16, SkinmaticsGuiAssets.CUSTOMIZE, 16, 16, (_) -> minecraft().setScreen(new CustomizationScreen(avatarId, profile, getParent())));
+
+            this.delete = new IconButton(x + width - 16, y + height - 32, SkinmaticsGuiAssets.DELETE, 16, 16, (_) -> {
+                SimpleIdentifier path = profile.toPath();
+                ConfigSerializationStatus status = ConfigParser.erase(AvatarProfile.TYPE, path);
+
+                if (status.isSuccessful()) {
+                    AvatarProfileManager.INSTANCE.unregister(avatarId);
+
+                    if (AvatarProfileManager.INSTANCE.getFallbacks().containsKey(avatarId)) {
+                        AvatarProfileManager.INSTANCE.register(avatarId, AvatarProfileManager.INSTANCE.getFallbacks().get(avatarId));
+                    }
+
+                    minecraft().setScreen(parent);
+                }
+            });
+
+            if (AvatarProfileManager.INSTANCE.getFallbacks().containsValue(profile)) {
+                delete.active = false;
+                delete.setTooltip(Tooltip.create(Component.translatable("skinmatics.avatar.no_delete")));
+            }
+
+            customize.setGroup(AVATAR_GROUP);
+            customize.showBackground = false;
+            delete.setGroup(AVATAR_GROUP);
+            delete.showBackground = false;
+            delete.setHolding(60);
+            delete.setDirection(3);
+        }
+
+        @Override
+        public void setFocused(boolean focused) {
+            super.setFocused(focused);
+
+            if (AvatarPlayer.hasInstance()) {
+                AvatarTrackerManager.INSTANCE.register(AvatarPlayer.getInstance(), profile);
+            }
+        }
+
+        @Override
+        public boolean shouldTick() {
+            return isHoveredOrFocused();
+        }
+
+        @Override
+        public void tick() {
+            tickCount ++;
+        }
+
+        public @NonNull AvatarProfile getAvatar() {
+            return profile;
+        }
+
+        public @NonNull String getAvatarId() {
+            return avatarId;
+        }
+
+        public boolean isSelectedProfile() {
+            return avatarId.equals(SkinmaticsConfig.getInstance().getAvatar());
+        }
+
+        @Override
+        protected void extractContent(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+            if (isHoveredOrFocused()) {
+                customize.extractRenderState(graphics, mouseX, mouseY, a);
+                delete.extractRenderState(graphics, mouseX, mouseY, a);
+            }
+
+            Font font = minecraft().font;
+            SkinmaticsGraphicsUtils.head(graphics, getX() + getWidth() / 2 - HEAD_OFFSET, getY() + getHeight() / 2 - HEAD_OFFSET, HEAD_SCALE, profile, tickCount, EyeUtils.STATE_IDLE);
+
+            graphics.centeredText(font, getMessage(), getX() + getWidth() / 2, getY() + 8, foregroundColor());
+
+            if (isSelectedProfile()) {
+                graphics.outline(getX(), getY(), getWidth(), getHeight(), foregroundColor());
+            }
+        }
+
+        public static void onClick(ClickableButton widget) {
+            if (!(widget instanceof AvatarButton button)) return;
+            if (widget.isFocused()) SkinmaticsConfig.getInstance().setAvatar(button.getAvatarId());
+        }
+    }
+
+    public static class NewAvatarButton extends ClickableButton {
+        public NewAvatarButton(int x, int y, int width, int height) {
+            super(x, y, width, height, Component.translatable("skinmatics.avatar.new"), NewAvatarButton::onClick);
+        }
+
+        @Override
+        protected void extractContent(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+            int centerX = getX() + getWidth() / 2;
+            Font font = minecraft().font;
+            graphics.centeredText(font, getMessage(), centerX, getY() + 8, foregroundColor());
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    SkinmaticsGuiAssets.NEW_AVATAR,
+                    centerX - 16,
+                    getY() + getHeight() / 2 - 16,
+                    0.0F,
+                    0.0F,
+                    32,
+                    32,
+                    32,
+                    32,
+                    32,
+                    32,
+                    0xFFFFFFFF
+            );
+        }
+
+        public static void onClick(ClickableButton widget) {
+            Minecraft.getInstance().setScreen(new NewAvatarScreen(widget.getParent()));
+        }
+    }
+
+    public static class FailedAvatarButton extends ClickableButton {
+        protected String error;
+
+        public FailedAvatarButton(int x, int y, int width, int height, String name, String error) {
+            super(x, y, width, height, Component.literal(name).withStyle(ChatFormatting.RED), FailedAvatarButton::onClick);
+            this.focusable = false;
+            this.error = error;
+
+            setTooltip(Tooltip.create(Component.translatable("skinmatics.avatar.error", error)));
+            setTooltipDelay(Duration.ZERO);
+        }
+
+        @Override
+        protected void extractContent(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+            int centerX = getX() + getWidth() / 2;
+            Font font = minecraft().font;
+            graphics.centeredText(font, getMessage(), centerX, getY() + 8, foregroundColor());
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    SkinmaticsGuiAssets.ERROR,
+                    centerX - 16,
+                    getY() + getHeight() / 2 - 16,
+                    0.0F,
+                    0.0F,
+                    32,
+                    32,
+                    32,
+                    32,
+                    32,
+                    32,
+                    0xFFFFFFFF
+            );
+        }
+
+        public static void onClick(ClickableButton widget) {}
     }
 }

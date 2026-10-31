@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.serialization.JsonOps;
 import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
 import dev.proststuff.skinmatics.avatar.manager.AvatarPackManager;
 import dev.proststuff.skinmatics.avatar.manager.AvatarProfileManager;
@@ -51,6 +52,8 @@ public interface AvatarPackLoader {
                 }, taskExecutor)
                 .thenCompose(preparationBarrier::wait)
                 .thenApplyAsync(avatarPacks -> {
+                    AvatarPackManager.INSTANCE.unregisterAll();
+                    AvatarTrackerManager.INSTANCE.unregisterAll();
                     AvatarTextureManager.INSTANCE.unregisterAll();
                     AvatarProfileManager.INSTANCE.unregisterAll();
 
@@ -74,9 +77,7 @@ public interface AvatarPackLoader {
             Resource pack = entry.getValue();
 
             try {
-                AvatarPack avatarPack = new AvatarPack(
-                        AvatarPack.Info.CODEC.parse(JsonOps.INSTANCE, JsonConfigFormat.GSON.fromJson(pack.openAsReader(), JsonElement.class)).getOrThrow()
-                );
+                AvatarPack avatarPack = new AvatarPack(AvatarPack.Info.CODEC.parse(JsonOps.INSTANCE, JsonConfigFormat.GSON.fromJson(pack.openAsReader(), JsonElement.class)).getOrThrow(), true);
                 prepareAvatarTextures(sharedState, packName, packPath, avatarPack);
                 prepareAvatars(sharedState, packName, packPath, avatarPack);
 
@@ -130,16 +131,16 @@ public interface AvatarPackLoader {
         }
     }
 
-
     static void prepareFromConfig(Map<String, AvatarPack> avatarPacks) {
         AvatarPack pack = new AvatarPack(
                 new AvatarPack.Info(
-                        Component.literal("skinmatics"),
+                        Component.literal("Skinmatics"),
                         Component.empty(),
                         "All Rights Reserved",
                         List.of(Minecraft.getInstance().getGameProfile().name()),
                         Skinmatics.getVersionString()
-                )
+                ),
+                false
         );
 
         try {

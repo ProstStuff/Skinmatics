@@ -11,6 +11,8 @@ base {
 }
 
 repositories {
+	mavenCentral()
+
 	maven {
 		url = "https://api.modrinth.com/maven"
 	}
@@ -27,11 +29,6 @@ repositories {
 
 	maven {
 		url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
-	}
-
-	maven {
-		name = "JitPack"
-		url = uri('https://jitpack.io')
 	}
 }
 
@@ -52,9 +49,8 @@ dependencies {
 	runtimeOnly "dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${dynamiclights_version}"
 	runtimeOnly "me.djtheredstoner:DevAuth-fabric:${devauth_version}"
 
-	//implementation "com.github.ProstStuff:Utilitary:${utilitary_version}"
-	// Just get local jar file bro. Utilitary JitPack is FUCKED (for me)
-	implementation files("lib/utilitary-${utilitary_version}.jar")
+	implementation files("lib/utilitary-${utilitary_version}.jar") // JitPack broken :(
+	implementation "de.marhali:json5-java:${json5_version}"
 }
 
 processResources {

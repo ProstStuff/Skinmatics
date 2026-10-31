@@ -27,7 +27,7 @@ public class BodyModelSwapperAvatarFeature {
 
         if (tracker == null) return original;
         AvatarFeatureData<Body> featureData = tracker.getAvatar().getFeature(AvatarFeatureTypes.BODY);
-        if (featureData == null) return original;
+        if (featureData == null || tracker.isHidden(AvatarFeatureTypes.BODY)) return original;
         return featureData.settings().slim() ? PlayerModelType.SLIM : PlayerModelType.WIDE;
 
     }
@@ -36,7 +36,7 @@ public class BodyModelSwapperAvatarFeature {
     public PlayerModelType skinmatics$interceptPlayerModelFromRenderState(PlayerModelType original, EntityRenderState entityRenderState) {
         if (entityRenderState instanceof AvatarRenderState state && state.skinmatics$getTracker() instanceof AvatarTracker tracker) {
             AvatarFeatureData<Body> featureData = tracker.getAvatar().getFeature(AvatarFeatureTypes.BODY);
-            if (featureData == null) return original;
+            if (featureData == null || tracker.isHidden(AvatarFeatureTypes.BODY)) return original;
             return featureData.settings().slim() ? PlayerModelType.SLIM : PlayerModelType.WIDE;
         }
 

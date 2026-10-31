@@ -10,9 +10,9 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 
-public record AvatarPack(Info info, Map<String, Either<AvatarProfile, String>> avatars, Set<AvatarTextureData.Direct> textures) {
-    public AvatarPack(Info info) {
-        this(info, new HashMap<>(), new HashSet<>());
+public record AvatarPack(Info info, Map<String, Either<AvatarProfile, String>> avatars, Set<AvatarTextureData.Direct> textures, boolean locked) {
+    public AvatarPack(Info info, boolean locked) {
+        this(info, new HashMap<>(), new HashSet<>(), locked);
     }
 
     public void registerAvatar(@NonNull String name, @NonNull Either<AvatarProfile, String> profile) {

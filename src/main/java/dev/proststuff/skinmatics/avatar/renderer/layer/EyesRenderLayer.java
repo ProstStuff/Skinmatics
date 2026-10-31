@@ -24,14 +24,9 @@ public class EyesRenderLayer extends FaceRenderLayer {
     }
 
     @Override
-    public boolean shouldRenderWhenInvisible() {
-        return true;
-    }
-
-    @Override
     public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int lightCoords, @NonNull AvatarRenderState state, float yRot, float xRot) {
         AvatarTracker tracker = state.skinmatics$getTracker();
-        if (tracker == null || ForceRenderLayer.isTrulyInvisible(state)) return;
+        if (tracker == null || tracker.isHidden(AvatarFeatureTypes.EYES) || ForceRenderLayer.isTrulyInvisible(state)) return;
 
         AvatarProfile avatarProfile = tracker.getAvatar();
         EyesAvatarRuntime runtime = tracker.getRuntime(AvatarRuntimeTypes.EYES);

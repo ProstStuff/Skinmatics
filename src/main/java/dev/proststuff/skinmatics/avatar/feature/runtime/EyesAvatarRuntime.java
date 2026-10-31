@@ -3,6 +3,7 @@ package dev.proststuff.skinmatics.avatar.feature.runtime;
 import dev.proststuff.skinmatics.SkinmaticsClient;
 import dev.proststuff.skinmatics.avatar.AvatarTracker;
 import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
+import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import dev.proststuff.skinmatics.avatar.feature.type.eye.Eyes;
 import dev.proststuff.skinmatics.avatar.feature.type.eye.EyeUtils;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -39,10 +40,7 @@ public class EyesAvatarRuntime extends AvatarRuntime<Eyes> {
 
     @Override
     public void tick() {
-        EyesAvatarRuntime runtime = tracker.getRuntime(AvatarRuntimeTypes.EYES);
-        if (runtime == null) return;
-        if (runtime.tracker != tracker) throw new IllegalStateException("EyesAvatarRuntime is in the wrong avatar tracker");
-        if (runtime.isBlinking()) return;
-        if (SkinmaticsClient.RANDOM.nextInt(runtime.featureData.settings().blinkingChance()) == 0) runtime.blink();
+        if (tracker.isHidden(AvatarFeatureTypes.EYES) || isBlinking()) return;
+        if (SkinmaticsClient.RANDOM.nextInt(featureData.settings().blinkingChance()) == 0) blink();
     }
 }

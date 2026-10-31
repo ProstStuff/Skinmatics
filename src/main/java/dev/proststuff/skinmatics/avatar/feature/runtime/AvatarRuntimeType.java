@@ -12,10 +12,13 @@ public record AvatarRuntimeType<S, R extends AvatarRuntime<S>>(AvatarFeatureType
     }
 
     public static class Builder<S, R extends AvatarRuntime<S>> {
+        protected final AvatarFeatureType<S> avatarFeatureType;
         protected AvatarRuntimeFactory<S, R> factory = null;
         protected boolean ticking = false;
 
-        public Builder() {}
+        public Builder(AvatarFeatureType<S> avatarFeature) {
+            this.avatarFeatureType = avatarFeature;
+        }
 
         public Builder<S, R> factory(AvatarRuntimeFactory<S, R> factory) {
             this.factory = factory;
@@ -27,9 +30,9 @@ public record AvatarRuntimeType<S, R extends AvatarRuntime<S>>(AvatarFeatureType
             return this;
         }
 
-        public AvatarRuntimeType<S, R> build(AvatarFeatureType<S> avatarFeature) {
+        public AvatarRuntimeType<S, R> build() {
             if (factory == null) throw new IllegalStateException("Undefined AvatarRuntimeFactory");
-            return new AvatarRuntimeType<>(avatarFeature, factory, ticking);
+            return new AvatarRuntimeType<>(avatarFeatureType, factory, ticking);
         }
     }
 }

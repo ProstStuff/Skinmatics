@@ -9,7 +9,6 @@ import dev.proststuff.skinmatics.avatar.feature.type.Wings;
 import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
 import net.minecraft.client.renderer.entity.layers.WingsLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -33,10 +32,6 @@ public class WingsAvatarFeature {
     @Final
     private ElytraModel elytraModel;
 
-    @Shadow
-    @Final
-    private EquipmentLayerRenderer equipmentRenderer;
-
     @Inject(method = "getPlayerElytraTexture", at = @At("HEAD"), cancellable = true)
     private static void skinmatics$switchTexture(HumanoidRenderState state, CallbackInfoReturnable<Identifier> cir) {
         if (state instanceof AvatarRenderState renderState) {
@@ -44,7 +39,7 @@ public class WingsAvatarFeature {
 
             if (tracker == null) return;
             AvatarFeatureData<Wings> featureData = tracker.getFeature(AvatarFeatureTypes.WINGS);
-            if (featureData == null) return;
+            if (featureData == null || tracker.isHidden(AvatarFeatureTypes.WINGS)) return;
             AvatarTextureData textureData = featureData.settings().baseTextures().get(tracker);
             if (!textureData.isEmpty()) cir.setReturnValue(textureData.id());
         }
@@ -54,7 +49,7 @@ public class WingsAvatarFeature {
     public void skinmatics$renderEmissive(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, HumanoidRenderState state, float yRot, float xRot, CallbackInfo ci) {
         if (state instanceof AvatarRenderState avatarRenderState && avatarRenderState.skinmatics$getTracker() instanceof AvatarTracker tracker) {
             AvatarFeatureData<Wings> featureData = tracker.getFeature(AvatarFeatureTypes.WINGS);
-            if (featureData == null) return;
+            if (featureData == null || tracker.isHidden(AvatarFeatureTypes.WINGS)) return;
             Wings settings = featureData.settings();
             if (!settings.emissive()) return;
             AvatarTextureData textureData = settings.emissiveTextures().get(tracker);

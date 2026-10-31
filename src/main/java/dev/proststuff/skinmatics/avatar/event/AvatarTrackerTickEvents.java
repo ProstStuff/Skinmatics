@@ -10,8 +10,12 @@ public interface AvatarTrackerTickEvents {
             AvatarTrackerTickEvents.Pre.class,
             listeners -> (LivingEntity entity, AvatarTracker tracker, boolean isAvatarPlayer) -> {
                 for (AvatarTrackerTickEvents.Pre listener : listeners) {
-                    listener.tick(entity, tracker, isAvatarPlayer);
+                    if (listener.tick(entity, tracker, isAvatarPlayer)) {
+                        return true;
+                    }
                 }
+
+                return false;
             }
     );
 
@@ -24,9 +28,13 @@ public interface AvatarTrackerTickEvents {
             }
     );
 
-    interface Pre extends AvatarTrackerTickEvents {}
-
-    interface Post extends AvatarTrackerTickEvents {}
-
-    void tick(LivingEntity entity, AvatarTracker tracker, boolean isAvatarPlayer);
+    interface Pre {
+        /**
+         * @return Cancel ticking
+         */
+        boolean tick(LivingEntity entity, AvatarTracker tracker, boolean isAvatarPlayer);
+    }
+    interface Post {
+        void tick(LivingEntity entity, AvatarTracker tracker, boolean isAvatarPlayer);
+    }
 }

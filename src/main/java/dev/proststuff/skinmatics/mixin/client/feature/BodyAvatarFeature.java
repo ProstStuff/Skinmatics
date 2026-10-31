@@ -6,9 +6,9 @@ import dev.proststuff.skinmatics.avatar.AvatarUtils;
 import dev.proststuff.skinmatics.avatar.feature.AvatarFeatureData;
 import dev.proststuff.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import dev.proststuff.skinmatics.avatar.feature.type.Body;
+import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.avatar.texture.AvatarTextureData;
 import dev.proststuff.skinmatics.entity.AvatarPlayer;
-import dev.proststuff.skinmatics.avatar.manager.AvatarTrackerManager;
 import dev.proststuff.skinmatics.util.SkinmaticsGraphicsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -31,12 +31,10 @@ public class BodyAvatarFeature {
     @Inject(method = "getTextureLocation(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/resources/Identifier;", at = @At("HEAD"), cancellable = true)
     public void skinmatics$switchBodyTexture(AvatarRenderState state, CallbackInfoReturnable<Identifier> cir) {
         AvatarTracker tracker = state.skinmatics$getTracker();
-
         if (tracker == null) return;
-
         AvatarFeatureData<Body> avatarFeatureData = tracker.getFeature(AvatarFeatureTypes.BODY);
 
-        if (avatarFeatureData != null) {
+        if (avatarFeatureData != null && !tracker.isHidden(AvatarFeatureTypes.BODY)) {
             Body settings = avatarFeatureData.settings();
             AvatarTextureData textureData = settings.baseTextures().get(tracker);
 
@@ -53,13 +51,24 @@ public class BodyAvatarFeature {
         }
     }
 
+    @Inject(method = "scale(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;)V", at = @At("TAIL"))
+    public void skinmatics$scaleBody(AvatarRenderState state, PoseStack poseStack, CallbackInfo ci) {
+        AvatarTracker tracker = state.skinmatics$getTracker();
+
+        if (tracker == null) return;
+        AvatarFeatureData<Body> avatarFeatureData = tracker.getFeature(AvatarFeatureTypes.BODY);
+        if (avatarFeatureData == null || tracker.isHidden(AvatarFeatureTypes.BODY)) return;
+        Body settings = avatarFeatureData.settings();
+        poseStack.scale(settings.scale().x, settings.scale().y, settings.scale().x);
+    }
+
     @ModifyArg(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModelPart(Lnet/minecraft/client/model/geom/ModelPart;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"), index = 2)
     public RenderType skinmatics$switchHandTexture(RenderType defaultRenderType) {
         AvatarTracker tracker = AvatarTrackerManager.INSTANCE.get(AvatarUtils.getClientUUID());
 
         if (tracker == null) return defaultRenderType;
         AvatarFeatureData<Body> avatarFeatureData = tracker.getFeature(AvatarFeatureTypes.BODY);
-        if (avatarFeatureData == null) return defaultRenderType;
+        if (avatarFeatureData == null || tracker.isHidden(AvatarFeatureTypes.BODY)) return defaultRenderType;
         Body settings = avatarFeatureData.settings();
         AvatarTextureData textureData = settings.baseTextures().get(tracker);
         if (!textureData.isEmpty()) return RenderTypes.entityTranslucent(textureData.id());
@@ -72,7 +81,7 @@ public class BodyAvatarFeature {
 
         if (tracker == null) return;
         AvatarFeatureData<Body> avatarFeatureData = tracker.getFeature(AvatarFeatureTypes.BODY);
-        if (avatarFeatureData == null) return;
+        if (avatarFeatureData == null || tracker.isHidden(AvatarFeatureTypes.BODY)) return;
         Body settings = avatarFeatureData.settings();
         AvatarTextureData textureData = settings.emissiveTextures().get(tracker);
 

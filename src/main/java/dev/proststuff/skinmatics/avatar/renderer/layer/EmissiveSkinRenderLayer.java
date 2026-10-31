@@ -31,18 +31,17 @@ public class EmissiveSkinRenderLayer extends SkinmaticsRenderLayer {
         if (ForceRenderLayer.isTrulyInvisible(state)) return;
         AvatarTracker tracker = state.skinmatics$getTracker();
 
-        if (tracker != null) {
-            AvatarFeatureData<Body> avatarFeatureData = tracker.getAvatar().getFeature(AvatarFeatureTypes.BODY);
-            if (avatarFeatureData == null) return;
-            Body settings = avatarFeatureData.settings();
-            AvatarTextureData textureData = settings.emissiveTextures().get(tracker);
+        if (tracker == null || tracker.isHidden(AvatarFeatureTypes.BODY)) return;
+        AvatarFeatureData<Body> avatarFeatureData = tracker.getAvatar().getFeature(AvatarFeatureTypes.BODY);
+        if (avatarFeatureData == null) return;
+        Body settings = avatarFeatureData.settings();
+        AvatarTextureData textureData = settings.emissiveTextures().get(tracker);
 
-            if (!textureData.isEmpty()) {
-                PlayerModel playerEntityModel = getParentModel();
-                int color = state.isSpectator ? ARGB.multiply(0x26FFFFFF, 0xFFFFFFFF) : 0xFFFFFFFF;
+        if (!textureData.isEmpty()) {
+            PlayerModel playerEntityModel = getParentModel();
+            int color = state.isSpectator ? ARGB.multiply(0x26FFFFFF, 0xFFFFFFFF) : 0xFFFFFFFF;
 
-                submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), color, null, state.outlineColor, null);
-            }
+            submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), color, null, state.outlineColor, null);
         }
     }
 }

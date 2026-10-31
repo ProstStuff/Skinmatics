@@ -8,8 +8,8 @@ public final class PaperDoll {
     static final PaperDoll INSTANCE = new PaperDoll();
     static final Codec<PaperDoll> CODEC = RecordCodecBuilder.create(
             inst -> inst.group(
-                    Codec.BOOL.fieldOf("visible").forGetter(PaperDoll::isVisible),
-                    Codec.BOOL.fieldOf("isAlwaysVisible").forGetter(PaperDoll::isAlwaysVisible),
+                    Codec.BOOL.fieldOf("enabled").forGetter(PaperDoll::isVisible),
+                    Codec.BOOL.fieldOf("alwaysVisible").forGetter(PaperDoll::isAlwaysVisible),
                     Codec.INT.fieldOf("visibleTicks").forGetter(PaperDoll::getVisibleTicks),
                     Codec.BOOL.fieldOf("hideEquipments").forGetter(PaperDoll::shouldHideEquipments),
                     Codec.INT.fieldOf("scale").forGetter(PaperDoll::getScale),

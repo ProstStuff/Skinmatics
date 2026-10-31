@@ -13,6 +13,9 @@ public interface SkinmaticsGuiAssets {
     Identifier NEW_AVATAR = gui("new_avatar");
     Identifier ERROR = gui("error");
 
+    Identifier FEATURE_SHOWN = gui("feature_shown");
+    Identifier FEATURE_HIDDEN = gui("feature_hidden");
+
     Identifier PAPER_DOLL = gui("paper_doll");
     Identifier TEXTURES = gui("textures");
     Identifier FOLDER = gui("folder");

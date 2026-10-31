@@ -55,7 +55,6 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
                     if (idResult.result().isEmpty()) return;
 
                     Identifier id = idResult.result().get();
-                    Skinmatics.LOGGER.info("decoding {}", id);
                     AvatarFeatureType<?> feature = AvatarFeatureTypeRegistry.get(id);
 
                     if (feature == null) {
@@ -71,7 +70,6 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
                     );
 
                     res.result().ifPresent(data -> {
-                        Skinmatics.LOGGER.info("Successfully decoded {}", id);
                         result.put(id, data);
                     });
                 });
@@ -111,7 +109,7 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
     static {
         JsonConfigFormat.FIXERS.put(TYPE, (fileId, rootElement) -> {
             JsonElement metadata = rootElement.getAsJsonObject().get(ConfigConstants.METADATA_KEY);
-            if (metadata.isJsonPrimitive() && metadata.getAsInt() == 2) return rootElement;
+            if (metadata.isJsonPrimitive() && metadata.getAsInt() == TYPE.version()) return rootElement;
 
             Set<String> nonFeatureKeys = Set.of(
                     "name",
@@ -147,7 +145,6 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
                 while (iterator.hasNext()) {
                     Map.Entry<String,JsonElement> entry = iterator.next();
                     String key = entry.getKey();
-                    Skinmatics.LOGGER.info("Migrating '{}'...", key);
 
                     if (nonFeatureKeys.contains(key)) continue;
                     JsonElement element = entry.getValue();
@@ -166,12 +163,18 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
                         Skinmatics.LOGGER.warn("Unknown field, {} does not have a registered AvatarFeatureType. Can't migrate this field!", id);
                     }
 
+                    if (id.equals(AvatarFeatureTypes.BODY.id())) {
+                        JsonArray vec2 = new JsonArray(2);
+                        vec2.add(1);
+                        vec2.add(1);
+                        element.getAsJsonObject().add("scale", vec2);
+                    }
+
                     features.add(id.toString(), element);
                     iterator.remove();
                 }
 
                 rootElement.getAsJsonObject().add(ConfigConstants.DATA_KEY, fixedData);
-                Skinmatics.LOGGER.info("{}", rootElement);
                 return rootElement;
             }
 
@@ -184,12 +187,25 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
         this(name, 0, new HashMap<>(), new ArrayList<>());
     }
 
+    public AvatarProfile toMutable() {
+        return new AvatarProfile(name, maxTicks, new HashMap<>(features), new ArrayList<>(hiddenFeatures));
+    }
+
+    public AvatarProfile toImmutable() {
+        return new AvatarProfile(name, maxTicks, Map.copyOf(features), List.copyOf(hiddenFeatures));
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public @Nullable <S> AvatarFeatureData<S> getFeature(AvatarFeatureType<S> avatarFeature) {
         Identifier identifier = AvatarFeatureTypeRegistry.getKey(avatarFeature);
         if (identifier == null) throw new IllegalStateException("Unregistered AvatarFeatureType");
         return (AvatarFeatureData<S>) features.get(identifier);
+    }
+
+    @Override
+    public boolean isHidden(AvatarFeatureType<?> avatarFeature) {
+        return hiddenFeatures.contains(avatarFeature.id());
     }
 
     public SimpleIdentifier toPath() {

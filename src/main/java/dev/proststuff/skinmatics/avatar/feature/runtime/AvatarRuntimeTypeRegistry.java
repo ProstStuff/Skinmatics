@@ -25,9 +25,9 @@ public class AvatarRuntimeTypeRegistry {
     }
 
     public static <S, R extends AvatarRuntime<S>> AvatarRuntimeType<S, R> register(AvatarFeatureType<S> avatarFeature, Consumer<AvatarRuntimeType.Builder<S, R>> builderFactory) {
-        AvatarRuntimeType.Builder<S, R> builder = new AvatarRuntimeType.Builder<>();
+        AvatarRuntimeType.Builder<S, R> builder = new AvatarRuntimeType.Builder<>(avatarFeature);
         builderFactory.accept(builder);
-        return register(builder.build(avatarFeature));
+        return register(builder.build());
     }
 
     public static @Nullable AvatarRuntimeType<?, ?> get(Identifier id) {

@@ -11,9 +11,9 @@ public class AvatarPackManager extends RemovableSimpleRegistry<String, AvatarPac
 
     @Override
     public AvatarPack register(String key, AvatarPack value) {
-        Skinmatics.LOGGER.info("Registering pack {}", key);
+        Skinmatics.LOGGER.info("Registering pack '{}'", value.info().name().getString());
         value.textures().forEach(AvatarTextureManager.INSTANCE::register);
-        value.avatars().forEach(AvatarProfileManager.INSTANCE::register);
+        value.avatars().forEach((a, b) -> AvatarProfileManager.INSTANCE.register(value, a, b));
 
         return super.register(key, value);
     }

@@ -1,10 +1,7 @@
 {
   "name": "Minecraft Default Skins",
-  "description": "Default Minecraft skins pack complete with their own eye sets.",
-  "license": "Minecraft EULA | Derivative Work",
-  "authors": [
-    "CallMeFreyya",
-    "Minecraft"
-  ],
-  "version": "1.0.0"
+  "description": "Default Minecraft skins pack complete with Skinmatics feature.",
+  "license": "Minecraft EULA",
+  "authors": ["Freyya (CallMeFreyya)", "Minecraft"],
+  "version": "1.0.1"
 }

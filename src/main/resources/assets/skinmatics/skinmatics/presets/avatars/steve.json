@@ -1,102 +1,131 @@
 {
-  "config": 1,
+  "config": 2,
   "data": {
     "name": "Steve",
     "maxTicks": 0,
-    "strongerEmissive": false,
-    "body": {
-      "slim": false,
-      "customBaseTexture": true,
-      "emissive": false,
-      "baseTextures": {
-        "presets/steve": [0]
+    "features": {
+      "skinmatics:body": {
+        "slim": false,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "customBaseTexture": true,
+        "emissive": false,
+        "strongerEmissive": false,
+        "baseTextures": {
+          "presets/steve.png": [
+            0
+          ]
+        },
+        "emissiveTextures": {}
       },
-      "emissiveTextures": {}
-    },
-    "cape": {
-      "visible": true,
-      "customBaseTexture": false,
-      "emissive": false,
-      "baseTextures": {},
-      "emissiveTextures": {}
-    },
-    "wings": {
-      "customBaseTexture": false,
-      "emissive": false,
-      "baseTextures": {},
-      "emissiveTextures": {}
-    },
-    "eyes": {
-      "visible": true,
-      "hidden": [],
-      "emissive": [],
-      "blinkingChance": 100,
-      "blinkingTicks": 5,
-      "baseTextures": {
-        "left": {
-          "front": {
-            "presets/eyes/steve_left_eye_r": [0]
-          },
-          "up": {
-            "presets/eyes/steve_left_eye_r": [0]
-          },
-          "down": {
-            "presets/eyes/steve_left_eye_r": [0]
-          },
+      "skinmatics:eyes": {
+        "visible": true,
+        "hidden": [],
+        "emissive": [],
+        "strongerEmissive": [],
+        "blinkingChance": 100,
+        "blinkingTicks": 5,
+        "baseTextures": {
           "left": {
-            "presets/eyes/steve_left_eye_l": [0]
-          },
-          "leftUp": {
-            "presets/eyes/steve_left_eye_l": [0]
-          },
-          "leftDown": {
-            "presets/eyes/steve_left_eye_l": [0]
+            "front": {
+              "presets/eyes/steve_left_eye_r.png": [
+                0
+              ]
+            },
+            "up": {
+              "presets/eyes/steve_left_eye_r.png": [
+                0
+              ]
+            },
+            "down": {
+              "presets/eyes/steve_left_eye_r.png": [
+                0
+              ]
+            },
+            "left": {
+              "presets/eyes/steve_left_eye_l.png": [
+                0
+              ]
+            },
+            "leftUp": {
+              "presets/eyes/steve_left_eye_l.png": [
+                0
+              ]
+            },
+            "leftDown": {
+              "presets/eyes/steve_left_eye_l.png": [
+                0
+              ]
+            },
+            "right": {
+              "presets/eyes/steve_left_eye_r.png": [
+                0
+              ]
+            },
+            "rightUp": {
+              "presets/eyes/steve_left_eye_r.png": [
+                0
+              ]
+            },
+            "rightDown": {
+              "presets/eyes/steve_left_eye_r.png": [
+                0
+              ]
+            }
           },
           "right": {
-            "presets/eyes/steve_left_eye_r": [0]
-          },
-          "rightUp": {
-            "presets/eyes/steve_left_eye_r": [0]
-          },
-          "rightDown": {
-            "presets/eyes/steve_left_eye_r": [0]
+            "front": {
+              "presets/eyes/steve_right_eye_l.png": [
+                0
+              ]
+            },
+            "up": {
+              "presets/eyes/steve_right_eye_l.png": [
+                0
+              ]
+            },
+            "down": {
+              "presets/eyes/steve_right_eye_l.png": [
+                0
+              ]
+            },
+            "left": {
+              "presets/eyes/steve_right_eye_l.png": [
+                0
+              ]
+            },
+            "leftUp": {
+              "presets/eyes/steve_right_eye_l.png": [
+                0
+              ]
+            },
+            "leftDown": {
+              "presets/eyes/steve_right_eye_l.png": [
+                0
+              ]
+            },
+            "right": {
+              "presets/eyes/steve_right_eye_r.png": [
+                0
+              ]
+            },
+            "rightUp": {
+              "presets/eyes/steve_right_eye_r.png": [
+                0
+              ]
+            },
+            "rightDown": {
+              "presets/eyes/steve_right_eye_r.png": [
+                0
+              ]
+            }
           }
         },
-
-        "right": {
-          "front": {
-            "presets/eyes/steve_right_eye_l": [0]
-          },
-          "up": {
-            "presets/eyes/steve_right_eye_l": [0]
-          },
-          "down": {
-            "presets/eyes/steve_right_eye_l": [0]
-          },
-          "left": {
-            "presets/eyes/steve_right_eye_l": [0]
-          },
-          "leftUp": {
-            "presets/eyes/steve_right_eye_l": [0]
-          },
-          "leftDown": {
-            "presets/eyes/steve_right_eye_l": [0]
-          },
-          "right": {
-            "presets/eyes/steve_right_eye_r": [0]
-          },
-          "rightUp": {
-            "presets/eyes/steve_right_eye_r": [0]
-          },
-          "rightDown": {
-            "presets/eyes/steve_right_eye_r": [0]
-          }
-        }
-      },
-      "emissiveTextures": {}
+        "emissiveTextures": {}
+      }
     },
-    "lights": {
-      "strength": 0
-    }
+    "hiddenFeatures": []
   }
 }

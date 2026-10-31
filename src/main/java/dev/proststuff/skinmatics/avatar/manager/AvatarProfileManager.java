@@ -1,10 +1,12 @@
 package dev.proststuff.skinmatics.avatar.manager;
 
 import dev.proststuff.skinmatics.Skinmatics;
+import dev.proststuff.skinmatics.avatar.AvatarPack;
 import dev.proststuff.skinmatics.avatar.AvatarProfile;
 import dev.proststuff.utilitary.registry.RemovableSimpleRegistry;
 import dev.proststuff.utilitary.util.Either;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ public class AvatarProfileManager extends RemovableSimpleRegistry<String, Avatar
     public static final AvatarProfileManager INSTANCE = new AvatarProfileManager();
 
     private final Map<String, String> failures = new HashMap<>();
+    private final Map<String, AvatarProfile> fallbacks = new HashMap<>();
 
     private AvatarProfileManager() {}
 
@@ -22,9 +25,49 @@ public class AvatarProfileManager extends RemovableSimpleRegistry<String, Avatar
         return failures;
     }
 
-    public void register(String name, Either<AvatarProfile, String> either) {
+    @Override
+    public @Nullable AvatarProfile get(String key) {
+        AvatarProfile avatarProfile = super.get(key);
+
+        if (avatarProfile == null) {
+            return fallbacks.get(key);
+        }
+
+        return avatarProfile;
+    }
+
+    @Override
+    public AvatarProfile unregister(String key) {
+        AvatarProfile avatarProfile = super.unregister(key);
+        AvatarTrackerManager.INSTANCE.unregisterAll(avatarProfile);
+        return avatarProfile;
+    }
+
+    @Override
+    public String unregisterValue(AvatarProfile value) {
+        AvatarTrackerManager.INSTANCE.unregisterAll(value);
+        return super.unregisterValue(value);
+    }
+
+    @Override
+    public void unregisterAll() {
+        fallbacks.clear();
+        super.unregisterAll();
+    }
+
+    public Map<String, AvatarProfile> getFallbacks() {
+        return fallbacks;
+    }
+
+    public void register(AvatarPack source, String name, Either<AvatarProfile, String> either) {
         either
-                .ifLeft(profile -> register(name, profile))
+                .ifLeft(profile -> {
+                    register(name, profile);
+
+                    if (source.locked()) {
+                        fallbacks.put(name, profile);
+                    }
+                })
                 .ifRight(err -> failures.put(name, err));
     }
 }
