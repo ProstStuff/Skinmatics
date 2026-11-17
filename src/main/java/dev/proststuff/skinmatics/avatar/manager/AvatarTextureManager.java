@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AvatarTextureManager extends RemovableSimpleRegistry<Identifier, AvatarTextureData> {
-    public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve(Skinmatics.ID).resolve("baseTextures");
+    public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve(Skinmatics.ID).resolve("t" + "textures");
     public static final AvatarTextureManager INSTANCE = new AvatarTextureManager();
 
     private final Map<Identifier, AvatarTextureData> references = new HashMap<>();
