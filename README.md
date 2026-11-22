@@ -1,6 +1,8 @@
 # Skinmatics
+[Documentation](https://fraynn.pages.dev/skinmatics/intro) | [Modrinth](https://modrinth.com/mod/skinmatics) | [GitHub](https://github.com/ProstStuff/Skinmatics)<br/>
+Depends on **Utilitary** - [Modrinth](https://modrinth.com/mod/utilitary) | [GitHub](https://github.com/ProstStuff/Utilitary)
 
-The official repository for Skinmatics.
+The official repository for Skinmatics Minecraft avatar mod.
 
 ## Authors
 
@@ -21,31 +23,31 @@ The official repository for Skinmatics.
 
 ```gradle
 repositories {
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-
-        filter {
-            includeGroup "maven.modrinth"
-        }
-    }
+    maven {
+		name = "JitPack"
+		url = uri('https://jitpack.io')
+	}
 }
 
 dependencies {
-    implementation "maven.modrinth:utilitary:<version>"
-    implementation "maven.modrinth:skinmatics:<version>"
+    // In Common gradle
+    compileOnly "com.github.ProstStuff:Utilitary:<version>+<minecraft_version>-common"
+    compileOnly "com.github.ProstStuff:Skinmatics:<version>+<minecraft_version>-common"
+    // In Fabric gradle
+    implementation "com.github.ProstStuff:Utilitary:<version>+<minecraft_version>-fabric"
+    implementation "com.github.ProstStuff:Skinmatics:<version>+<minecraft_version>-fabric"
+    // In NeoForge gradle
+    implementation "com.github.ProstStuff:Utilitary:<version>+<minecraft_version>-neoforge"
+    implementation "com.github.ProstStuff:Skinmatics:<version>+<minecraft_version>-neoforge"
 }
 ```
 
-### Library Versions
+---
 
-Minor versions are excluded (2.0 = 2.0.X; 2.1 = 2.1.X)
+### Library Versions
 
 | Skinmatics Version | Utilitary Version |
 |-------------------:|:------------------|
-|                2.0 | 1.0               |
-|                2.1 | 1.1               |
+|              2.0.X | 1.0.X             |
+|              2.1.X | 1.1.X             |
+|              2.2.X | 1.2.X             |

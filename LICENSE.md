@@ -9,7 +9,7 @@ Unless explicitly stated, this license applies to any files under the following 
 
 - ./src/main/resources/assets/
 
-except for the following:
+except for the following as:
 
 - ./src/main/resources/assets/skinmatics/packs/presets - Minecraft EULA
 
@@ -19,6 +19,7 @@ except for the following:
 ## Code License (MIT)
 
 All other files are licensed under the MIT License:
+
 ```
 MIT License
 Copyright (c) 2026 Fraynn
