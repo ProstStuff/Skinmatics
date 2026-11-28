@@ -1,14 +1,14 @@
 package com.fraynn.skinmatics.entity.renderer.layer;
 
-import com.fraynn.skinmatics.avatar.extension.AvatarTrackedEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.fraynn.skinmatics.avatar.AvatarTracker;
 import com.fraynn.skinmatics.avatar.AvatarUtils;
+import com.fraynn.skinmatics.avatar.extension.AvatarTrackedEntity;
 import com.fraynn.skinmatics.avatar.feature.AvatarFeatureData;
 import com.fraynn.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import com.fraynn.skinmatics.avatar.feature.type.Body;
 import com.fraynn.skinmatics.entity.renderer.ForceRenderLayer;
 import com.fraynn.skinmatics.texture.AvatarTextureData;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -41,8 +41,7 @@ public class EmissiveSkinRenderLayer extends SkinmaticsRenderLayer {
         if (!textureData.isEmpty()) {
             PlayerModel playerEntityModel = getParentModel();
             int color = state.isSpectator ? ARGB.multiply(0x26FFFFFF, 0xFFFFFFFF) : 0xFFFFFFFF;
-
-            submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), color, null, state.outlineColor, null);
+            submitNodeCollector.order(1).submitModel(playerEntityModel, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), state.outlineColor, null, color);
         }
     }
 }

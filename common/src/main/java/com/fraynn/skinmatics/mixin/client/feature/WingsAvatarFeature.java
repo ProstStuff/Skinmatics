@@ -60,12 +60,12 @@ public class WingsAvatarFeature {
 
                 poseStack.pushPose();
                 poseStack.translate(0.0, 0.0, 0.0078125);
-                submitNodeCollector.order(0).submitModel(model, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+                submitNodeCollector.order(0).submitModel(model, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
                 poseStack.popPose();
 
                 poseStack.pushPose();
                 poseStack.translate(0.0, 0.0, -0.0078125);
-                submitNodeCollector.order(0).submitModel(model, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+                submitNodeCollector.order(0).submitModel(model, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), settings.strongerEmissive()), lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
                 poseStack.popPose();
             }
         }

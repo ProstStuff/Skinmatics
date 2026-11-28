@@ -2,17 +2,20 @@ package com.fraynn.skinmatics.gui.screen;
 
 import com.fraynn.skinmatics.Skinmatics;
 import com.fraynn.skinmatics.avatar.AvatarProfile;
+import com.fraynn.skinmatics.avatar.AvatarProfileManager;
+import com.fraynn.skinmatics.avatar.AvatarTrackerManager;
 import com.fraynn.skinmatics.avatar.feature.type.eye.EyeUtils;
 import com.fraynn.skinmatics.config.SkinmaticsConfig;
 import com.fraynn.skinmatics.entity.AvatarPlayer;
-import com.fraynn.skinmatics.gui.screen.widget.*;
-import com.fraynn.skinmatics.avatar.AvatarProfileManager;
-import com.fraynn.skinmatics.avatar.AvatarTrackerManager;
 import com.fraynn.skinmatics.gui.SkinmaticsGraphicsUtils;
+import com.fraynn.skinmatics.gui.screen.widget.ClickableButton;
+import com.fraynn.skinmatics.gui.screen.widget.IconButton;
+import com.fraynn.skinmatics.gui.screen.widget.TextButton;
 import com.fraynn.utilitary.config.serialization.ConfigParser;
 import com.fraynn.utilitary.config.serialization.ConfigSerializationStatus;
 import com.fraynn.utilitary.registry.SimpleRegistry;
 import com.fraynn.utilitary.util.SimpleIdentifier;
+import com.mojang.blaze3d.Blaze3D;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -24,9 +27,9 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Util;
 import org.jspecify.annotations.NonNull;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +158,7 @@ public class AvatarScreen extends SkinmaticsScreen {
         this.maxAvatarListYOffset = Math.max(j - avatarYIndex + 1, 0) * avatarHeight;
 
         addRenderableWidget(
-                new TextButton(width - 32, 0, 16, 16, Component.literal("?"), (_) -> Util.getPlatform().openUri("https://fraynn.pages.dev/skinmatics/intro"))
+                new TextButton(width - 32, 0, 16, 16, Component.literal("?"), _ -> Blaze3D.openUri(URI.create("https://fraynn.pages.dev/skinmatics/intro")))
         ).focusable = false;
     }
 

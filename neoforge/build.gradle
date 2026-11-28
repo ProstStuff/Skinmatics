@@ -12,15 +12,15 @@ repositories {
 
 dependencies {
     // Sinytra Connector
-    implementation "maven.modrinth:connector:UTJVNLyr"
-    implementation "maven.modrinth:forgified-fabric-api:LfyblCbV"
-    implementation "maven.modrinth:launchpad:QMTIAZjK"
+    //implementation "maven.modrinth:connector:UTJVNLyr"
+    //implementation "maven.modrinth:forgified-fabric-api:LfyblCbV"
+    //implementation "maven.modrinth:launchpad:QMTIAZjK"
 
     implementation "com.fraynn:utilitary:${utilitary_file_version}-neoforge"
     implementation "de.marhali:json5-java:${json5_version}"
 
     implementation "dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${dynalight_version}"
-    runtimeOnly "dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${dynalight_version}"
+    //runtimeOnly "dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${dynalight_version}"
 
     runtimeOnly "maven.modrinth:sodium:mc${sodium_version}-neoforge"
     implementation "maven.modrinth:iris:${iris_version}-neoforge"

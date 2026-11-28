@@ -17,7 +17,6 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.CapeLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -47,8 +46,8 @@ public class CapeAvatarFeature {
         return settings.customBaseTexture() && !settings.baseTextures().isEmpty() ? DummyTextureAsset.INSTANCE : null;
     }
 
-    @WrapOperation(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IIILnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V"))
-    private void skinmatics$renderCustom(SubmitNodeCollector collector, Model model, Object stateObj, PoseStack _poseStack, RenderType renderType, int light, int overlay, int color, ModelFeatureRenderer.CrumblingOverlay overlayData, Operation<Void> original, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot) {
+    @WrapOperation(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;III)V"))
+    private void skinmatics$renderCustom(SubmitNodeCollector instance, Model model, Object state, PoseStack poseStack, RenderType renderType, int light, int overlay, int color, Operation<Void> original) {
         AvatarTracker tracker = ((AvatarTrackedEntity) state).skinmatics$getTracker();
 
         if (tracker != null) {
@@ -61,10 +60,10 @@ public class CapeAvatarFeature {
             }
         }
 
-        original.call(collector, model, stateObj, poseStack, renderType, light, overlay, color, overlayData);
+        original.call(instance, model, state, poseStack, renderType, light, overlay, color);
     }
 
-    @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;IIILnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V"))
+    @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/AvatarRenderState;FF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitModel(Lnet/minecraft/client/model/Model;Ljava/lang/Object;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/rendertype/RenderType;III)V"))
     public void skinmatics$renderEmissive(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, AvatarRenderState state, float yRot, float xRot, CallbackInfo ci) {
         AvatarTracker tracker = ((AvatarTrackedEntity) state).skinmatics$getTracker();
 
@@ -72,6 +71,6 @@ public class CapeAvatarFeature {
         AvatarFeatureData<Cape> featureData = tracker.getFeature(AvatarFeatureTypes.CAPE);
         if (featureData == null || tracker.isHidden(AvatarFeatureTypes.CAPE) || !featureData.settings().emissive()) return;
         AvatarTextureData textureData = featureData.settings().emissiveTextures().get(tracker);
-        if (!textureData.isEmpty()) submitNodeCollector.order(1).submitModel(model, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), featureData.settings().strongerEmissive()), lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+        if (!textureData.isEmpty()) submitNodeCollector.order(1).submitModel(model, state, poseStack, AvatarUtils.getEmissiveRenderType(textureData.id(), featureData.settings().strongerEmissive()), lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
     }
 }

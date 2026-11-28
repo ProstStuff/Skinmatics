@@ -1,16 +1,16 @@
 package com.fraynn.skinmatics.gui;
 
-import com.fraynn.skinmatics.mixin.client.extension.GuiGraphicsExtractorExtension;
-import com.mojang.authlib.GameProfile;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.fraynn.skinmatics.Skinmatics;
 import com.fraynn.skinmatics.avatar.AvatarProfile;
 import com.fraynn.skinmatics.avatar.feature.AvatarFeatureData;
 import com.fraynn.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import com.fraynn.skinmatics.avatar.feature.type.Body;
 import com.fraynn.skinmatics.avatar.feature.type.eye.Eyes;
+import com.fraynn.skinmatics.mixin.client.extension.GuiGraphicsExtractorExtension;
 import com.fraynn.skinmatics.texture.AvatarTextureData;
 import com.fraynn.skinmatics.texture.AvatarTextureManager;
+import com.mojang.authlib.GameProfile;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
