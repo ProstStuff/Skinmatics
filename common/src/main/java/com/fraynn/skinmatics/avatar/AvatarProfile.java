@@ -124,7 +124,6 @@ public record AvatarProfile(String name, int maxTicks, Map<Identifier, AvatarFea
                 while (iterator.hasNext()) {
                     Map.Entry<String,JsonElement> entry = iterator.next();
                     String key = entry.getKey();
-                    Skinmatics.LOGGER.info("adding {}", key);
                     if (PROFILE_DATA_KEYS.contains(key)) continue;
 
                     JsonElement element = entry.getValue();
