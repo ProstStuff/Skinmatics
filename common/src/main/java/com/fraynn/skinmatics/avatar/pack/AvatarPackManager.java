@@ -1,6 +1,5 @@
 package com.fraynn.skinmatics.avatar.pack;
 
-import com.fraynn.skinmatics.Skinmatics;
 import com.fraynn.skinmatics.avatar.AvatarProfileManager;
 import com.fraynn.skinmatics.texture.AvatarTextureManager;
 import com.fraynn.utilitary.registry.RemovableSimpleRegistry;
@@ -12,7 +11,6 @@ public class AvatarPackManager extends RemovableSimpleRegistry<String, AvatarPac
 
     @Override
     public AvatarPack register(String key, AvatarPack value) {
-        Skinmatics.LOGGER.info("Registering pack '{}'", value.info().name().getString());
         value.textures().forEach(AvatarTextureManager.INSTANCE::register);
         value.avatars().forEach((a, b) -> AvatarProfileManager.INSTANCE.register(value, a, b));
 
