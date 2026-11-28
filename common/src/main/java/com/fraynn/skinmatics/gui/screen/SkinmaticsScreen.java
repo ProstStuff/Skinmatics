@@ -70,7 +70,7 @@ public class SkinmaticsScreen extends MultiFocusScreen implements SkinmaticsGui 
     @Override
     public void onClose() {
         SkinmaticsConfig.save();
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 
     public record UiRect(int x0, int y0, int x1, int y1) {

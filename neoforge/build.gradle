@@ -12,9 +12,9 @@ repositories {
 
 dependencies {
     // Sinytra Connector
-    implementation "maven.modrinth:u58R1TMW:Fdq3p4uT"
-    implementation "maven.modrinth:Aqlf1Shp:bqnuKGQ4"
-    implementation "maven.modrinth:voWgQoWV:isqNNLhL"
+    implementation "maven.modrinth:connector:UTJVNLyr"
+    implementation "maven.modrinth:forgified-fabric-api:LfyblCbV"
+    implementation "maven.modrinth:launchpad:QMTIAZjK"
 
     implementation "com.fraynn:utilitary:${utilitary_file_version}-neoforge"
     implementation "de.marhali:json5-java:${json5_version}"

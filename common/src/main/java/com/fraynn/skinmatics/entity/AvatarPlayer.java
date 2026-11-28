@@ -19,6 +19,7 @@ public class AvatarPlayer extends RemotePlayer {
 
     public AvatarPlayer(ClientLevel level, GameProfile gameProfile) {
         super(level, gameProfile);
+        setId(-1);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AddSkinmaticsButton {
             }
 
             IconButton button = new IconButton(0, 0, 20, 20, SkinmaticsGuiAssets.SKINMATICS_NO_BACKGROUND, 20, 20, b -> {
-                Minecraft.getInstance().setScreen(SkinmaticsGui.openScreen(Minecraft.getInstance().screen));
+                Minecraft.getInstance().setScreenAndShow(SkinmaticsGui.openScreen(Minecraft.getInstance().gui.screen()));
             });
             button.focusable = false;
 

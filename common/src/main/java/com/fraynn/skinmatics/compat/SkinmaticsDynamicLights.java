@@ -2,18 +2,18 @@ package com.fraynn.skinmatics.compat;
 
 import com.fraynn.skinmatics.Skinmatics;
 import com.fraynn.skinmatics.avatar.AvatarTracker;
+import com.fraynn.skinmatics.avatar.AvatarTrackerManager;
 import com.fraynn.skinmatics.avatar.feature.AvatarFeatureData;
 import com.fraynn.skinmatics.avatar.feature.runtime.AvatarRuntimeTypes;
 import com.fraynn.skinmatics.avatar.feature.runtime.light.LightAvatarRuntime;
 import com.fraynn.skinmatics.avatar.feature.type.AvatarFeatureTypes;
 import com.fraynn.skinmatics.avatar.feature.type.Light;
-import com.fraynn.skinmatics.avatar.AvatarTrackerManager;
 import dev.lambdaurora.lambdynlights.api.DynamicLightsContext;
 import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.lambdaurora.lambdynlights.api.entity.luminance.EntityLuminance;
 import dev.lambdaurora.lambdynlights.api.item.ItemLightSourceManager;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import org.jetbrains.annotations.Range;
 import org.jspecify.annotations.NonNull;
 
@@ -26,8 +26,8 @@ public class SkinmaticsDynamicLights implements DynamicLightsInitializer {
     @Override
     public void onInitializeDynamicLights(@NonNull DynamicLightsContext init) {
         init.entityLightSourceManager().onRegisterEvent().register(context -> {
-            context.register(EntityType.PLAYER, ProfileEntityLuminance.INSTANCE);
-            context.register(EntityType.MANNEQUIN, ProfileEntityLuminance.INSTANCE);
+            context.register(EntityTypes.PLAYER, ProfileEntityLuminance.INSTANCE);
+            context.register(EntityTypes.MANNEQUIN, ProfileEntityLuminance.INSTANCE);
         });
     }
 

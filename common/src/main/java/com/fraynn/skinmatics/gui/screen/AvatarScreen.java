@@ -174,7 +174,7 @@ public class AvatarScreen extends SkinmaticsScreen {
         if (!avatarAvailable) return;
         extractPanelBackground(graphics, preview.x0(), preview.y0(), preview.x1(), preview.y1());
         graphics.enableScissor(preview.x0(), preview.y0() + 1, preview.x1(), preview.y1() - 1);
-        InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, preview.x0(), preview.y0(), preview.x1(), preview.y1(), previewScale, 0.5F, mouseX, mouseY, AvatarPlayer.getInstance());
+        if (AvatarPlayer.hasInstance()) InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, preview.x0(), preview.y0(), preview.x1(), preview.y1(), previewScale, 0.5F, mouseX, mouseY, AvatarPlayer.getInstance());
         graphics.disableScissor();
     }
 
@@ -238,7 +238,7 @@ public class AvatarScreen extends SkinmaticsScreen {
             this.profile = profile;
             this.avatarId = avatarId;
 
-            this.customize = new IconButton(x + width - 16, y + height - 16, SkinmaticsGuiAssets.CUSTOMIZE, 16, 16, (_) -> minecraft().setScreen(new CustomizationScreen(avatarId, profile, getParent())));
+            this.customize = new IconButton(x + width - 16, y + height - 16, SkinmaticsGuiAssets.CUSTOMIZE, 16, 16, (_) -> minecraft().setScreenAndShow(new CustomizationScreen(avatarId, profile, getParent())));
 
             this.delete = new IconButton(x + width - 16, y + height - 32, SkinmaticsGuiAssets.DELETE, 16, 16, (_) -> {
                 SimpleIdentifier path = profile.toPath();
@@ -251,7 +251,7 @@ public class AvatarScreen extends SkinmaticsScreen {
                         AvatarProfileManager.INSTANCE.register(avatarId, AvatarProfileManager.INSTANCE.getFallbacks().get(avatarId));
                     }
 
-                    minecraft().setScreen(parent);
+                    minecraft().setScreenAndShow(parent);
                 }
             });
 
@@ -350,7 +350,7 @@ public class AvatarScreen extends SkinmaticsScreen {
         }
 
         public static void onClick(ClickableButton widget) {
-            Minecraft.getInstance().setScreen(new NewAvatarScreen(widget.getParent()));
+            Minecraft.getInstance().setScreenAndShow(new NewAvatarScreen(widget.getParent()));
         }
     }
 

@@ -66,7 +66,7 @@ public interface SkinmaticsEvents {
         PaperDollRenderer.INSTANCE.tick();
 
         if (SkinmaticsKeyMappings.OPEN_PROFILES.get().consumeClick()) {
-            minecraft.setScreen(SkinmaticsGui.openScreen(minecraft.screen));
+            minecraft.setScreenAndShow(SkinmaticsGui.openScreen(minecraft.gui.screen()));
         }
 
         if (minecraft.player != null) {
